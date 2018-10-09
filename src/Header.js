@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './css/header.css';
+import { AuthService } from './auth';
 
 export default class Header extends React.Component {
     render() {
@@ -26,7 +27,7 @@ class Navigation extends React.Component {
                         <LoginButton></LoginButton>
                         <li className="menu_button"><Link to="/store">Browse</Link></li>
                         <li className="menu_button"><Link to="/">Contact Us</Link></li>
-
+                        <div className="username">Welcome {getName()}</div>
                 </ul>
             </div>
         );
@@ -34,15 +35,8 @@ class Navigation extends React.Component {
 }
 
 class LoginButton extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            isLoggedIn: false
-        }
-    }
-
     render() {
-        if (this.state.isLoggedIn === false) {
+        if (AuthService.isAuthed == false) {
             return (
                 <li className="menu_button"><Link to="/login">Login</Link></li>
             );
@@ -51,5 +45,13 @@ class LoginButton extends React.Component {
                 <li className="menu_button"><a href="/">Logout</a></li>
             );
         }
+    }
+}
+
+function getName() {
+    if (AuthService.isAuthed == true) {
+        return <div className="username">{AuthService.getName()}</div>
+    } else {
+        return <div className="username">Guest</div>
     }
 }

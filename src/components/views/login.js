@@ -5,8 +5,7 @@ import {
     Redirect,
     BrowserRouter as Router,
   } from 'react-router-dom';
-//const AuthService = require('hpstore/auth');
-import AuthService from './../auth';
+import { AuthService } from '../../auth';
 
 export default class Login extends React.Component {
     state = {
@@ -14,9 +13,8 @@ export default class Login extends React.Component {
     };
   
     login = () => {
-      AuthService.authenticate(() => {
-        this.setState({ redirectToPreviousRoute: true });
-      });
+      AuthService.authenticate("Ethan");
+      this.setState({ redirectToPreviousRoute: true });
     };
   
     render() {
