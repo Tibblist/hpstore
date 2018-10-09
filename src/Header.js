@@ -1,5 +1,6 @@
 import React from 'react';
-import './header.css';
+import {Link} from 'react-router-dom';
+import './css/header.css';
 
 export default class Header extends React.Component {
     render() {
@@ -7,10 +8,6 @@ export default class Header extends React.Component {
         <header className="menu">
             <nav className="menu__navigation">
             <div></div>
-            <div className="menu__logo"><a href="/">
-            <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png"></img>
-            </a></div>
-            <div className="spacer" />
             <Navigation/>
             </nav>
         </header>
@@ -23,9 +20,13 @@ class Navigation extends React.Component {
         return (
             <div className="navbar_navigation-items">
                 <ul>
+                        <div className="menu_logo"><a href="/">
+                            <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png"></img>
+                        </a></div>
                         <LoginButton></LoginButton>
-                        <li className="menu_button"><a href="/">Browse</a></li>
-                        <li className="menu_button"><a href="/">Contact Us</a></li>
+                        <li className="menu_button"><Link to="/store">Browse</Link></li>
+                        <li className="menu_button"><Link to="/">Contact Us</Link></li>
+
                 </ul>
             </div>
         );
@@ -43,7 +44,7 @@ class LoginButton extends React.Component {
     render() {
         if (this.state.isLoggedIn === false) {
             return (
-                <li className="menu_button"><a href="/">Login</a></li>
+                <li className="menu_button"><Link to="/login">Login</Link></li>
             );
         } else {
             return (

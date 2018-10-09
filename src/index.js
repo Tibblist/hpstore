@@ -1,8 +1,10 @@
 import React from 'react';
-import { Router, Route, hashHistory } from 'react-router'
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import './css/index.css';
+import App from './app';
 
-render((
-  <Router history={hashHistory}>
-    <Route path="/" component={App}/>
-  </Router>
-), document.getElementById('app'))
+ReactDOM.render(
+  <Router>
+    <App />
+  </Router>, document.getElementById('root'));
