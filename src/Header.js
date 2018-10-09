@@ -42,7 +42,7 @@ class LoginButton extends React.Component {
             );
         } else {
             return (
-                <li className="menu_button"><a href="/">Logout</a></li>
+                <li className="menu_button"><a href="/" onClick={AuthService.logout()}>Logout</a></li>
             );
         }
     }
