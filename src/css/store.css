@@ -1,0 +1,21 @@
+.item-container {
+    display: grid;
+    grid-column-gap: 25px;
+    grid-row-gap: 25px;
+    margin-left: 20%;
+  }
+
+  .item0 {
+    color: blue;
+    grid-column: 1;
+  }
+
+  .item1 {
+    color: green;
+    grid-column: 2;
+  }
+  
+  .item2 {
+    color: purple;
+    grid-column: 3;
+  }

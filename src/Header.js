@@ -21,9 +21,9 @@ class Navigation extends React.Component {
         return (
             <div className="navbar_navigation-items">
                 <ul>
-                        <div className="menu_logo"><a href="/">
+                        <div className="menu_logo"><Link to="/">
                             <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png" alt="Hello"></img>
-                        </a></div>
+                        </Link></div>
                         <LoginButton></LoginButton>
                         <li className="menu_button"><Link to="/store">Browse</Link></li>
                         <li className="menu_button"><Link to="/">Contact Us</Link></li>
@@ -42,13 +42,13 @@ class LoginButton extends React.Component {
             );
         } else {
             return (
-                <li className="menu_button"><a href="/" onClick={AuthService.logout}>Logout</a></li>
+                <li className="menu_button"><Link to="/" onClick={AuthService.logout}>Logout</Link></li>
             );
         }
     }
 }
 
-function getName() {
+function getName() {  //Exists to check if they have logged in or not and display either their name or guest
     if (AuthService.isAuthed() === true) {
         return <div className="username">{AuthService.getName()}</div>
     } else {

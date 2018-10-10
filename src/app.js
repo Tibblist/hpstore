@@ -15,7 +15,8 @@ class App extends React.Component {
             <Route path="/store" component={Store}/>
             <Route path="/login" component={Login}/>
         </div>
-    );}
+        );
+    }
 }
 
 export default App;
