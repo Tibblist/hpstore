@@ -22,7 +22,7 @@ class Navigation extends React.Component {
             <div className="navbar_navigation-items">
                 <ul>
                         <div className="menu_logo"><a href="/">
-                            <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png"></img>
+                            <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png" alt="Hello"></img>
                         </a></div>
                         <LoginButton></LoginButton>
                         <li className="menu_button"><Link to="/store">Browse</Link></li>
