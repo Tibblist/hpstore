@@ -17,14 +17,16 @@ class Items extends React.Component {
         return (
             <div className="item-container">
             {createItemArray().map(function(item, id) {
-                console.log(id);
-                console.log(item);
                 var column = "item" + counter;
                 counter++;
-                if (counter == 3) {
+                if (counter == 3) { //Updates the column the item will be put on from 0-2
                     counter = 0;
                 }
-                return <li className={column} key={id}>{item[1]}</li>
+                return <li className={column} key={id}><div className="item">
+                <div className="item-image"><img src={item[3]} alt={item[1]}></img></div>
+                <div className="item-name">{item[1]}</div>
+                <div className="item-price">{item[2]}</div>
+                </div></li>
             })}
             </div>
         );
@@ -38,7 +40,7 @@ function createItemArray() {
         item.push(i);
         item.push("Naglfar");
         item.push("1.2B");
-        item.push("IMAGE URL HERE");
+        item.push("https://wiki.eveuniversity.org/images/thumb/f/f9/Naglfar.jpg/256px-Naglfar.jpg");
         itemArray.push(item);
     }
     return itemArray;

@@ -19,3 +19,7 @@
     color: purple;
     grid-column: 3;
   }
+
+  .item {
+    border: 3px solid black;
+  }
