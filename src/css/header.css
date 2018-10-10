@@ -14,7 +14,7 @@
     background-color: black;
 }
 
-.active {
+.menu_button a.active {
     background-color: #4CAF50;
 }
 
