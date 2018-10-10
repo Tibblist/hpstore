@@ -36,20 +36,20 @@ class Navigation extends React.Component {
 
 class LoginButton extends React.Component {
     render() {
-        if (AuthService.isAuthed == false) {
+        if (AuthService.isAuthed() === false) {
             return (
                 <li className="menu_button"><Link to="/login">Login</Link></li>
             );
         } else {
             return (
-                <li className="menu_button"><a href="/" onClick={AuthService.logout()}>Logout</a></li>
+                <li className="menu_button"><a href="/" onClick={AuthService.logout}>Logout</a></li>
             );
         }
     }
 }
 
 function getName() {
-    if (AuthService.isAuthed == true) {
+    if (AuthService.isAuthed() === true) {
         return <div className="username">{AuthService.getName()}</div>
     } else {
         return <div className="username">Guest</div>

@@ -1,23 +1,27 @@
+var _authed = false;
+var _name = "";
+
 export class AuthService {
       constructor() {
-        this._authed = false;
-        this._name = "";
+        console.log("Contructor for AuthService ran!");
       }
 
       static getName() {
-          return this._name;
+          return _name;
       }
 
       static isAuthed() {
-        return this._authed;
+        return _authed;
       }
 
       static authenticate(name) {
-          this._name = name;
-          this._authed = true;
+          console.log("Authenticated user: " + name);
+          _name = name;
+          _authed = true;
       }
 
       static logout() {
-          this._authed = false;
+          console.log("Logged out!");
+          _authed = false;
       }
   }
