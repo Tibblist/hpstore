@@ -1,5 +1,6 @@
 import React from 'react';
 import StoreHeader from './store-header';
+import { DropDownButton } from '../utils/buttons';
 import '../../css/store.css';
 var counter = 0;
 export default class Store extends React.Component {
@@ -19,8 +20,6 @@ class Items extends React.Component {
         return (
             <div className="item-container">
             {createItemArray().map(function(item, id) {
-                console.log(id);
-                console.log(item);
                 var columnNum = counter % 3;
                 var column = "item" + columnNum;
                 counter++;
@@ -36,8 +35,9 @@ class Items extends React.Component {
 }
 
 class SideMenu extends React.Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
+        this.toggleSelected = this.toggleSelected.bind(this);
         this.state = {
           capitals: [
             {
@@ -157,6 +157,7 @@ class SideMenu extends React.Component {
     }
 
     toggleSelected(id, key){
+        console.log(id, key);
         let temp = this.state[key]
         temp[id].selected = !temp[id].selected
         this.setState({
@@ -169,52 +170,18 @@ class SideMenu extends React.Component {
             <div className="sidenav">
                 <ul>
                     <DropDownButton
+                        titleHelper="Capitals"
                         title="Capitals"
                         list={this.state.capitals}
+                        toggleItem={this.toggleSelected}
                     />
                     <DropDownButton
+                        titleHelper="Supercapitals"
                         title="Supercapitals"
                         list={this.state.supercapitals}
+                        toggleItem={this.toggleSelected}
                     />
                 </ul>
-            </div>
-        );
-    }
-}
-
-class DropDownButton extends React.Component {
-    constructor(props){
-        super(props)
-        this.state = {
-          listOpen: false,
-          headerTitle: this.props.title
-        }
-    }
-    handleClickOutside(){
-        this.setState({
-          listOpen: false
-        })
-    }
-      
-    toggleList(){
-        this.setState(prevState => ({
-          listOpen: !prevState.listOpen
-        }))
-    }
-
-    render() {
-        const{list} = this.props;
-        const{listOpen, headerTitle} = this.state;
-        return (
-            <div className="dd-wrapper">
-                <div className="dd-header" onClick={this.toggleList.bind(this)}>
-                    <div className="dd-header-title">{headerTitle}</div>
-                </div>
-                {listOpen && <ul className="dd-list">
-                    {list.map((item) => (
-                        <li className="dd-list-item" key={item.id} >{item.title}</li>
-                    ))}
-                </ul>}
             </div>
         );
     }
