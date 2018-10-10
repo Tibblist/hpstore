@@ -36,11 +36,7 @@ class Items extends React.Component {
 function createItemArray() {
     var itemArray = [];
     for (var i = 0; i < 10; i++) {
-        var item = [];
-        item.push(i);
-        item.push("Naglfar");
-        item.push("1.2B");
-        item.push("https://wiki.eveuniversity.org/images/thumb/f/f9/Naglfar.jpg/256px-Naglfar.jpg");
+        var item = [i, "Naglfar", "1.2B", "https://wiki.eveuniversity.org/images/thumb/f/f9/Naglfar.jpg/256px-Naglfar.jpg"];
         itemArray.push(item);
     }
     return itemArray;
