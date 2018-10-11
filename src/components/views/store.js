@@ -1,35 +1,40 @@
 import React from 'react';
 import StoreHeader from './store-header';
+import Grid from '@material-ui/core/Grid';
 import { DropDownButton } from '../utils/buttons';
 import '../../css/store.css';
+
 var counter = 0;
+
 export default class Store extends React.Component {
     render() {
         return (
             <div>
                 <StoreHeader></StoreHeader>
-                <Items></Items>
+                <ItemGrid></ItemGrid>
                 <SideMenu></SideMenu>
             </div>
         );
     }
 }
 
-class Items extends React.Component {
-    render () {
+class ItemGrid extends React.Component {
+    render() {
+        var itemArray = createItemArray();
         return (
-            <div className="item-container">
-            {createItemArray().map(function(item, id) {
-                var columnNum = counter % 3;
-                var column = "item" + columnNum;
-                counter++;
-                return <p className={column} key={id}><div className="item">
-                <div className="item-image"><img src={item[3]} alt={item[1]}></img></div>
-                <div className="item-name">{item[1]}</div>
-                <div className="item-price">{item[2]}</div>
-                </div></p>
-            })}
-            </div>
+            <Grid container className="item-container" spacing={16}>
+                <Grid item xs={12}>
+                    <Grid container className="item-grid" justify="space-evenly" alighItems="center" spacing={10}>
+                    {itemArray.map(function(item, id) {
+                        return <Grid className="grid-item" key={id} item xs={16}><div className="item">
+                            <div className="item-image"><img src={item[3]} alt={item[1]}></img></div>
+                            <div className="item-name">{item[1]}</div>
+                            <div className="item-price">{item[2]}</div>
+                            </div></Grid>
+                        })}
+                    </Grid>
+                </Grid>
+            </Grid>
         );
     }
 }
@@ -189,7 +194,7 @@ class SideMenu extends React.Component {
 
 function createItemArray() {
     var itemArray = [];
-    for (var i = 0; i < 10; i++) {
+    for (var i = 0; i < 50; i++) {
         var item = [i, "naglfar", "1.2B", "https://wiki.eveuniversity.org/images/thumb/f/f9/Naglfar.jpg/256px-Naglfar.jpg"];
         itemArray.push(item);
     }

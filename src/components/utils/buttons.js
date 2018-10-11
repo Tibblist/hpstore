@@ -32,7 +32,7 @@ export class DropDownButton extends React.Component {
                 </div>
                 {listOpen && <ul className="dd-list">
                     {list.map((item) => (
-                        <li className="dd-list-item" key={item.id} onClick={() => toggleItem(item.id, item.key)}>{item.title}</li>
+                        itemStyle(item, toggleItem)
                     ))}
                 </ul>}
             </div>
@@ -51,5 +51,13 @@ function getHeaderTitle(props) {
     }
     else if(count > 1){
         return props.titleHelper + ' (' + count + ')';
+    }
+}
+
+function itemStyle(item, toggleItem) {
+    if (item.selected == true) {
+        return <li className="dd-list-item-selected" key={item.id} onClick={() => toggleItem(item.id, item.key)}>{item.title} &#10004;</li>
+    } else {
+        return <li className="dd-list-item" key={item.id} onClick={() => toggleItem(item.id, item.key)}>{item.title}</li>
     }
 }
