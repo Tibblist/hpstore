@@ -22,19 +22,21 @@ class ItemGrid extends React.Component {
     render() {
         var itemArray = createItemArray();
         return (
-            <Grid container className="item-container" spacing={16}>
+            <div className="item-container">
+            <Grid container spacing={16}>
                 <Grid item xs={12}>
                     <Grid container className="item-grid" justify="space-evenly" alighItems="center" spacing={10}>
-                    {itemArray.map(function(item, id) {
-                        return <Grid className="grid-item" key={id} item xs={16}><div className="item">
+                        {itemArray.map(function(item, id) {
+                        return  <Grid className="grid-item" key={id} item xs={16}>
                             <div className="item-image"><img src={item[3]} alt={item[1]}></img></div>
                             <div className="item-name">{item[1]}</div>
                             <div className="item-price">{item[2]}</div>
-                            </div></Grid>
+                            </Grid>
                         })}
                     </Grid>
                 </Grid>
             </Grid>
+            </div>
         );
     }
 }
