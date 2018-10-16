@@ -117,6 +117,7 @@ const styles = theme => ({
     height: 50,
     width: '50%',
     'margin-left': '25%',
+    'border': '3px black',
   },
   container: {
     position: 'relative',
