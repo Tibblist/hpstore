@@ -11,6 +11,7 @@ export class AuthService {
       }
 
       static isAuthed() {
+        console.log("Is user authed: " + _authed);
         return _authed;
       }
 

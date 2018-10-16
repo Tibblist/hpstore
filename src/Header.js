@@ -25,6 +25,7 @@ class Navigation extends React.Component {
                             <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png" alt="Hello"></img>
                         </Link></div>
                         <LoginButton></LoginButton>
+                        <li className="menu_button"><Link to="/account">Account</Link></li>
                         <li className="menu_button"><Link to="/store">Browse</Link></li>
                         <li className="menu_button"><Link to="/">Contact Us</Link></li>
                         <div className="username">Welcome {getName()}</div>
