@@ -1,11 +1,11 @@
 import React from 'react';
 import SearchBar from '../utils/search-bar';
-import '../../css/store-header.css';
 
 export default class StoreHeader extends React.Component {
     render () {
+        const { classes } = this.props;
         return (
-            <SearchBar/>
+            <SearchBar></SearchBar>
         );
     }
 }

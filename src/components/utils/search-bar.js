@@ -115,11 +115,11 @@ function getSuggestionValue(suggestion) {
 const styles = theme => ({
   root: {
     height: 50,
-    width: 1000,
+    width: '50%',
+    'margin-left': '25%',
   },
   container: {
     position: 'relative',
-    left: 225,
   },
   suggestionsContainerOpen: {
     position: 'absolute',

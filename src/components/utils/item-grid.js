@@ -4,6 +4,8 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
     root: {
+        'margin-left': '10%',
+        'margin-right': '5%',
     },
     container: {
         left: 200,

@@ -6,19 +6,7 @@ import Store from './components/views/store';
 import Login from './components/views/login';
 import Account from './components/views/account';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { AuthService } from './auth';
-import './css/app.css';
-
-const SecretRoute = ({ component: Component, ...rest }) => (
-    <Route {...rest} render={(props) => (
-        AuthService.isAuthed() === true
-        ? <Component {...props} />
-        : <Redirect to={{
-            pathname: '/login',
-            state: { from: props.location }
-          }} />
-    )} />
-  );
+import { AuthRoute} from './auth';
 
 class App extends React.Component {
     render() {
@@ -28,7 +16,7 @@ class App extends React.Component {
             <Header/>
             <Route path="/" exact component={Home}/>
             <Route path="/store" component={Store}/>
-            <SecretRoute path="/account" component={Account}></SecretRoute>
+            <AuthRoute path="/account" component={Account}></AuthRoute>
             <Route path="/login" component={Login}/>
         </div>
         );
