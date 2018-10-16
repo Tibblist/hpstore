@@ -26,3 +26,14 @@ export class AuthService {
           _authed = false;
       }
   }
+
+export const AuthRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+        AuthService.isAuthed() === true
+        ? <Component {...props} />
+        : <Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }} />
+    )} />
+);
