@@ -55,7 +55,7 @@ function getHeaderTitle(props) {
 }
 
 function itemStyle(item, toggleItem) {
-    if (item.selected == true) {
+    if (item.selected === true) {
         return <li className="dd-list-item-selected" key={item.id} onClick={() => toggleItem(item.id, item.key)}>{item.title} &#10004;</li>
     } else {
         return <li className="dd-list-item" key={item.id} onClick={() => toggleItem(item.id, item.key)}>{item.title}</li>

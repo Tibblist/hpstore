@@ -11,7 +11,7 @@ import './css/app.css';
 
 const SecretRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => (
-        AuthService.isAuthed === true
+        AuthService.isAuthed() === true
         ? <Component {...props} />
         : <Redirect to={{
             pathname: '/login',
