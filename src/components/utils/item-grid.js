@@ -8,20 +8,27 @@ const styles = theme => ({
     root: {
         'margin-left': '10%',
         'margin-right': '5%',
-        'margin-top': 10,
+        'margin-top': 20,
     },
     container: {
         
     },
     gridItem: {
-        'margin-top': 5,
+        'margin-top': 10,
     },
+    itemName: {
+        'text-align': 'center',
+    },
+    itemPrice: {
+        'text-align': 'center',
+
+    }
   });
 
 function createItemArray() {
     var itemArray = [];
     for (var i = 0; i < 50; i++) {
-        var item = [i, "naglfar", "1.2B", "https://wiki.eveuniversity.org/images/thumb/f/f9/Naglfar.jpg/256px-Naglfar.jpg"];
+        var item = [i, "Naglfar", "1.2B", "https://wiki.eveuniversity.org/images/thumb/f/f9/Naglfar.jpg/256px-Naglfar.jpg"];
         itemArray.push(item);
     }
     return itemArray;
@@ -39,8 +46,8 @@ class ItemGrid extends React.Component {
                         {itemArray.map(function(item, id) {
                         return  <Paper className={classes.gridItem} key={id}>
                             <div className="item-image"><img src={item[3]} alt={item[1]}></img></div>
-                            <Typography component='h1'>{item[1]}</Typography>
-                            <Typography component='h3'>{item[2]}</Typography>
+                            <Typography className={classes.itemName}>{item[1]}</Typography>
+                            <Typography className={classes.itemPrice}>{item[2]}</Typography>
                             </Paper>
                         })}
                     </Grid>

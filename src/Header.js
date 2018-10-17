@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './css/header.css';
-import { AuthService } from './auth';
+import { AuthService } from './backend/auth';
 
 export default class Header extends React.Component {
     render() {
@@ -25,7 +25,7 @@ class Navigation extends React.Component {
                             <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png" alt="Hello"></img>
                         </Link></div>
                         <LoginButton></LoginButton>
-                        <li className="menu_button"><Link to="/account">Account</Link></li>
+                        {accountTab()}
                         <li className="menu_button"><Link to="/store">Browse</Link></li>
                         <li className="menu_button"><Link to="/">Contact Us</Link></li>
                         <div className="username">Welcome {getName()}</div>
@@ -54,5 +54,13 @@ function getName() {  //Exists to check if they have logged in or not and displa
         return <div className="username">{AuthService.getName()}</div>
     } else {
         return <div className="username">Guest</div>
+    }
+}
+
+function accountTab() {
+    if (AuthService.isAuthed() === true) {
+        return <li className="menu_button"><Link to="/account">Account</Link></li>
+    } else {
+        return ''
     }
 }

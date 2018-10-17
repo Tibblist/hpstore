@@ -2,11 +2,9 @@ import { Route, Redirect } from 'react-router-dom';
 import React from 'react';
 var _authed = false;
 var _name = "";
+var _isAdmin = "";
 
 export class AuthService {
-      constructor() {
-        console.log("Contructor for AuthService ran!");
-      }
 
       static getName() {
           return _name;
@@ -27,7 +25,11 @@ export class AuthService {
           console.log("Logged out!");
           _authed = false;
       }
-  }
+
+      static isAdmin() {
+          return _isAdmin;
+      }
+}
 
 export const AuthRoute = ({ component: Component, ...rest }) => (
     <Route {...rest} render={(props) => (
