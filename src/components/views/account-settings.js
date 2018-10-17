@@ -58,7 +58,7 @@ class AccountSettings extends React.Component {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <div className={classes.expContent}>
-                <TextField label="Name">
+                <TextField placeholder="Name">
                 </TextField>
                 <Button variant="contained" className={classes.submitButton}>
                     Submit
