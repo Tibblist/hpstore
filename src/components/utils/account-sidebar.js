@@ -21,7 +21,6 @@ const styles = theme => ({
         display: 'inline-block',
         zIndex: 1,
         'float': 'left',
-        'margin-top': '0px',
     },
     listContainer: {
         height: '100%',
@@ -42,7 +41,7 @@ class SideBar extends React.Component {
 }
 
 function listItems() {
-    if (AuthService.isAdmin() == true) {
+    if (AuthService.isAdmin() === true) {
         return adminListItems;
     } else {
         return userListItems;
