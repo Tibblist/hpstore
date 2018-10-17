@@ -18,8 +18,10 @@ const styles = theme => ({
         backgroundColor: 'white',
     },
     container: {
-        width: '10%',
+        display: 'inline-block',
         zIndex: 1,
+        'float': 'left',
+        'margin-top': '0px',
     },
     listContainer: {
         height: '100%',
