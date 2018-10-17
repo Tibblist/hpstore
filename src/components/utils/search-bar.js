@@ -8,6 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
+import SearchIcon from '@material-ui/icons/Search';
 
 const suggestions = [
   { label: 'Afghanistan' },
@@ -50,7 +51,7 @@ function renderInputComponent(inputProps) {
   const { classes, inputRef = () => {}, ref, ...other } = inputProps;
 
   return (
-    <TextField className="search-bar"
+    <TextField
       fullWidth
       InputProps={{
         inputRef: node => {
@@ -62,7 +63,11 @@ function renderInputComponent(inputProps) {
         },
       }}
       {...other}
-    />
+    >
+      <div className={classes.searchIcon}>
+       <SearchIcon />
+      </div>
+    </TextField>  
   );
 }
 
@@ -182,7 +187,6 @@ class IntegrationAutosuggest extends React.Component {
 
     return (
       <div className={classes.root}>
-      <div className="search-bar">
         <Autosuggest
           {...autosuggestProps}
           inputProps={{
@@ -203,7 +207,6 @@ class IntegrationAutosuggest extends React.Component {
             </Paper>
           )}
         />
-      </div>
       </div>
     );
   }

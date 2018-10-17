@@ -1,15 +1,20 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     root: {
         'margin-left': '10%',
         'margin-right': '5%',
+        'margin-top': 10,
     },
     container: {
-        left: 200,
-        backgroundColor: 'yellow',
+        
+    },
+    gridItem: {
+        'margin-top': 5,
     },
   });
 
@@ -32,11 +37,11 @@ class ItemGrid extends React.Component {
                 <Grid item xs={12}>
                     <Grid container className="item-grid" justify="space-evenly" alighitems="center" spacing={0}>
                         {itemArray.map(function(item, id) {
-                        return  <Grid className="grid-item" key={id}>
+                        return  <Paper className={classes.gridItem} key={id}>
                             <div className="item-image"><img src={item[3]} alt={item[1]}></img></div>
-                            <div className="item-name">{item[1]}</div>
-                            <div className="item-price">{item[2]}</div>
-                            </Grid>
+                            <Typography component='h1'>{item[1]}</Typography>
+                            <Typography component='h3'>{item[2]}</Typography>
+                            </Paper>
                         })}
                     </Grid>
                 </Grid>
