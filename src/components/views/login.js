@@ -24,7 +24,7 @@ export default class Login extends React.Component {
   
       return (
         <div>
-          <p>You must log in to view the page at {from.pathname}</p>
+          <p>You must log in to view the page at: {from.pathname}</p>
           <button onClick={this.login}>Log in</button>
         </div>
       );
