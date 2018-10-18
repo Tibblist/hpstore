@@ -11,6 +11,7 @@ import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import { AuthService } from '../../backend/auth';
+import {Link} from 'react-router-dom';
 
 
 const styles = theme => ({
@@ -51,10 +52,12 @@ function listItems() {
 const adminListItems = (
     <div>
       <ListItem button>
+      <Link to="/account/dashboard">
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
+        </Link>
       </ListItem>
       <ListItem button>
         <ListItemIcon>
@@ -85,24 +88,30 @@ const adminListItems = (
 
 const userListItems = (
     <div>
+      <Link to="/account/dashboard" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
       </ListItem>
+      </Link>
+      <Link to="/account/orders" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Orders" />
       </ListItem>
+      </Link>
+      <Link to="/account/settings" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
           <SettingsIcon />
         </ListItemIcon>
         <ListItemText primary="Settings" />
       </ListItem>
+      </Link>
     </div>
   );
 

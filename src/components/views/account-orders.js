@@ -70,7 +70,7 @@ class AccountOrders extends React.Component {
                     {n.transID}
                 </TableCell>
                 <TableCell >{n.name}</TableCell>
-                <TableCell >{numberWithCommas(n.price)}</TableCell>
+                <TableCell >{numberWithCommas(n.price)} ISK</TableCell>
                 <TableCell >{n.startDate}</TableCell>
                 <TableCell >{n.expectedDate}</TableCell>
                 <TableCell >{n.deliveredDate}</TableCell>
