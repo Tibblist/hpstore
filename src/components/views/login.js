@@ -10,7 +10,7 @@ export default class Login extends React.Component {
     };
   
     login = () => {
-      AuthService.authenticate("Ethan");
+      AuthService.authenticate("Tibblist");
       this.setState({ redirectToPreviousRoute: true });
     };
   
