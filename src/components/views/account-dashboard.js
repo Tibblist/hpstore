@@ -7,7 +7,7 @@ const styles = theme => ({
 
 class AccountDash extends React.Component {
     render() {
-        const { classes } = this.props;
+        //const { classes } = this.props;
         return (
             <div>
                 Hello World!
