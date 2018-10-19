@@ -1,5 +1,6 @@
 var db = {
-    users: []
+    users: [],
+    count: 0
 }
 
 export const Groups = Object.freeze({
@@ -8,8 +9,15 @@ export const Groups = Object.freeze({
     ADMIN: 3,
 });
 
-class DB {
+export class DB {
     addUser(name, refreshToken, group) {
         
+    }
+    static testCount() {
+        db.count++;
+        console.log(db.count);
+    }
+    static getCount() {
+        return db.count;
     }
 }
