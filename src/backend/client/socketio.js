@@ -1,5 +1,5 @@
 const io = require('socket.io-client')
-const socket = io.connect('http://localhost:3000')
+const socket = io.connect('http://store.holepunchers.space:8080')
 
 function registerHandler(dataType, onDataReceived) {
     socket.on(dataType, onDataReceived);
@@ -10,5 +10,5 @@ function unregisterHandler(dataType) {
   }
 
   function sendData(dataType, ...data) {
-    socket.emit('register', ...data);
+    socket.emit(dataType, ...data);
   }
