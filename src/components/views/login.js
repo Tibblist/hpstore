@@ -2,7 +2,7 @@ import React from 'react';
 import {
     Redirect,
   } from 'react-router-dom';
-import { AuthService } from '../../backend/auth';
+import { AuthService } from '../../backend/client/auth';
 
 export default class Login extends React.Component {
     state = {

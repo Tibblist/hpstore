@@ -1,8 +1,17 @@
 import { Route, Redirect } from 'react-router-dom';
 import React from 'react';
+
+
+
 var _authed = false;
 var _name = "";
 var _isAdmin = false;
+
+export const Groups = Object.freeze({
+    MEMBER: 1,
+    BUILDER: 2,
+    ADMIN: 3,
+});
 
 export class AuthService {
 

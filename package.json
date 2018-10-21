@@ -1,5 +1,4 @@
 {
-  "start": "PORT=80 react-scripts start",
   "name": "hpstore",
   "version": "0.1.0",
   "private": true,
@@ -13,10 +12,11 @@
     "react-dom": "^16.5.2",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.0.4"
+    "react-scripts": "2.0.4",
+    "socket.io": "^2.1.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "PORT=80 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

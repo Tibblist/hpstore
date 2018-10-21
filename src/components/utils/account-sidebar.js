@@ -10,7 +10,7 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
-import { AuthService } from '../../backend/auth';
+import { AuthService } from '../../backend/client/auth';
 import {Link} from 'react-router-dom';
 
 

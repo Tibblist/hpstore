@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import './css/header.css';
-import { AuthService } from './backend/auth';
+import { AuthService } from './backend/client/auth';
 
 export default class Header extends React.Component {
     render() {
