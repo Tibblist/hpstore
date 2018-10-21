@@ -3,16 +3,6 @@ import { DB } from '../../backend/db';
 
 
 export default class Home extends React.Component {
-    constructor(props){
-        super(props);
-        this.state = {
-          count: DB.getCount()
-        }
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return this.state.count != nextState.count;
-    }
 
     testCount() {
         DB.testCount();
