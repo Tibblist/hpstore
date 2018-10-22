@@ -89,7 +89,6 @@ const columns = [
 
 const options = {
     serverSide: true,
-    filterType: 'checkbox',
 };
 
 function prepData(transID, name, price, startDate, expectedDate, deliveredDate, status) {
