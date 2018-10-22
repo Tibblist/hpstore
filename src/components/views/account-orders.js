@@ -6,8 +6,11 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import {SERVER_URL} from '../../config';
+import MUIDataTable from "mui-datatables";
+import { SSL_OP_SSLEAY_080_CLIENT_DH_BUG } from 'constants';
 
-var id = 0;
+const request = require('superagent');
 
 const Status = Object.freeze({
     PAY:    <TableCell style={{backgroundColor: "yellow"}}><b style={{color: "black"}}>Confirming Payment</b></TableCell>,
@@ -16,22 +19,9 @@ const Status = Object.freeze({
     REJECT: <TableCell style={{backgroundColor: "red"}}><b style={{color: "black"}}>Rejected</b></TableCell>,
 });
 
-function prepData(transID, name, price, startDate, expectedDate, deliveredDate, status) {
-    id++;
-    return {id, transID, name, price, startDate, expectedDate, deliveredDate, status};
-}
-
 const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  }
-
-const data = [
-    prepData(110, "Naglfar", 1200000000, "10/20/18", "10/27/18", "", Status.BUILD),
-    prepData(114, "Naglfar", 1200000000, "10/20/18", "10/27/18", "", Status.PAY),
-    prepData(120, "Naglfar", 1200000000, "10/20/18", "10/27/18", "", Status.DELAY),
-    prepData(123, "Naglfar", 1200000000, "10/20/18", "10/27/18", "", Status.REJECT),
-    prepData(125, "Naglfar", 1200000000, "10/20/18", "10/27/18", "", Status.REJECT),
-]
+}
 
 const styles = theme => ({
     root: {
@@ -45,44 +35,151 @@ const styles = theme => ({
     },
 });
 
+const columns = [
+    {
+     name: "Transaction ID",
+     options: {
+      filter: false,
+      sort: true,
+     }
+    },
+    {
+     name: "Name",
+     options: {
+      filter: true,
+      sort: true,
+     }
+    },
+    {
+     name: "Price",
+     options: {
+      filter: true,
+      sort: true,
+     }
+    },
+    {
+     name: "Order Date",
+     options: {
+      filter: false,
+      sort: false,
+     }
+    },
+    {
+     name: "Expected End Date",
+     options: {
+      filter: false,
+      sort: false,
+     }
+    },
+    {
+     name: "Delivered Date",
+     options: {
+      filter: false,
+      sort: false,
+     }
+    },
+    {
+     name: "Status",
+     options: {
+      filter: false,
+      sort: false,
+     }
+    },
+];
+
+const options = {
+    serverSide: true,
+    filterType: 'checkbox',
+};
+
+function prepData(transID, name, price, startDate, expectedDate, deliveredDate, status) {
+    return {transID, name, price, startDate, expectedDate, deliveredDate, status};
+}
+
 class AccountOrders extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            data: [] 
+        };
+        this.fetchData = this.fetchData.bind(this);
+        this.testSendOrder = this.testSendOrder.bind(this);
+    }
+
+    componentDidMount() {
+        this.fetchData();
+    }
+
+    fetchData = () => {
+        request
+        .get("/api/getOrders")
+        .end((err, res) => {
+            if (res == null) {
+                console.log(res);
+                console.log(err);
+                return;
+            }
+            var newData = [];
+            for (var i = 0; i < res.body.length; i++) {
+                var keys = Object.keys(res.body[i]);
+                var temp = [];
+                keys.forEach(function(key){
+                    if (key === "status") {
+                        temp.push(showStatus(res.body[i][key]));
+                        return;
+                    } else if (key === "price") {
+                        temp.push(numberWithCommas(res.body[i][key]) + " ISK");
+                        return;
+                    }
+                    temp.push(res.body[i][key]);
+                });
+                newData.push(temp);
+            }
+            console.log(newData);
+            this.setState({
+                data: newData
+            });
+        });
+    }
+
+    testSendOrder() {
+        request
+            .post('/api/createOrder')
+            .set('Content-Type', 'application/json')
+            .send(prepData(120, "Naglfar", 1200000000, "10/20/18", "10/27/18", "", 1))
+            .then(
+                this.fetchData()
+                );
+    }
+
     render() {
         const { classes } = this.props;
         return (
-            <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Transaction ID</TableCell>
-            <TableCell>Name</TableCell>
-            <TableCell >Price</TableCell>
-            <TableCell >Order Date</TableCell>
-            <TableCell >Expected End Date</TableCell>
-            <TableCell >Delivered Date</TableCell>
-            <TableCell >Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map(n => {
-            return (
-            <TableRow key={n.id}>
-                <TableCell component="th" scope="row" numeric>
-                    {n.transID}
-                </TableCell>
-                <TableCell >{n.name}</TableCell>
-                <TableCell >{numberWithCommas(n.price)} ISK</TableCell>
-                <TableCell >{n.startDate}</TableCell>
-                <TableCell >{n.expectedDate}</TableCell>
-                <TableCell >{n.deliveredDate}</TableCell>
-                {n.status}
-            </TableRow>
-             );
-             })}
-            </TableBody>
-            </Table>
-        </Paper>
+        <div className={classes.root}>
+            <MUIDataTable
+                title={"Users Orders"}
+                data={this.state.data}
+                columns={columns}
+                options={options}
+            />
+            <button style={{marginLeft: '50%', marginRight: '50%'}} onClick={this.testSendOrder}>Add an order</button>
+        </div>
         );
     }
 }
 
+function showStatus(status) {
+    switch (status) {
+        case 1:
+            return Status.PAY
+        case 2:
+            return Status.BUILD
+        case 3:
+            return Status.DELAY
+        case 4:
+            return Status.REJECT
+        default:
+            return "ERROR NO STATUS"
+    }
+}
 export default withStyles(styles)(AccountOrders);

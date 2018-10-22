@@ -9,6 +9,14 @@
             "problemMatcher": [
                 "$node-sass"
             ]
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "path": "src/backend/server/",
+            "problemMatcher": [
+                "$tsc"
+            ]
         }
     ]
 }
