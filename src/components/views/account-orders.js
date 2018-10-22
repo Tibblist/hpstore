@@ -108,7 +108,6 @@ class AccountOrders extends React.Component {
         .get("/api/getOrders")
         .end((err, res) => {
             if (res == null) {
-                console.log(res);
                 console.log(err);
                 return;
             }
