@@ -19,7 +19,6 @@ db.once("open", () => console.log("connected to the database"));
 
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-// An api endpoint that returns all the orders for a all users
 const Status = Object.freeze({
   PAY:    1,
   BUILD:  2,
@@ -39,6 +38,7 @@ function prepData(transID, name, price, startDate, expectedDate, deliveredDate, 
   return {transID, name, price, startDate, expectedDate, deliveredDate, status};
 }
 
+// An api endpoint that returns all the orders for a all users
 app.get('/api/getOrders', (req,res) => {
     res.json(data);
     console.log('Sent list of orders');
