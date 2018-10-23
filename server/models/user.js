@@ -10,8 +10,6 @@ let UserSchema = new mongoose.Schema(
         orders: [{
 
         }],
-
-
     }
 )
 

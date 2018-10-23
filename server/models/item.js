@@ -11,7 +11,6 @@ let ItemSchema = new mongoose.Schema(
         isCapital: Boolean,
         isSuper: Boolean,
         race: String,
-        
     }
 )
 
