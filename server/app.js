@@ -56,6 +56,10 @@ app.post('/api/createOrder', (req, res) => {
   console.log("Recieved order: " + req.body);
 });
 
+app.get('/api/createUser', (req, res) => {
+  
+});
+
 // Handles any requests that don't match the ones above
 app.get('*', (req,res) =>{
     res.sendFile('index.html', { root: __dirname });
