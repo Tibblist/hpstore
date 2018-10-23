@@ -1,8 +1,15 @@
 const express = require('express');
 const mongoose = require("mongoose");
+var morgan = require("morgan");  
+var compression = require("compression");  
+var fs = require("fs");
+var helmet = require("helmet");
 
 const app = express();
 // Serve the static files from the React app
+app.use(helmet());
+app.use(compression());
+app.use(morgan("common"));
 app.use(express.static('../../../build/'));
 app.use(express.json());
 
