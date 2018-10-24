@@ -4,7 +4,11 @@ var morgan = require("morgan");
 var compression = require("compression");  
 var fs = require("fs");
 var helmet = require("helmet");
+const request = require('superagent');
 
+const CLIENT_ID = "c568354f648e47f2a5f1d54b1c0d297f";
+const CLIENT_SECRET = "GupzMDAz0aG1MDeAdPGhAe5XGqlBtuyQB01PkyDB";
+const base_64 = Buffer.from(CLIENT_ID + ":" + CLIENT_SECRET, "base64");
 const app = express();
 // Serve the static files from the React app
 app.use(helmet());
@@ -56,8 +60,17 @@ app.post('/api/createOrder', (req, res) => {
   console.log("Recieved order: " + req.body);
 });
 
-app.get('/api/createUser', (req, res) => {
-  
+app.get('/callback', (req, res) => {
+  var code = req.query.code;
+  res.redirect('store.holepunchers.space');
+  request
+  .post('login.eveonline.com')
+  .set('Authorization', "Basic " + base_64)
+  .set('Content-Type', 'application/json')
+  .send({"grant_type":"authorization_code", "code":code})
+  .then(
+    
+  );
 });
 
 // Handles any requests that don't match the ones above

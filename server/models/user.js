@@ -8,7 +8,8 @@ let UserSchema = new mongoose.Schema(
         defaultShipping: String,
         group: Number,
         orders: [{
-
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Order'
         }],
     }
 )

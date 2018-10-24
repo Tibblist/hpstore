@@ -3,8 +3,8 @@ const Order = require('./../models/order');
 
 var exports = module.exports = {};
 
-exports.createNewUser = function() {
+exports.createNewUser = function(user) {
 
-    var user = new User({'state': 'hi'});
+    var user = new User(user);
     user.save();
 }

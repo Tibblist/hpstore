@@ -141,7 +141,7 @@ class AccountOrders extends React.Component {
             .send(prepData(120, "Naglfar", 1200000000, "10/20/18", "10/27/18", "", 1))
             .then(
                 this.fetchData()
-                );
+            );
     }
 
     render() {
