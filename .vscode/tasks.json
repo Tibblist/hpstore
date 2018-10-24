@@ -17,6 +17,14 @@
             "problemMatcher": [
                 "$tsc"
             ]
+        },
+        {
+            "type": "npm",
+            "script": "start",
+            "path": "server/",
+            "problemMatcher": [
+                "$tsc"
+            ]
         }
     ]
 }
