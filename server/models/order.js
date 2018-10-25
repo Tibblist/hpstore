@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 // this will be our data base's data structure 
 const OrderSchema = new Schema(
   {
-    id: Number,
-    tid: Number,
+    _id:  mongoose.Schema.Types.ObjectId,
+    transID: Number,
     builder: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'

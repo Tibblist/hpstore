@@ -5,12 +5,7 @@ var compression = require("compression");
 var fs = require("fs");
 var helmet = require("helmet");
 const request = require('superagent');
-
-const CLIENT_ID = "c568354f648e47f2a5f1d54b1c0d297f";
-const CLIENT_SECRET = "GupzMDAz0aG1MDeAdPGhAe5XGqlBtuyQB01PkyDB";
-const buffData = CLIENT_ID + ":" + CLIENT_SECRET;
-let buff = new Buffer(buffData);  
-const base_64 = buff.toString('base64');
+const esi = require('./esi');
 
 const app = express();
 // Serve the static files from the React app
@@ -66,18 +61,7 @@ app.post('/api/createOrder', (req, res) => {
 app.get('/callback', (req, res) => {
   var code = req.query.code;
   res.redirect('/account');
-  console.log(base_64);
-  request
-  .post('login.eveonline.com/oauth/token')
-  .send({"grant_type":"authorization_code", "code":code})
-  .set('Authorization', "Basic " + base_64)
-  .set('Content-Type', 'application/json')
-  .end((err, res) => {
-    console.log("ERROR: " + err);
-    console.log(res);
-    console.log(res.body);
-  });
-
+  esi.initialCodeProcessing(code);
 });
 
 // Handles any requests that don't match the ones above

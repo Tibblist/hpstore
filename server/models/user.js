@@ -2,15 +2,17 @@ const mongoose = require('mongoose')
 
 let UserSchema = new mongoose.Schema(
     {
+        _id: mongoose.Schema.Types.ObjectId,
         primaryCharacter: {
-
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Character'
         },
+        characters: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Character'
+        }],
         defaultShipping: String,
         group: Number,
-        orders: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Order'
-        }],
     }
 )
 
