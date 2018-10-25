@@ -17,5 +17,37 @@ exports.createOrder = function(res, obj) {
 }
 
 exports.findOrderByBuyer = function(res, buyerName) {
-    Order.find
+    Order.find({'buyer.primaryCharacter.name': buyerName}, function(err, order) {
+        if (err) {
+            console.log(err);
+        }
+        res.send(order);
+    });
+}
+
+exports.findOrderByTID = function (res, tid) {
+    Order.find({transID: tid}, function(err, order) {
+        if (err) {
+            console.log(err);
+        }
+        res.send(order);
+    });
+}
+
+exports.updateOrderPrice = function (tid, newPrice) {
+    Order.findOne({transID: tid}, function(err, order){
+        if (err) {
+            console.log(err);
+        }
+        order.changePrice(newPrice);
+    });
+}
+
+exports.updateOrderPaid = function (tid, newPaid) {
+    Order.findOne({transID: tid}, function(err, order){
+        if (err) {
+            console.log(err);
+        }
+        order.changePaid(newPaid);
+    })
 }

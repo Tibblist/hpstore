@@ -8,12 +8,17 @@ var exports = module.exports = {};
 exports.createNewUser = function(charID, charName, charCorpID, charAllianceID) {
     var newCharacter = new Character({'charID': charID, name: charName, corpID: charCorpID, allianceID: charAllianceID});
     newCharacter._id = new mongoose.Types.ObjectId();
-    newCharacter.save();
+    newCharacter.save(function(err) {
+        console.log(err);
+    });
     var newUser = new User({group: 1});
     newUser.primaryCharacter = newCharacter;
     newUser.characters.push(newCharacter);
     newUser._id = new mongoose.Types.ObjectId();
-    newUser.save();
+    console.log("Primary Character of newUser is: " + newUser.primaryCharacter.name);
+    newUser.save(function(err) {
+        console.log(err);
+    });
 }
 
 exports.checkIfUserExists = function(id) {
