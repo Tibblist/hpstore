@@ -1,7 +1,8 @@
 const User = require('./../models/user');
 const Order = require('./../models/order');
 const Character = require('./../models/character');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const uuidv4 = require('uuid/v4');
 
 var exports = module.exports = {};
 
@@ -16,9 +17,11 @@ exports.createNewUser = function(charID, charName, charCorpID, charAllianceID) {
     newUser.characters.push(newCharacter);
     newUser._id = new mongoose.Types.ObjectId();
     console.log("Primary Character of newUser is: " + newUser.primaryCharacter.name);
+    newUser.token = uuidv4();
     newUser.save(function(err) {
         console.log(err);
     });
+    return newUser;
 }
 
 exports.checkIfUserExists = function(id) {
@@ -35,7 +38,7 @@ exports.checkIfUserExists = function(id) {
                 console.log("Found user: " + user);
                 found = true;
             }
-            resolve(found);
+            resolve([user, found]);
         });
     });
 }

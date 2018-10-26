@@ -13,7 +13,7 @@ exports.getCharacterName = function(refreshToken) {
 
 }
 
-exports.initialCodeProcessing = function(authCode) {
+exports.initialCodeProcessing = function(response, authCode) {
     request
   .post('https://login.eveonline.com/oauth/token')
   .set('Authorization', "Basic " + base_64)
@@ -26,11 +26,11 @@ exports.initialCodeProcessing = function(authCode) {
     }
     console.log(res.body);
     console.log(res.body.access_token);
-    verifyToken(res.body);
+    verifyToken(response, res.body);
   });
 }
 
-function verifyToken(body) {
+function verifyToken(response, body) {
     request
     .get('https://esi.evetech.net/verify/')
     .query({token: body.access_token})
@@ -38,18 +38,23 @@ function verifyToken(body) {
         if (err) {
             console.log(err);
         }
-        checkIfUser(res.body);
+        checkIfUser(response, res.body);
     });
 }
 
-function checkIfUser(body) {
-    user_ctrl.checkIfUserExists(body.CharacterID).then(function (found) {
-        if (!found) {
+function checkIfUser(response, body) {
+    user_ctrl.checkIfUserExists(body.CharacterID).then(function (ret) {
+        if (!ret[1]) {
             getCharInfo(body.CharacterID).then(function(charBody) {
                 console.log(charBody);
-                user_ctrl.createNewUser(body.CharacterID, body.CharacterName, charBody.corporation_id, charBody.alliance_id);
+                var user = user_ctrl.createNewUser(body.CharacterID, body.CharacterName, charBody.corporation_id, charBody.alliance_id);
+                response.cookie('token', user.token, {expire: 360000 * 60 * 1000 + Date.now()});
+
             });
+        } else {
+            response.cookie('token', ret[0].token, {expire: 43200 * 60 * 1000 + Date.now()});
         }
+        response.send('');
     });
 }
 
