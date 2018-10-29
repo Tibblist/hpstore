@@ -1,6 +1,6 @@
 import { Route, Redirect } from 'react-router-dom';
 import React from 'react';
-
+import Cookies from 'js-cookie';
 
 
 var _authed = false;
@@ -16,23 +16,23 @@ export const Groups = Object.freeze({
 export class AuthService {
 
       static getName() {
-          return _name;
+          return Cookies.get('name');
       }
 
       static isAuthed() {
-        console.log("Is user authed: " + _authed);
-        return _authed;
-      }
+        console.log(Cookies.get('token'));
 
-      static authenticate(name) {
-          console.log("Authenticated user: " + name);
-          _name = name;
-          _authed = true;
+        if (Cookies.get('token') != undefined) {
+            return true;
+        } else {
+            return false;
+        }
       }
 
       static logout() {
           console.log("Logged out!");
-          _authed = false;
+          Cookies.remove('token');
+          Cookies.remove('name');
       }
 
       static isAdmin() {

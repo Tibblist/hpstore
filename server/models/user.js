@@ -13,6 +13,8 @@ let UserSchema = new mongoose.Schema(
         }],
         defaultShipping: String,
         group: Number,
+        token: String,
+
     }
 )
 

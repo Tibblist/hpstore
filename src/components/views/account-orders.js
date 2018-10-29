@@ -82,7 +82,8 @@ const columns = [
 ];
 
 const options = {
-    serverSide: true,
+    //serverSide: true,
+    selectableRows: false,
 };
 
 function prepData(transID, name, price, startDate, expectedDate, deliveredDate, status) {
@@ -118,6 +119,7 @@ class AccountOrders extends React.Component {
                 keys.forEach(function(key){
                     if (key === "status") {
                         temp.push(showStatus(res.body[i][key]));
+                        //temp.push("Hello");
                         return;
                     } else if (key === "price") {
                         temp.push(numberWithCommas(res.body[i][key]) + " ISK");
@@ -146,6 +148,7 @@ class AccountOrders extends React.Component {
 
     render() {
         const { classes } = this.props;
+        console.log(this.state.data);
         return (
         <div className={classes.root}>
             <MUIDataTable
@@ -154,7 +157,7 @@ class AccountOrders extends React.Component {
                 columns={columns}
                 options={options}
             />
-            <button style={{marginLeft: '50%', marginRight: '50%'}} onClick={this.testSendOrder}>Add an order</button>
+                        <button style={{marginLeft: '50%', marginRight: '50%'}} onClick={this.testSendOrder}>Add an order</button>
         </div>
         );
     }

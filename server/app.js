@@ -2,10 +2,10 @@ const express = require('express');
 const mongoose = require("mongoose");
 var morgan = require("morgan");  
 var compression = require("compression");  
-var fs = require("fs");
 var helmet = require("helmet");
-const request = require('superagent');
 const esi = require('./esi');
+const dataJS = require('./data')
+
 
 const app = express();
 // Serve the static files from the React app
@@ -24,7 +24,10 @@ mongoose.connect(
 
 let db = mongoose.connection;
 
-db.once("open", () => console.log("connected to the database"));
+db.once("open", () => {
+  dataJS.init();
+  console.log("connected to the database")
+});
 
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
@@ -60,8 +63,12 @@ app.post('/api/createOrder', (req, res) => {
 
 app.get('/callback', (req, res) => {
   var code = req.query.code;
-  res.redirect('/account');
-  esi.initialCodeProcessing(code);
+  esi.initialCodeProcessing(res, code).then(function() {
+    res.redirect('/account');
+    res.end();
+  }).catch(function(err){
+    console.log("ERROR: " + err);
+  });
 });
 
 // Handles any requests that don't match the ones above
