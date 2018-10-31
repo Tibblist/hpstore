@@ -115,7 +115,11 @@ function createItemArray() {
     }*/
     
     breakDownArray();
-    //cleanDuplicates();
+    cleanDuplicates();
+    breakDownArray();
+    cleanDuplicates();
+    breakDownArray();
+    cleanDuplicates();
 
     console.log("Ending heavy processing");
     for (var i = 0; i < itemArray.length; i++) {
@@ -162,7 +166,12 @@ function breakDownArray() {
                         }
                     }
                     if (!found) {
-                        newMatsArray.push(item.mats[k]);
+                        var mat = {
+                            id: item.mats[k].id,
+                            name: item.mats[k].name,
+                            quantity: item.mats[k].quantity
+                        }
+                        newMatsArray.push(mat);
                     }
                 }
             } else {
@@ -177,7 +186,7 @@ function cleanDuplicates() {
     var index = findItemIndex(12006);
 
     for (var i = 0; i < itemArray.length; i++) {
-        console.log(itemArray[index].mats);
+        //console.log(itemArray[index].mats);
         var newMatArray = [];
         for (var j = 0; j < itemArray[i].mats.length; j++) {
             var mat = itemArray[i].mats[j];
@@ -190,7 +199,7 @@ function cleanDuplicates() {
                     continue;
                 }
                 if (mat.id == mat2.id) {
-                    if (itemArray[i].id == 12005) console.log("adding " + mat.quantity + " of " + mat.name + " to " + mat2.quantity);
+                    //if (itemArray[i].id == 12005) console.log("adding " + mat.quantity + " of " + mat.name + " to " + mat2.quantity);
                     mat.quantity = mat.quantity + mat2.quantity;
                 }
             }
