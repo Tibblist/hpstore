@@ -36,6 +36,13 @@ function mapItemIDs() {
 
 function createConversionMap() {
     for (var i = 0; i < conversions.length; i++) {
+        if (itemIDMap.get(parseInt(conversions[i].productTypeID, 10)) == undefined) {
+            continue;
+        }
+        if (itemIDMap.get(parseInt(conversions[i].productTypeID, 10)).includes("Blueprint")) {
+            //console.log("Blocked invention item");
+            continue;
+        }
         bpMap.set(parseInt(conversions[i].typeID, 10), {itemID: parseInt(conversions[i].productTypeID, 10), quantityPerRun: parseInt(conversions[i].quantity, 10)});
     }
 }
@@ -44,10 +51,7 @@ function createItemArray() {
     for (var i = 0; i < matsArray.length; i++) {
         var item = matsArray[i];
         var type = parseInt(item.typeID, 10);
-        var index = findItem(type);
-        if (type == 41425) {
-            console.log(item);
-        }
+        var index = findItemIndex(type);
         if (index > -1) {
             var mat = {
                 id: parseInt(item.materialTypeID, 10),
@@ -64,7 +68,7 @@ function createItemArray() {
                 id: bpMap.get(parseInt(item.typeID, 10)).itemID,
                 bpid: parseInt(item.typeID, 10),
                 quantity: bpMap.get(parseInt(item.typeID, 10)).quantityPerRun,
-                name: itemIDMap.get(type),
+                name: itemIDMap.get(bpMap.get(parseInt(item.typeID, 10)).itemID),
                 mats: []
             }
             var mat = {
@@ -74,14 +78,11 @@ function createItemArray() {
             }
             newItem.mats.push(mat);
             itemArray.push(newItem);
-            productsArray.push(newItem.id);
+            productsArray.push(newItem.id);    
         }
     }
     console.log("Beginning heavy processing");
-    for (var i = 0; i < itemArray.length; i++) {
-        if (itemArray[i].id != 32790) {
-            continue;
-        }
+    /*for (var i = 0; i < itemArray.length; i++) {
         for (var j = 0; j < itemArray[i].mats.length; j++) {
             var mat = itemArray[i].mats[j];
             if (productsArray.includes(mat.id)) {
@@ -111,7 +112,11 @@ function createItemArray() {
                 }
             }
         }
-    }
+    }*/
+    
+    breakDownArray();
+    //cleanDuplicates();
+
     console.log("Ending heavy processing");
     for (var i = 0; i < itemArray.length; i++) {
         for (var j = 0; j < itemArray[i].mats.length; j++) {
@@ -134,7 +139,89 @@ function createItemArray() {
     });
 }
 
-function findItem (typeID) {
+function isMatAProduct(matID) {
+    if (productsArray.includes(matID)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function breakDownArray() {
+    for (var i = 0; i < itemArray.length; i++) {
+        var newMatsArray = [];
+        for (var j = 0; j < itemArray[i].mats.length; j++) {
+            if (isMatAProduct(itemArray[i].mats[j].id)) {
+                var item = findItem(itemArray[i].mats[j].id);
+                for (var k = 0; k < item.mats.length; k++) {
+                    var found = false;
+                    for (var g = 0; g < itemArray[i].mats.length; g++) {
+                        if (item.mats[k].id == itemArray[i].mats[g].id) {
+                            newMatsArray.push({id: itemArray[i].mats[g].id, name: itemArray[i].mats[g].name, quantity: itemArray[i].mats[g].quantity + item.mats[k].quantity})
+                            found = true;
+                        }
+                    }
+                    if (!found) {
+                        newMatsArray.push(item.mats[k]);
+                    }
+                }
+            } else {
+                newMatsArray.push(itemArray[i].mats[j]);
+            }
+        }
+        itemArray[i].mats = newMatsArray;
+    }
+}
+
+function cleanDuplicates() {
+    var index = findItemIndex(12006);
+
+    for (var i = 0; i < itemArray.length; i++) {
+        console.log(itemArray[index].mats);
+        var newMatArray = [];
+        for (var j = 0; j < itemArray[i].mats.length; j++) {
+            var mat = itemArray[i].mats[j];
+            if (isInNewArray(mat.id, newMatArray)) {
+                continue;
+            }
+            for (var k = 0; k < itemArray[i].mats.length; k++) {
+                var mat2 = itemArray[i].mats[k];
+                if (k == j) {
+                    continue;
+                }
+                if (mat.id == mat2.id) {
+                    if (itemArray[i].id == 12005) console.log("adding " + mat.quantity + " of " + mat.name + " to " + mat2.quantity);
+                    mat.quantity = mat.quantity + mat2.quantity;
+                }
+            }
+            newMatArray.push(mat);
+        }
+        //if (itemArray[i].id == 12005) console.log(newMatArray);
+        itemArray[i].mats = newMatArray;
+    }
+}
+
+function isInNewArray(id, array) {
+    for (var i = 0; i < array.length; i++) {
+        if (array[i].id == id) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function findItem(typeID) {
+    for (var i = 0; i < itemArray.length; i++) {
+        if (itemArray[i].id == typeID) {
+            return itemArray[i];
+        }
+    }
+    console.log("ERROR FINDING ITEM");
+    console.log(typeID);
+    return null;
+}
+
+function findItemIndex (typeID) {
     for (var i = 0; i < itemArray.length; i++) {
         if (itemArray[i].bpid == typeID) {
             return i;
