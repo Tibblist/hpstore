@@ -42,3 +42,7 @@ exports.checkIfUserExists = function(id) {
         });
     });
 }
+
+exports.getUserWithToken = async function(token) {
+    return await User.findOne({'token': token}).populate('primaryCharacter');
+}

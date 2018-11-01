@@ -98,6 +98,7 @@ class AccountOrders extends React.Component {
         };
         this.fetchData = this.fetchData.bind(this);
         this.testSendOrder = this.testSendOrder.bind(this);
+        console.log("Showing orders");
     }
 
     componentDidMount() {

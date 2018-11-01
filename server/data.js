@@ -29,9 +29,6 @@ function mapItemIDs() {
     for (var i = 0; i < parsedJSON.length; i++) {
         itemIDMap.set(parseInt(parsedJSON[i].ID, 10), parsedJSON[i].NAME);
     }
-    //console.log(itemIDMap);
-    //console.log(parsedJSON.length)
-    //console.log(itemIDMap.get(32773))
 }
 
 function createConversionMap() {
@@ -84,13 +81,8 @@ function createItemArray() {
     console.log("Beginning heavy processing");
     
     breakDownArray();
-    cleanDuplicates();
     breakDownArray();
-    cleanDuplicates();
     breakDownArray();
-    cleanDuplicates();
-    breakDownArray();
-    cleanDuplicates();
     breakDownArray();
     cleanDuplicates();
     
@@ -99,7 +91,10 @@ function createItemArray() {
         for (var j = 0; j < itemArray[i].mats.length; j++) {
             var mat = itemArray[i].mats[j];
             if (!doesMatExist(mat.id)) {
-                materialArray.push({id: mat.id, name: mat.name});
+                if (mat.id > 17000) {
+                    continue;
+                }
+                materialArray.push({id: mat.id, name: mat.name, price: 0});
             }
         }
     }
@@ -112,6 +107,9 @@ function createItemArray() {
     var json = JSON.stringify(itemArray, null, 4);
     var fs = require('fs');
     fs.writeFile('myjsonfile.json', json, 'utf8', function(){
+
+    });
+    fs.writeFile('mats.json', JSON.stringify(materialArray, null, 1), 'utf8', function(){
 
     });
 }
@@ -128,6 +126,10 @@ function breakDownArray() {
     for (var i = 0; i < itemArray.length; i++) {
         var newMatsArray = [];
         for (var j = 0; j < itemArray[i].mats.length; j++) {
+            if (itemArray[i].mats[j].name != undefined && itemArray[i].mats[j].name.includes("Fuel Block")) {
+                newMatsArray.push(itemArray[i].mats[j]);
+                continue;
+            }
             if (isMatAProduct(itemArray[i].mats[j].id)) {
                 var item = findItem(itemArray[i].mats[j].id);
                 for (var k = 0; k < item.mats.length; k++) {

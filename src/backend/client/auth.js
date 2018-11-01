@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 
 var _authed = false;
 var _name = "";
-var _isAdmin = false;
+var _isAdmin = true;
 
 export const Groups = Object.freeze({
     MEMBER: 1,
@@ -27,6 +27,10 @@ export class AuthService {
         } else {
             return false;
         }
+      }
+
+      static getToken() {
+          return Cookies.get('token');
       }
 
       static logout() {

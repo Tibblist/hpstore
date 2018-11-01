@@ -4,7 +4,9 @@ var morgan = require("morgan");
 var compression = require("compression");  
 var helmet = require("helmet");
 const esi = require('./esi');
-const dataJS = require('./data')
+const mats = require('./mats');
+const dataJS = require('./data');
+const user_ctrl = require('./controllers/user_ctrl');
 
 
 const app = express();
@@ -25,7 +27,7 @@ mongoose.connect(
 let db = mongoose.connection;
 
 db.once("open", () => {
-  dataJS.init();
+  //dataJS.init();
   console.log("connected to the database")
 });
 
@@ -69,6 +71,23 @@ app.get('/callback', (req, res) => {
   }).catch(function(err){
     console.log("ERROR: " + err);
   });
+});
+
+
+
+app.get('/api/getMatPrices', (req,res) => {
+  res.json(mats);
+  console.log('Sent list of mats');
+});
+
+app.post('/api/postMatPrices', async (req, res) => {
+  console.log(req.get('Authorization'));
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  console.log(user);
+  user.populate('primaryCharacter');
+  console.log(user);
+  console.log(user.primaryCharacter.name);
+  res.end();
 });
 
 // Handles any requests that don't match the ones above

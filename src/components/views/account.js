@@ -5,6 +5,7 @@ import AccountOrders from './account-orders';
 import AccountUsers from './account-users';
 import AccountReports from './account-reports';
 import AccountSettings from './account-settings';
+import AccountPrice from './account-price';
 import {Route} from 'react-router-dom';
 
 class AccountHome extends React.Component {
@@ -17,6 +18,7 @@ class AccountHome extends React.Component {
             <Route path="/account/orders" component={AccountOrders}/>
             <Route path="/account/users" component={AccountUsers}/>
             <Route path="/account/reports" component={AccountReports}/>
+            <Route path="/account/price" component={AccountPrice}/>
             <Route path="/account/settings" component={AccountSettings}/>
             </div>
         );

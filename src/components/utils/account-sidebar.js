@@ -7,6 +7,7 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import PeopleIcon from '@material-ui/icons/People';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import SettingsIcon from '@material-ui/icons/Settings';
+import MoneyIcon from '@material-ui/icons/AttachMoney';
 import List from '@material-ui/core/List';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
@@ -43,28 +44,30 @@ class SideBar extends React.Component {
 
 function listItems() {
     if (AuthService.isAdmin() === true) {
-        return adminListItems;
+        return builderListItems;
     } else {
         return userListItems;
     }
 }
 
-const adminListItems = (
+const builderListItems = (
     <div>
       <ListItem button>
-      <Link to="/account/dashboard">
+      <Link to="/account/dashboard" style={{ textDecoration: 'none' }}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
         </Link>
       </ListItem>
+      <Link to="/account/orders" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Orders" />
       </ListItem>
+      </Link>
       <ListItem button>
         <ListItemIcon>
           <PeopleIcon />
@@ -77,12 +80,22 @@ const adminListItems = (
         </ListItemIcon>
         <ListItemText primary="Reports" />
       </ListItem>
+      <Link to="/account/price" style={{ textDecoration: 'none' }}>
+      <ListItem button>
+        <ListItemIcon>
+          <MoneyIcon />
+        </ListItemIcon>
+        <ListItemText primary="Price" />
+      </ListItem>
+      </Link>
+      <Link to="/account/settings" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
           <SettingsIcon />
         </ListItemIcon>
         <ListItemText primary="Settings" />
       </ListItem>
+      </Link>
     </div>
 );
 

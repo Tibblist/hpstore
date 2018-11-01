@@ -1,0 +1,397 @@
+[
+ {
+  "id": 35,
+  "name": "Pyerite",
+  "price": 0
+ },
+ {
+  "id": 36,
+  "name": "Mexallon",
+  "price": 0
+ },
+ {
+  "id": 37,
+  "name": "Isogen",
+  "price": 0
+ },
+ {
+  "id": 34,
+  "name": "Tritanium",
+  "price": 0
+ },
+ {
+  "id": 38,
+  "name": "Nocxium",
+  "price": 0
+ },
+ {
+  "id": 39,
+  "name": "Zydrine",
+  "price": 0
+ },
+ {
+  "id": 40,
+  "name": "Megacyte",
+  "price": 0
+ },
+ {
+  "id": 4051,
+  "name": "Nitrogen Fuel Block",
+  "price": 0
+ },
+ {
+  "id": 16634,
+  "name": "Atmospheric Gases",
+  "price": 0
+ },
+ {
+  "id": 16635,
+  "name": "Evaporite Deposits",
+  "price": 0
+ },
+ {
+  "id": 16644,
+  "name": "Platinum",
+  "price": 0
+ },
+ {
+  "id": 16649,
+  "name": "Technetium",
+  "price": 0
+ },
+ {
+  "id": 4247,
+  "name": "Helium Fuel Block",
+  "price": 0
+ },
+ {
+  "id": 16646,
+  "name": "Mercury",
+  "price": 0
+ },
+ {
+  "id": 16651,
+  "name": "Neodymium",
+  "price": 0
+ },
+ {
+  "id": 4312,
+  "name": "Oxygen Fuel Block",
+  "price": 0
+ },
+ {
+  "id": 16638,
+  "name": "Titanium",
+  "price": 0
+ },
+ {
+  "id": 16641,
+  "name": "Chromium",
+  "price": 0
+ },
+ {
+  "id": 4246,
+  "name": "Hydrogen Fuel Block",
+  "price": 0
+ },
+ {
+  "id": 16648,
+  "name": "Hafnium",
+  "price": 0
+ },
+ {
+  "id": 16650,
+  "name": "Dysprosium",
+  "price": 0
+ },
+ {
+  "id": 16633,
+  "name": "Hydrocarbons",
+  "price": 0
+ },
+ {
+  "id": 16636,
+  "name": "Silicates",
+  "price": 0
+ },
+ {
+  "id": 16642,
+  "name": "Vanadium",
+  "price": 0
+ },
+ {
+  "id": 16652,
+  "name": "Promethium",
+  "price": 0
+ },
+ {
+  "id": 16643,
+  "name": "Cadmium",
+  "price": 0
+ },
+ {
+  "id": 11399,
+  "name": "Morphite",
+  "price": 0
+ },
+ {
+  "id": 16647,
+  "name": "Caesium",
+  "price": 0
+ },
+ {
+  "id": 3828,
+  "name": "Construction Blocks",
+  "price": 0
+ },
+ {
+  "id": 16653,
+  "name": "Thulium",
+  "price": 0
+ },
+ {
+  "id": 2871,
+  "name": "Recursive Computing Module",
+  "price": 0
+ },
+ {
+  "id": 16275,
+  "name": "Strontium Clathrates",
+  "price": 0
+ },
+ {
+  "id": 16637,
+  "name": "Tungsten",
+  "price": 0
+ },
+ {
+  "id": 3645,
+  "name": "Water",
+  "price": 0
+ },
+ {
+  "id": 9850,
+  "name": "Spirits",
+  "price": 0
+ },
+ {
+  "id": 2870,
+  "name": "Organic Mortar Applicators",
+  "price": 0
+ },
+ {
+  "id": 2872,
+  "name": "Self-Harmonizing Power Core",
+  "price": 0
+ },
+ {
+  "id": 2875,
+  "name": "Sterile Conduits",
+  "price": 0
+ },
+ {
+  "id": 16639,
+  "name": "Scandium",
+  "price": 0
+ },
+ {
+  "id": 9836,
+  "name": "Consumer Electronics",
+  "price": 0
+ },
+ {
+  "id": 3814,
+  "name": "Reports",
+  "price": 0
+ },
+ {
+  "id": 9840,
+  "name": "Transmitter",
+  "price": 0
+ },
+ {
+  "id": 9842,
+  "name": "Miniature Electronics",
+  "price": 0
+ },
+ {
+  "id": 3812,
+  "name": "Data Sheets",
+  "price": 0
+ },
+ {
+  "id": 9834,
+  "name": "Guidance Systems",
+  "price": 0
+ },
+ {
+  "id": 2351,
+  "name": "Smartfab Units",
+  "price": 0
+ },
+ {
+  "id": 2352,
+  "name": "Nuclear Reactors",
+  "price": 0
+ },
+ {
+  "id": 2867,
+  "name": "Broadcast Node",
+  "price": 0
+ },
+ {
+  "id": 2876,
+  "name": "Wetware Mainframe",
+  "price": 0
+ },
+ {
+  "id": 2346,
+  "name": "Synthetic Synapses",
+  "price": 0
+ },
+ {
+  "id": 2367,
+  "name": "Cryoprotectant Solution",
+  "price": 0
+ },
+ {
+  "id": 2348,
+  "name": "Gel-Matrix Biopaste",
+  "price": 0
+ },
+ {
+  "id": 12836,
+  "name": "Transcranial Microcontrollers",
+  "price": 0
+ },
+ {
+  "id": 3689,
+  "name": "Mechanical Parts",
+  "price": 0
+ },
+ {
+  "id": 16640,
+  "name": "Cobalt",
+  "price": 0
+ },
+ {
+  "id": 3685,
+  "name": "Hydrogen Batteries",
+  "price": 0
+ },
+ {
+  "id": 9838,
+  "name": "Superconductors",
+  "price": 0
+ },
+ {
+  "id": 9848,
+  "name": "Robotics",
+  "price": 0
+ },
+ {
+  "id": 3687,
+  "name": "Electronic Parts",
+  "price": 0
+ },
+ {
+  "id": 2868,
+  "name": "Integrity Response Drones",
+  "price": 0
+ },
+ {
+  "id": 3925,
+  "name": "Reclaimed Organics",
+  "price": 0
+ },
+ {
+  "id": 3926,
+  "name": "Augmented Stem Cells",
+  "price": 0
+ },
+ {
+  "id": 2360,
+  "name": "Industrial Explosives",
+  "price": 0
+ },
+ {
+  "id": 9846,
+  "name": "Planetary Vehicles",
+  "price": 0
+ },
+ {
+  "id": 13267,
+  "name": "Janitor",
+  "price": 0
+ },
+ {
+  "id": 3810,
+  "name": "Marines",
+  "price": 0
+ },
+ {
+  "id": 44,
+  "name": "Enriched Uranium",
+  "price": 0
+ },
+ {
+  "id": 9832,
+  "name": "Coolant",
+  "price": 0
+ },
+ {
+  "id": 3683,
+  "name": "Oxygen",
+  "price": 0
+ },
+ {
+  "id": 16272,
+  "name": "Heavy Water",
+  "price": 0
+ },
+ {
+  "id": 16273,
+  "name": "Liquid Ozone",
+  "price": 0
+ },
+ {
+  "id": 16274,
+  "name": "Helium Isotopes",
+  "price": 0
+ },
+ {
+  "id": 2349,
+  "name": "Supercomputers",
+  "price": 0
+ },
+ {
+  "id": 42,
+  "name": "Spiced Wine",
+  "price": 0
+ },
+ {
+  "id": 3647,
+  "name": "Holoreels",
+  "price": 0
+ },
+ {
+  "id": 3715,
+  "name": "Frozen Food",
+  "price": 0
+ },
+ {
+  "id": 9844,
+  "name": "Small Arms",
+  "price": 0
+ },
+ {
+  "id": 3773,
+  "name": "Hydrochloric Acid",
+  "price": 0
+ },
+ {
+  "id": 2361,
+  "name": "Hermetic Membranes",
+  "price": 0
+ }
+]
