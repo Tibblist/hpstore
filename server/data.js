@@ -82,37 +82,6 @@ function createItemArray() {
         }
     }
     console.log("Beginning heavy processing");
-    /*for (var i = 0; i < itemArray.length; i++) {
-        for (var j = 0; j < itemArray[i].mats.length; j++) {
-            var mat = itemArray[i].mats[j];
-            if (productsArray.includes(mat.id)) {
-                for (var k = 0; k < itemArray.length; k++) {
-                    var item = itemArray[k];
-                    if (item.id == mat.id) {
-                        console.log(itemArray[i]);
-                        console.log(item);
-                        for (var g = 0; g < item.mats.length; g++) {
-                            var found = false;
-                            for (var f = 0; f < itemArray[i].mats.length; f++) {
-                                if (item.mats[g].id == itemArray[i].mats[f].id) {
-                                    console.log("adding " + itemArray[i].mats[f].quantity + " of " + itemArray[i].mats[f].name + " to " + item.mats[g].name);
-                                    itemArray[i].mats[f].quantity += item.mats[g].quantity;
-                                    console.log(itemArray[i].name + "Now needs " + itemArray[i].mats[f].quantity + " of " + itemArray[i].mats[f].name);
-                                    found = true;
-                                }
-                            }
-                            if (!found) {
-                                console.log("Pushing to mat array: " + item.mats[g].name);
-                                itemArray[i].mats.push(item.mats[g]);
-                            }
-                        }
-                        itemArray[i].mats.splice(j, 1);
-                        console.log(itemArray[i]);
-                    }
-                }
-            }
-        }
-    }*/
     
     breakDownArray();
     cleanDuplicates();
@@ -120,13 +89,17 @@ function createItemArray() {
     cleanDuplicates();
     breakDownArray();
     cleanDuplicates();
-
+    breakDownArray();
+    cleanDuplicates();
+    breakDownArray();
+    cleanDuplicates();
+    
     console.log("Ending heavy processing");
     for (var i = 0; i < itemArray.length; i++) {
         for (var j = 0; j < itemArray[i].mats.length; j++) {
             var mat = itemArray[i].mats[j];
             if (!doesMatExist(mat.id)) {
-                materialArray.push(mat);
+                materialArray.push({id: mat.id, name: mat.name});
             }
         }
     }
@@ -134,7 +107,7 @@ function createItemArray() {
         //console.log(itemArray[i]);
     }
     for (var i = 0; i < materialArray.length; i++) {
-        //console.log(materialArray[i]);
+        console.log(materialArray[i]);
     }
     var json = JSON.stringify(itemArray, null, 4);
     var fs = require('fs');
