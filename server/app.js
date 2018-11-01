@@ -76,7 +76,13 @@ app.get('/callback', (req, res) => {
 
 
 app.get('/api/getMatPrices', (req,res) => {
-  res.json(mats);
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    res.json(mats);
+  } else {
+    res.send(403);
+    res.end();
+  }
   console.log('Sent list of mats');
 });
 
@@ -84,10 +90,14 @@ app.post('/api/postMatPrices', async (req, res) => {
   console.log(req.get('Authorization'));
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   console.log(user);
-  user.populate('primaryCharacter');
-  console.log(user);
-  console.log(user.primaryCharacter.name);
-  res.end();
+  if (user_ctrl.userIsBuilder(user)) {
+    //CHANGE PRICES HERE
+    res.send("OK");
+    res.end();
+  } else {
+    res.send("No permimssions");
+    res.end();
+  }
 });
 
 // Handles any requests that don't match the ones above

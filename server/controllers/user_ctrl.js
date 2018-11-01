@@ -9,16 +9,17 @@ var exports = module.exports = {};
 exports.createNewUser = function(charID, charName, charCorpID, charAllianceID) {
     var newCharacter = new Character({'charID': charID, name: charName, corpID: charCorpID, allianceID: charAllianceID});
     newCharacter._id = new mongoose.Types.ObjectId();
-    newCharacter.save(function(err) {
-        console.log(err);
-    });
     var newUser = new User({group: 1});
     newUser.primaryCharacter = newCharacter;
     newUser.characters.push(newCharacter);
     newUser._id = new mongoose.Types.ObjectId();
     console.log("Primary Character of newUser is: " + newUser.primaryCharacter.name);
     newUser.token = uuidv4();
+    newCharacter.owner = newUser;
     newUser.save(function(err) {
+        console.log(err);
+    });
+    newCharacter.save(function(err) {
         console.log(err);
     });
     return newUser;
@@ -26,23 +27,31 @@ exports.createNewUser = function(charID, charName, charCorpID, charAllianceID) {
 
 exports.checkIfUserExists = function(id) {
     return new Promise(function (resolve, reject) {
-    User.find({'primaryCharacter.charID': id}, function(err, user) {
-            var found = false;
+        Character.find({charID: id})
+        .populate('owner')
+        .exec(function(err, char) {
             if (err) {
-                console.log(err);
                 reject(err);
+            } if (char == null) {
+                resolve([null, false]);
             }
-            if (!user.length) {
-                console.log("didn't find user");
-            } else {
-                console.log("Found user: " + user);
-                found = true;
-            }
-            resolve([user, found]);
+            resolve([char.owner, true]);
         });
     });
 }
 
 exports.getUserWithToken = async function(token) {
     return await User.findOne({'token': token}).populate('primaryCharacter');
+}
+
+exports.userIsAdmin = function(user) {
+    return (user.group == 3)
+}
+
+exports.userIsBuilder = function(user) {
+    return (user.group > 1)
+}
+
+exports.userIsValid = function(user) {
+    return (user.group > 0)
 }

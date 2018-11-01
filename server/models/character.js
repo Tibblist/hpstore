@@ -9,7 +9,10 @@ let CharacterSchema = new mongoose.Schema(
         corpName: String,
         allianceID: Number,
         allianceName: String,
-
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        }
     }
 )
 
