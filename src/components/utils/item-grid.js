@@ -22,6 +22,11 @@ const styles = theme => ({
     itemPrice: {
         'text-align': 'center',
 
+    },
+    itemImg: {
+        'display': 'block',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
     }
   });
 
@@ -45,9 +50,9 @@ class ItemGrid extends React.Component {
                     <Grid container className="item-grid" justify="space-evenly" alighitems="center" spacing={0}>
                         {itemArray.map(function(item, id) {
                         return  <Paper className={classes.gridItem} key={id}>
-                            <div className="item-image"><img src={"none"} alt={item[1]}></img></div>
+                            <div className={classes.itemImg}><img src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} alt={item[1]} className={classes.itemImg}></img></div>
                             <Typography className={classes.itemName}>{item.name}</Typography>
-                            <Typography className={classes.itemPrice}>{item.price}</Typography>
+                            <Typography className={classes.itemPrice}>Price: {item.price} ISK</Typography>
                             </Paper>
                         })}
                     </Grid>

@@ -87,7 +87,7 @@ function createItemArray() {
     breakDownArray();
     cleanDuplicates();
 
-    recalcPricing();
+    //recalcPricing();
     
     console.log("Ending heavy processing");
     for (var i = 0; i < itemArray.length; i++) {
@@ -107,11 +107,11 @@ function createItemArray() {
     for (var i = 0; i < materialArray.length; i++) {
         //console.log(materialArray[i]);
     }
-    var json = JSON.stringify(itemArray, null, 4);
+    /*var json = JSON.stringify(itemArray, null, 4);
     fs.writeFile('myjsonfile.json', json, 'utf8', function(){
 
     });
-    /*fs.writeFile('mats.json', JSON.stringify(materialArray, null, 1), 'utf8', function(){
+    fs.writeFile('mats.json', JSON.stringify(materialArray, null, 1), 'utf8', function(){
 
     });*/
 }
@@ -125,13 +125,13 @@ function isMatAProduct(matID) {
 }
 
 exports.recalcPricing = function() {
-    console.log("Recalcing price");
+    //console.log("Recalcing price");
     const mats = require('./mats');
     var matsMap = new Map();
     for (var i = 0; i < mats.length; i++) {
+        //console.log(parseInt(mats[i].id, 10) + ", " + parseInt(mats[i].price, 10));
         matsMap.set(parseInt(mats[i].id, 10), parseInt(mats[i].price, 10));
     }
-    console.log(itemArray.length);
     for (var i = 0; i < itemArray.length; i++) {
         var newItem = {
             id: itemArray[i].id,
@@ -140,12 +140,15 @@ exports.recalcPricing = function() {
         }
         var newPrice = 0;
         for (var j = 0; j < itemArray[i].mats.length; j++) {
-            newPrice += matsMap.get(itemArray[i].id);
+            var matCost = matsMap.get(itemArray[i].mats[j].id);
+            if (isNaN(matCost)) {
+                continue;
+            }
+            newPrice += matsMap.get(itemArray[i].mats[j].id);
         }
         newItem.price = newPrice;
         itemPriceArray.push(newItem);
     }
-    console.log("Price array below");
     console.log(itemPriceArray);
 }
 

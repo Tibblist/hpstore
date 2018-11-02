@@ -34,9 +34,14 @@ export default class Store extends React.Component {
                 }); 
                 return;
             }
-            console.log(res.body);
+            var newSuggestions = [];
+            for (var i = 0; i < res.body.length; i++) {
+              newSuggestions.push({label: res.body[i].name});
+            }
+            console.log(newSuggestions);
             this.setState({
-                itemArray: res.body
+                itemArray: res.body,
+                suggestions: newSuggestions
             });
         })
   }
