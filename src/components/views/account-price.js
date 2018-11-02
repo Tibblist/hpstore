@@ -51,6 +51,7 @@ class AccountPrice extends React.Component {
     fetchData = () => {
         request
         .get("/api/getMatPrices")
+        .set('Authorization', AuthService.getToken())
         .end((err, res) => {
             if (err) {
                 console.log(err);

@@ -32,16 +32,24 @@ exports.checkIfUserExists = function(id) {
         .exec(function(err, char) {
             if (err) {
                 reject(err);
-            } if (char == null) {
-                resolve([null, false]);
             }
-            resolve([char.owner, true]);
+            console.log(char); 
+            if(!char.length) {
+                console.log("No char found");
+                resolve([null, false]);
+                return;
+            }
+            console.log(char[0].owner);
+            resolve([char[0].owner, true, char[0].name]);
         });
     });
 }
 
 exports.getUserWithToken = async function(token) {
-    return await User.findOne({'token': token}).populate('primaryCharacter');
+    console.log(token);
+    var user = await User.findOne({'token': token}).populate('primaryCharacter');
+    console.log(user);
+    return user;
 }
 
 exports.userIsAdmin = function(user) {
