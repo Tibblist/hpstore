@@ -25,19 +25,19 @@ const styles = theme => ({
     }
   });
 
-function createItemArray() {
+/*function createItemArray() {
     var itemArray = [];
     for (var i = 0; i < 50; i++) {
         var item = [i, "Naglfar", "1.2B", "https://wiki.eveuniversity.org/images/thumb/f/f9/Naglfar.jpg/256px-Naglfar.jpg"];
         itemArray.push(item);
     }
     return itemArray;
-}
+}*/
 
 class ItemGrid extends React.Component {
     render() {
         const { classes } = this.props;
-        var itemArray = createItemArray();
+        var itemArray = this.props.items;
         return (
             <div className={classes.root}>
             <Grid container spacing={8} className={classes.container}>
@@ -45,9 +45,9 @@ class ItemGrid extends React.Component {
                     <Grid container className="item-grid" justify="space-evenly" alighitems="center" spacing={0}>
                         {itemArray.map(function(item, id) {
                         return  <Paper className={classes.gridItem} key={id}>
-                            <div className="item-image"><img src={item[3]} alt={item[1]}></img></div>
-                            <Typography className={classes.itemName}>{item[1]}</Typography>
-                            <Typography className={classes.itemPrice}>{item[2]}</Typography>
+                            <div className="item-image"><img src={"none"} alt={item[1]}></img></div>
+                            <Typography className={classes.itemName}>{item.name}</Typography>
+                            <Typography className={classes.itemPrice}>{item.price}</Typography>
                             </Paper>
                         })}
                     </Grid>

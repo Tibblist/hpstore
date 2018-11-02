@@ -10,7 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 
-const suggestions = [
+var suggestions = [
   { label: 'Afghanistan' },
   { label: 'Aland Islands' },
   { label: 'Albania' },
@@ -149,11 +149,15 @@ const styles = theme => ({
 });
 
 class IntegrationAutosuggest extends React.Component {
-  state = {
-    single: '',
-    popper: '',
-    suggestions: [],
-  };
+  constructor(props) {
+    super(props);
+    suggestions = this.props.suggestions;
+    this.state = {
+      single: '',
+      popper: '',
+      suggestions: [],
+    };
+  }
 
   handleSuggestionsFetchRequested = ({ value }) => {
     this.setState({
@@ -172,6 +176,7 @@ class IntegrationAutosuggest extends React.Component {
       [name]: newValue,
     });
   };
+
 
   render() {
     const { classes } = this.props;

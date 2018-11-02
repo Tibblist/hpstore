@@ -6,6 +6,7 @@ var bpMap = new Map();
 var productsArray = [];
 var itemArray = [];
 var materialArray = [];
+var itemPriceArray = [];
 
 var exports = module.exports = {};
 
@@ -85,6 +86,8 @@ function createItemArray() {
     breakDownArray();
     breakDownArray();
     cleanDuplicates();
+
+    recalcPricing();
     
     console.log("Ending heavy processing");
     for (var i = 0; i < itemArray.length; i++) {
@@ -102,16 +105,15 @@ function createItemArray() {
         //console.log(itemArray[i]);
     }
     for (var i = 0; i < materialArray.length; i++) {
-        console.log(materialArray[i]);
+        //console.log(materialArray[i]);
     }
     var json = JSON.stringify(itemArray, null, 4);
-    var fs = require('fs');
     fs.writeFile('myjsonfile.json', json, 'utf8', function(){
 
     });
-    fs.writeFile('mats.json', JSON.stringify(materialArray, null, 1), 'utf8', function(){
+    /*fs.writeFile('mats.json', JSON.stringify(materialArray, null, 1), 'utf8', function(){
 
-    });
+    });*/
 }
 
 function isMatAProduct(matID) {
@@ -120,6 +122,35 @@ function isMatAProduct(matID) {
     } else {
         return false;
     }
+}
+
+exports.recalcPricing = function() {
+    console.log("Recalcing price");
+    const mats = require('./mats');
+    var matsMap = new Map();
+    for (var i = 0; i < mats.length; i++) {
+        matsMap.set(parseInt(mats[i].id, 10), parseInt(mats[i].price, 10));
+    }
+    console.log(itemArray.length);
+    for (var i = 0; i < itemArray.length; i++) {
+        var newItem = {
+            id: itemArray[i].id,
+            name: itemArray[i].name,
+            price: 0
+        }
+        var newPrice = 0;
+        for (var j = 0; j < itemArray[i].mats.length; j++) {
+            newPrice += matsMap.get(itemArray[i].id);
+        }
+        newItem.price = newPrice;
+        itemPriceArray.push(newItem);
+    }
+    console.log("Price array below");
+    console.log(itemPriceArray);
+}
+
+exports.getPriceArray = function() {
+    return itemPriceArray;
 }
 
 function breakDownArray() {

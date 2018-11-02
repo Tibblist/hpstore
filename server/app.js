@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 var morgan = require("morgan");  
 var compression = require("compression");  
 var helmet = require("helmet");
+var fs = require('fs');
 const esi = require('./esi');
 const mats = require('./mats');
 const dataJS = require('./data');
@@ -27,7 +28,8 @@ mongoose.connect(
 let db = mongoose.connection;
 
 db.once("open", () => {
-  //dataJS.init();
+  dataJS.init();
+  dataJS.recalcPricing();
   console.log("connected to the database")
 });
 
@@ -73,7 +75,11 @@ app.get('/callback', (req, res) => {
   });
 });
 
-
+app.get('/api/getItems', (req,res) => {
+  res.json(dataJS.getPriceArray());
+  console.log('Sent list of items');
+  console.log(dataJS.getPriceArray());
+});
 
 app.get('/api/getMatPrices', async (req,res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
@@ -91,11 +97,14 @@ app.post('/api/postMatPrices', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   console.log(user);
   if (user_ctrl.userIsBuilder(user)) {
-    //CHANGE PRICES HERE
+    fs.writeFile('mats.json', JSON.stringify(req.body, null, 1), 'utf8', function(){
+      console.log("Saved prices to disk");
+      dataJS.recalcPricing();
+    });
     res.send("OK");
     res.end();
   } else {
-    res.send("No permimssions");
+    res.send(403);
     res.end();
   }
 });

@@ -3,13 +3,49 @@ import StoreHeader from './store-header';
 import ItemGrid from '../utils/item-grid';
 import { DropDownButton } from '../utils/buttons';
 import '../../css/store.css';
+import { AuthService } from '../../backend/client/auth';
+const request = require('superagent');
 
 export default class Store extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      suggestions: [],
+      itemArray: [],
+    }
+    this.fetchData = this.fetchData.bind(this);
+    console.log("Constructor ran");
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  fetchData = () => {
+    console.log("Fetching data");
+    request
+        .get("/api/getItems")
+        .set('Authorization', AuthService.getToken())
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+                this.setState({
+                    itemArray: [{id: '0', name: 'Error getting items', price: 0}]
+                }); 
+                return;
+            }
+            console.log(res.body);
+            this.setState({
+                itemArray: res.body
+            });
+        })
+  }
+
     render() {
         return (
             <div>
-                <StoreHeader></StoreHeader>
-                <ItemGrid></ItemGrid>
+                <StoreHeader suggestions={this.state.suggestions}></StoreHeader>
+                <ItemGrid items={this.state.itemArray}></ItemGrid>
                 <SideMenu></SideMenu>
             </div>
         );

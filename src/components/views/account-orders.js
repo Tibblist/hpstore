@@ -107,7 +107,7 @@ class AccountOrders extends React.Component {
 
     fetchData = () => {
         request
-        .get("/api/getOrders")
+        .get("/api/getOrders")  
         .end((err, res) => {
             if (res == null) {
                 console.log(err);
