@@ -14,7 +14,7 @@ export default class Store extends React.Component {
       itemArray: [],
     }
     this.fetchData = this.fetchData.bind(this);
-    console.log("Constructor ran");
+    //console.log("Constructor ran");
   }
 
   componentDidMount() {
@@ -38,19 +38,23 @@ export default class Store extends React.Component {
             for (var i = 0; i < res.body.length; i++) {
               newSuggestions.push({label: res.body[i].name});
             }
-            console.log(newSuggestions);
+            //console.log(newSuggestions);
             this.setState({
                 itemArray: res.body,
                 suggestions: newSuggestions
             });
         })
-  }
+    }
+
+    addToCart = (id, event) => {
+
+    }
 
     render() {
         return (
             <div>
                 <StoreHeader suggestions={this.state.suggestions}></StoreHeader>
-                <ItemGrid items={this.state.itemArray}></ItemGrid>
+                <ItemGrid addFunction={this.addToCart} items={this.state.itemArray.slice(0, 100)}></ItemGrid>
                 <SideMenu></SideMenu>
             </div>
         );

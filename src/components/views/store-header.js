@@ -12,18 +12,11 @@ const styles = theme => ({
   });
 
 class StoreHeader extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            suggestions: this.props.suggestions,
-
-        }
-    }
     render () {
         const {classes} = this.props;
         return (
             <Paper className={classes.root}>
-                <SearchBar suggestions={this.state.suggestions}></SearchBar>
+                <SearchBar suggestions={this.props.suggestions}></SearchBar>
             </Paper>
         );
     }

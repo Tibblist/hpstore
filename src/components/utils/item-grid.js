@@ -3,6 +3,8 @@ import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import CartIcon from '@material-ui/icons/AddShoppingCart';
 
 const styles = theme => ({
     root: {
@@ -27,6 +29,11 @@ const styles = theme => ({
         'display': 'block',
         'margin-left': 'auto',
         'margin-right': 'auto',
+    },
+    addButton: {
+        'display': 'block',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
     }
   });
 
@@ -40,6 +47,11 @@ const styles = theme => ({
 }*/
 
 class ItemGrid extends React.Component {
+
+    handleCart = (id) => {
+        this.props.addFunction(id);
+    }
+
     render() {
         const { classes } = this.props;
         var itemArray = this.props.items;
@@ -50,11 +62,15 @@ class ItemGrid extends React.Component {
                     <Grid container className="item-grid" justify="space-evenly" alighitems="center" spacing={0}>
                         {itemArray.map(function(item, id) {
                         return  <Paper className={classes.gridItem} key={id}>
-                            <div className={classes.itemImg}><img src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} alt={item[1]} className={classes.itemImg}></img></div>
+                            <div className={classes.itemImg}><img src={"https://image.eveonline.com/Render/" + item.id + "_256.png"} onError={(e)=>{e.target.onerror = null; e.target.src="https://image.eveonline.com/Type/" + item.id + "_64.png"}} alt={item[1]} className={classes.itemImg}></img></div>
                             <Typography className={classes.itemName}>{item.name}</Typography>
                             <Typography className={classes.itemPrice}>Price: {item.price} ISK</Typography>
+                            <Button variant="contained" className={classes.addButton} onClick={() => this.handleCart(item.id)}>
+                                Add to cart
+                                <CartIcon/>
+                            </Button>
                             </Paper>
-                        })}
+                        }, this)}
                     </Grid>
                 </Grid>
             </Grid>

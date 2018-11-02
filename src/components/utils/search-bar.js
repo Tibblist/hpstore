@@ -151,7 +151,6 @@ const styles = theme => ({
 class IntegrationAutosuggest extends React.Component {
   constructor(props) {
     super(props);
-    suggestions = this.props.suggestions;
     this.state = {
       single: '',
       popper: '',
@@ -180,6 +179,7 @@ class IntegrationAutosuggest extends React.Component {
 
   render() {
     const { classes } = this.props;
+    suggestions = this.props.suggestions;
 
     const autosuggestProps = {
       renderInputComponent,
