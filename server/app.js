@@ -5,7 +5,6 @@ var compression = require("compression");
 var helmet = require("helmet");
 var fs = require('fs');
 const esi = require('./esi');
-const mats = require('./mats');
 const dataJS = require('./data');
 const user_ctrl = require('./controllers/user_ctrl');
 
@@ -77,11 +76,12 @@ app.get('/callback', (req, res) => {
 
 app.get('/api/getItems', (req,res) => {
   res.json(dataJS.getPriceArray());
-  console.log('Sent list of items');
-  console.log(dataJS.getPriceArray());
+  //console.log('Sent list of items');
+  //console.log(dataJS.getPriceArray());
 });
 
 app.get('/api/getMatPrices', async (req,res) => {
+  const mats = require('./mats');
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
     res.json(mats);

@@ -54,7 +54,7 @@ export default class Store extends React.Component {
         return (
             <div>
                 <StoreHeader suggestions={this.state.suggestions}></StoreHeader>
-                <ItemGrid addFunction={this.addToCart} items={this.state.itemArray.slice(0, 100)}></ItemGrid>
+                <ItemGrid addFunction={this.addToCart} items={this.state.itemArray}></ItemGrid>
                 <SideMenu></SideMenu>
             </div>
         );

@@ -24,7 +24,6 @@ exports.init = function() {
 }
 
 function mapItemsToGroup() {
-    console.log()
     for (var i = 0; i < itemInfo.length; i++) {
         itemGroupMap.set(parseInt(itemInfo[i].typeID, 10), parseInt(itemInfo[i].groupID, 10));
     }
@@ -68,7 +67,6 @@ function createItemArray() {
         if (index > -1) {
             var matCategoryID = groupCategoryMap.get(itemGroupMap.get(parseInt(item.materialTypeID, 10)));
             if (isValidMat(matCategoryID)) {
-                console.log(itemIDMap.get(parseInt(item.materialTypeID, 10)));
                 continue;
             }
             var mat = {
@@ -135,14 +133,14 @@ function createItemArray() {
     for (var i = 0; i < materialArray.length; i++) {
         //console.log(materialArray[i]);
     }
-    var json = JSON.stringify(itemArray, null, 4);
+    /*var json = JSON.stringify(itemArray, null, 4);
     fs.writeFile('filteredItemArray.json', json, 'utf8', function(){
 
     });
     console.log(materialArray);
     fs.writeFile('mats.json', JSON.stringify(materialArray, null, 1), 'utf8', function(){
 
-    });
+    });*/
 }
 
 function isValidItem(id) {
@@ -175,6 +173,7 @@ exports.recalcPricing = function() {
         //console.log(parseInt(mats[i].id, 10) + ", " + parseInt(mats[i].price, 10));
         matsMap.set(parseInt(mats[i].id, 10), parseInt(mats[i].price, 10));
     }
+    //console.log(matsMap);
     for (var i = 0; i < itemArray.length; i++) {
         var newItem = {
             id: itemArray[i].id,
@@ -188,8 +187,9 @@ exports.recalcPricing = function() {
             if (isNaN(matCost)) {
                 continue;
             }
-            newPrice += matsMap.get(itemArray[i].mats[j].id);
+            newPrice += (itemArray[i].mats[j].quantity * matsMap.get(itemArray[i].mats[j].id));
         }
+        //console.log(newPrice);
         newItem.price = newPrice;
         itemPriceArray.push(newItem);
     }
@@ -214,7 +214,7 @@ function breakDownArray() {
                     var found = false;
                     for (var g = 0; g < itemArray[i].mats.length; g++) {
                         if (item.mats[k].id == itemArray[i].mats[g].id) {
-                            newMatsArray.push({id: itemArray[i].mats[g].id, name: itemArray[i].mats[g].name, quantity: itemArray[i].mats[g].quantity + item.mats[k].quantity})
+                            newMatsArray.push({id: itemArray[i].mats[g].id, name: itemArray[i].mats[g].name, quantity: itemArray[i].mats[g].quantity + (item.mats[k].quantity * itemArray[i].mats[j].quantity)})
                             found = true;
                         }
                     }
@@ -222,7 +222,7 @@ function breakDownArray() {
                         var mat = {
                             id: item.mats[k].id,
                             name: item.mats[k].name,
-                            quantity: item.mats[k].quantity
+                            quantity: item.mats[k].quantity * itemArray[i].mats[j].quantity
                         }
                         newMatsArray.push(mat);
                     }
