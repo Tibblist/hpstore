@@ -1,7 +1,12 @@
 const parsedJSON = require('./eveids.json');
 const matsArray = require('./matsNeeded');
 const conversions = require('./converter');
+const itemInfo = require('./invTypes');
+const itemGroups = require('./invGroups');
+var fs = require('fs');
 var itemIDMap = new Map();
+var itemGroupMap = new Map();
+var groupCategoryMap = new Map();
 var bpMap = new Map();
 var productsArray = [];
 var itemArray = [];
@@ -13,17 +18,22 @@ var exports = module.exports = {};
 exports.init = function() {
     mapItemIDs();
     createConversionMap();
+    mapItemsToGroup();
+    mapGroupToCatagory();
     createItemArray();
 }
 
-var exampleItem = {
-    id: 1,
-    name: 'test',
-    mats: [{
-        id: 2,
-        name: 'trit',
-        quantity: 200
-    }]
+function mapItemsToGroup() {
+    console.log()
+    for (var i = 0; i < itemInfo.length; i++) {
+        itemGroupMap.set(parseInt(itemInfo[i].typeID, 10), parseInt(itemInfo[i].groupID, 10));
+    }
+}
+
+function mapGroupToCatagory() {
+    for (var i = 0; i < itemGroups.length; i++) {
+        groupCategoryMap.set(parseInt(itemGroups[i].groupID, 10), parseInt(itemGroups[i].categoryID, 10));
+    }
 }
 
 function mapItemIDs() {
@@ -50,16 +60,26 @@ function createItemArray() {
         var item = matsArray[i];
         var type = parseInt(item.typeID, 10);
         var index = findItemIndex(type);
+        if (bpMap.get(parseInt(item.typeID, 10)) == undefined) {
+            //console.log(item);
+            continue;
+        }
+        var categoryID = groupCategoryMap.get(itemGroupMap.get(bpMap.get(parseInt(item.typeID, 10)).itemID));
         if (index > -1) {
+            var matCategoryID = groupCategoryMap.get(itemGroupMap.get(parseInt(item.materialTypeID, 10)));
+            if (isValidMat(matCategoryID)) {
+                console.log(itemIDMap.get(parseInt(item.materialTypeID, 10)));
+                continue;
+            }
             var mat = {
                 id: parseInt(item.materialTypeID, 10),
                 name: itemIDMap.get(parseInt(item.materialTypeID, 10)),
+                category: matCategoryID,
                 quantity: parseInt(item.quantity, 10)
             }
             itemArray[index].mats.push(mat);
         } else {
-            if (bpMap.get(parseInt(item.typeID, 10)) == undefined) {
-                //console.log(item);
+            if (isValidItem(categoryID)) {
                 continue;
             }
             var newItem = {
@@ -67,11 +87,19 @@ function createItemArray() {
                 bpid: parseInt(item.typeID, 10),
                 quantity: bpMap.get(parseInt(item.typeID, 10)).quantityPerRun,
                 name: itemIDMap.get(bpMap.get(parseInt(item.typeID, 10)).itemID),
+                category: categoryID,
                 mats: []
+            }
+            var matCategoryID = groupCategoryMap.get(itemGroupMap.get(parseInt(item.materialTypeID, 10)));
+            if (isValidMat(matCategoryID)) {
+                itemArray.push(newItem);
+                productsArray.push(newItem.id);
+                continue;
             }
             var mat = {
                 id: parseInt(item.materialTypeID, 10),
                 name: itemIDMap.get(parseInt(item.materialTypeID, 10)),
+                category: matCategoryID,
                 quantity: parseInt(item.quantity, 10)
             }
             newItem.mats.push(mat);
@@ -107,13 +135,28 @@ function createItemArray() {
     for (var i = 0; i < materialArray.length; i++) {
         //console.log(materialArray[i]);
     }
-    /*var json = JSON.stringify(itemArray, null, 4);
-    fs.writeFile('myjsonfile.json', json, 'utf8', function(){
+    var json = JSON.stringify(itemArray, null, 4);
+    fs.writeFile('filteredItemArray.json', json, 'utf8', function(){
 
     });
+    console.log(materialArray);
     fs.writeFile('mats.json', JSON.stringify(materialArray, null, 1), 'utf8', function(){
 
-    });*/
+    });
+}
+
+function isValidItem(id) {
+    if (id != 6 && id != 7 && id != 8 && id != 18 && id != 87 && id != 4 && id != 24 && id != 17) {
+        return true;
+    }
+    return false;
+}
+
+function isValidMat(id) {
+    if (id != 4 && id != 24 && id != 6 && id != 17) {
+        return true;
+    }
+    return false;
 }
 
 function isMatAProduct(matID) {
@@ -136,6 +179,7 @@ exports.recalcPricing = function() {
         var newItem = {
             id: itemArray[i].id,
             name: itemArray[i].name,
+            category: itemArray[i].category,
             price: 0
         }
         var newPrice = 0;
@@ -149,7 +193,7 @@ exports.recalcPricing = function() {
         newItem.price = newPrice;
         itemPriceArray.push(newItem);
     }
-    console.log(itemPriceArray);
+    //console.log(itemPriceArray);
 }
 
 exports.getPriceArray = function() {
