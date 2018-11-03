@@ -88,6 +88,12 @@ function createItemArray() {
                 category: categoryID,
                 mats: []
             }
+            if (newItem.id == 16672) {
+                if (newItem.quantity == 20) {
+                    continue;
+                }
+                console.log("Removing bad data");
+            }
             var matCategoryID = groupCategoryMap.get(itemGroupMap.get(parseInt(item.materialTypeID, 10)));
             if (isValidMat(matCategoryID)) {
                 itemArray.push(newItem);
@@ -108,8 +114,11 @@ function createItemArray() {
     console.log("Beginning heavy processing");
     
     breakDownArray();
+    cleanDuplicates();
     breakDownArray();
+    cleanDuplicates();
     breakDownArray();
+    cleanDuplicates();
     breakDownArray();
     cleanDuplicates();
 
@@ -133,10 +142,10 @@ function createItemArray() {
     for (var i = 0; i < materialArray.length; i++) {
         //console.log(materialArray[i]);
     }
-    /*var json = JSON.stringify(itemArray, null, 4);
+    var json = JSON.stringify(itemArray, null, 4);
     fs.writeFile('filteredItemArray.json', json, 'utf8', function(){
 
-    });
+    });/*
     console.log(materialArray);
     fs.writeFile('mats.json', JSON.stringify(materialArray, null, 1), 'utf8', function(){
 
@@ -175,6 +184,7 @@ exports.recalcPricing = function() {
     }
     //console.log(matsMap);
     for (var i = 0; i < itemArray.length; i++) {
+        //if (itemArray[i].id == 12005) console.log(itemArray[i])
         var newItem = {
             id: itemArray[i].id,
             name: itemArray[i].name,
@@ -183,13 +193,16 @@ exports.recalcPricing = function() {
         }
         var newPrice = 0;
         for (var j = 0; j < itemArray[i].mats.length; j++) {
+            //if (itemArray[i].id == 12005) console.log(itemArray[i].mats[j]);
             var matCost = matsMap.get(itemArray[i].mats[j].id);
             if (isNaN(matCost)) {
                 continue;
             }
             newPrice += (itemArray[i].mats[j].quantity * matsMap.get(itemArray[i].mats[j].id));
+            //if (itemArray[i].id == 12005) console.log(newPrice);
         }
         //console.log(newPrice);
+        newPrice = Math.round(newPrice);
         newItem.price = newPrice;
         itemPriceArray.push(newItem);
     }
@@ -201,7 +214,9 @@ exports.getPriceArray = function() {
 }
 
 function breakDownArray() {
+    var idToCheck = 11539;
     for (var i = 0; i < itemArray.length; i++) {
+        //if (itemArray[i].id == idToCheck) console.log(itemArray[i]);
         var newMatsArray = [];
         for (var j = 0; j < itemArray[i].mats.length; j++) {
             if (itemArray[i].mats[j].name != undefined && itemArray[i].mats[j].name.includes("Fuel Block")) {
@@ -214,7 +229,19 @@ function breakDownArray() {
                     var found = false;
                     for (var g = 0; g < itemArray[i].mats.length; g++) {
                         if (item.mats[k].id == itemArray[i].mats[g].id) {
-                            newMatsArray.push({id: itemArray[i].mats[g].id, name: itemArray[i].mats[g].name, quantity: itemArray[i].mats[g].quantity + (item.mats[k].quantity * itemArray[i].mats[j].quantity)})
+                            newMatsArray.push({id: itemArray[i].mats[g].id, name: itemArray[i].mats[g].name, quantity: itemArray[i].mats[g].quantity + ((item.mats[k].quantity * itemArray[i].mats[j].quantity)/ item.quantity)})
+                            /*if (itemArray[i].id == 12005) console.log("items.mats[k]");
+                            if (itemArray[i].id == 12005) console.log(item.mats[k]);
+                            if (itemArray[i].id == 12005) console.log("itemArray[i].mats[j]");
+                            if (itemArray[i].id == 12005) console.log(itemArray[i].mats[j]);
+                            if (itemArray[i].id == 12005) console.log("itemArray[i].mats[g]");
+                            if (itemArray[i].id == 12005) console.log(itemArray[i].mats[g]);*/
+                           // if (itemArray[i].id == idToCheck) console.log("Original mat: ");
+                            //if (itemArray[i].id == idToCheck) console.log(itemArray[i].mats[j]);
+                            //if (itemArray[i].id == idToCheck) console.log("Item being broken down: " + item.name);
+                            //if (itemArray[i].id == idToCheck) console.log(item.mats[k].quantity + " " + item.mats[k].name + " id of" + item.mats[k].id + " multiplied by " + itemArray[i].mats[j].quantity + " added to" + itemArray[i].mats[g].quantity + " divided by " + item.quantity);
+                            //if (item.mats[k].id == 16657) console.log(item);
+
                             found = true;
                         }
                     }
@@ -222,15 +249,22 @@ function breakDownArray() {
                         var mat = {
                             id: item.mats[k].id,
                             name: item.mats[k].name,
-                            quantity: item.mats[k].quantity * itemArray[i].mats[j].quantity
+                            quantity: (item.mats[k].quantity * itemArray[i].mats[j].quantity)/item.quantity
                         }
+                        //if (itemArray[i].id == idToCheck) console.log("Original mat: ");
+                        //if (itemArray[i].id == idToCheck) console.log(itemArray[i].mats[j]);
+                        //if (itemArray[i].id == 12005) console.log(mat);
+                        //if (itemArray[i].id == idToCheck) console.log(item.mats[k].quantity + " " + item.mats[k].name + " multiplied by " + itemArray[i].mats[j].quantity + " divided by " + item.quantity);
+                        //if (item.mats[k].id == 16672) console.log(item);
                         newMatsArray.push(mat);
                     }
                 }
             } else {
+                //if (itemArray[i].id == idToCheck) console.log("Adding old mat: " + itemArray[i].mats[j].name);
                 newMatsArray.push(itemArray[i].mats[j]);
             }
         }
+        //if (itemArray[i].id == idToCheck) console.log(newMatsArray);
         itemArray[i].mats = newMatsArray;
     }
 }
