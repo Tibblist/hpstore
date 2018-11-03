@@ -216,7 +216,6 @@ exports.getPriceArray = function() {
 function breakDownArray() {
     var idToCheck = 11539;
     for (var i = 0; i < itemArray.length; i++) {
-        //if (itemArray[i].id == idToCheck) console.log(itemArray[i]);
         var newMatsArray = [];
         for (var j = 0; j < itemArray[i].mats.length; j++) {
             if (itemArray[i].mats[j].name != undefined && itemArray[i].mats[j].name.includes("Fuel Block")) {
@@ -230,17 +229,6 @@ function breakDownArray() {
                     for (var g = 0; g < itemArray[i].mats.length; g++) {
                         if (item.mats[k].id == itemArray[i].mats[g].id) {
                             newMatsArray.push({id: itemArray[i].mats[g].id, name: itemArray[i].mats[g].name, quantity: itemArray[i].mats[g].quantity + ((item.mats[k].quantity * itemArray[i].mats[j].quantity)/ item.quantity)})
-                            /*if (itemArray[i].id == 12005) console.log("items.mats[k]");
-                            if (itemArray[i].id == 12005) console.log(item.mats[k]);
-                            if (itemArray[i].id == 12005) console.log("itemArray[i].mats[j]");
-                            if (itemArray[i].id == 12005) console.log(itemArray[i].mats[j]);
-                            if (itemArray[i].id == 12005) console.log("itemArray[i].mats[g]");
-                            if (itemArray[i].id == 12005) console.log(itemArray[i].mats[g]);*/
-                           // if (itemArray[i].id == idToCheck) console.log("Original mat: ");
-                            //if (itemArray[i].id == idToCheck) console.log(itemArray[i].mats[j]);
-                            //if (itemArray[i].id == idToCheck) console.log("Item being broken down: " + item.name);
-                            //if (itemArray[i].id == idToCheck) console.log(item.mats[k].quantity + " " + item.mats[k].name + " id of" + item.mats[k].id + " multiplied by " + itemArray[i].mats[j].quantity + " added to" + itemArray[i].mats[g].quantity + " divided by " + item.quantity);
-                            //if (item.mats[k].id == 16657) console.log(item);
 
                             found = true;
                         }
@@ -251,20 +239,13 @@ function breakDownArray() {
                             name: item.mats[k].name,
                             quantity: (item.mats[k].quantity * itemArray[i].mats[j].quantity)/item.quantity
                         }
-                        //if (itemArray[i].id == idToCheck) console.log("Original mat: ");
-                        //if (itemArray[i].id == idToCheck) console.log(itemArray[i].mats[j]);
-                        //if (itemArray[i].id == 12005) console.log(mat);
-                        //if (itemArray[i].id == idToCheck) console.log(item.mats[k].quantity + " " + item.mats[k].name + " multiplied by " + itemArray[i].mats[j].quantity + " divided by " + item.quantity);
-                        //if (item.mats[k].id == 16672) console.log(item);
                         newMatsArray.push(mat);
                     }
                 }
             } else {
-                //if (itemArray[i].id == idToCheck) console.log("Adding old mat: " + itemArray[i].mats[j].name);
                 newMatsArray.push(itemArray[i].mats[j]);
             }
         }
-        //if (itemArray[i].id == idToCheck) console.log(newMatsArray);
         itemArray[i].mats = newMatsArray;
     }
 }
@@ -273,7 +254,6 @@ function cleanDuplicates() {
     var index = findItemIndex(12006);
 
     for (var i = 0; i < itemArray.length; i++) {
-        //console.log(itemArray[index].mats);
         var newMatArray = [];
         for (var j = 0; j < itemArray[i].mats.length; j++) {
             var mat = itemArray[i].mats[j];
@@ -286,13 +266,11 @@ function cleanDuplicates() {
                     continue;
                 }
                 if (mat.id == mat2.id) {
-                    //if (itemArray[i].id == 12005) console.log("adding " + mat.quantity + " of " + mat.name + " to " + mat2.quantity);
                     mat.quantity = mat.quantity + mat2.quantity;
                 }
             }
             newMatArray.push(mat);
         }
-        //if (itemArray[i].id == 12005) console.log(newMatArray);
         itemArray[i].mats = newMatArray;
     }
 }
