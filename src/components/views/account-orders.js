@@ -1,7 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import TableCell from '@material-ui/core/TableCell';
-import {SERVER_URL} from '../../config';
 import MUIDataTable from "mui-datatables";
 
 const request = require('superagent');

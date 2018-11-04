@@ -3,11 +3,14 @@ const matsArray = require('./matsNeeded');
 const conversions = require('./converter');
 const itemInfo = require('./invTypes');
 const itemGroups = require('./invGroups');
+const itemMeta = require('./invMeta');
 var fs = require('fs');
 var itemIDMap = new Map();
 var itemGroupMap = new Map();
 var groupCategoryMap = new Map();
 var bpMap = new Map();
+var publishedMap = new Map();
+var metaMap = new Map();
 var productsArray = [];
 var itemArray = [];
 var materialArray = [];
@@ -20,6 +23,8 @@ exports.init = function() {
     createConversionMap();
     mapItemsToGroup();
     mapGroupToCatagory();
+    mapPublished();
+    mapMeta();
     createItemArray();
 }
 
@@ -38,6 +43,18 @@ function mapGroupToCatagory() {
 function mapItemIDs() {
     for (var i = 0; i < parsedJSON.length; i++) {
         itemIDMap.set(parseInt(parsedJSON[i].ID, 10), parsedJSON[i].NAME);
+    }
+}
+
+function mapPublished() {
+    for (var i = 0; i < itemInfo.length; i++) {
+        publishedMap.set(parseInt(itemInfo[i].typeID, 10), parseInt(itemInfo[i].published, 10));
+    }
+}
+
+function mapMeta() {
+    for (var i = 0; i < itemMeta.length; i++) {
+        metaMap.set(parseInt(itemMeta[i].typeID, 10), parseInt(itemMeta[i].metaGroupID, 10));
     }
 }
 
@@ -86,7 +103,12 @@ function createItemArray() {
                 quantity: bpMap.get(parseInt(item.typeID, 10)).quantityPerRun,
                 name: itemIDMap.get(bpMap.get(parseInt(item.typeID, 10)).itemID),
                 category: categoryID,
+                published: publishedMap.get(bpMap.get(parseInt(item.typeID, 10)).itemID),
+                meta: metaMap.get(bpMap.get(parseInt(item.typeID, 10)).itemID),
                 mats: []
+            }
+            if (newItem.meta == undefined) {
+                newItem.meta = 0;
             }
             if (newItem.id == 16672) {
                 if (newItem.quantity == 20) {
@@ -121,6 +143,8 @@ function createItemArray() {
     cleanDuplicates();
     breakDownArray();
     cleanDuplicates();
+    filterArray();
+
 
     //recalcPricing();
     
@@ -174,6 +198,30 @@ function isMatAProduct(matID) {
     }
 }
 
+function filterItem(id) {
+    if (id != 6 && id != 7 && id != 18 && id != 87) {
+        return true;
+    }
+    return false;
+}
+
+function filterArray() {
+    for (var i = 0; i < itemArray.length; i++) {
+        itemArray = itemArray.filter(function (value, index, arr) {
+            if (filterItem(value.category)) {
+                return false;
+            } else if (value.published == 0) {
+                return false;
+            } else if (value.meta > 2) {
+                return false;
+            } else if ((itemGroupMap.get(value.id) > 772 && itemGroupMap.get(value.id) < 790) || (itemGroupMap.get(value.id) > 1231 && itemGroupMap.get(value.id) < 1235)) {
+                return false;
+            }
+            return true;
+        });
+    }
+}
+
 exports.recalcPricing = function() {
     //console.log("Recalcing price");
     const mats = require('./mats');
@@ -203,6 +251,13 @@ exports.recalcPricing = function() {
         }
         //console.log(newPrice);
         newPrice = Math.round(newPrice);
+        if (newPrice < 1000000 && newItem.category != 8) {
+            if (itemArray[i].meta == 0) {
+                newPrice = 1000000;
+            } else {
+                newPrice = 2000000;
+            }
+        }
         newItem.price = newPrice;
         itemPriceArray.push(newItem);
     }

@@ -25,6 +25,8 @@ const styles = theme => ({
     itemName: {
         'margin-top': 10,
         'text-align': 'center',
+        'margin-left': '10px',
+        'margin-right': '10px',
     },
     itemPrice: {
         'margin-top': 10,
@@ -41,17 +43,13 @@ const styles = theme => ({
         'display': 'block',
         'margin-left': 'auto',
         'margin-right': 'auto',
-    }
+    },
+     addButtonDiv: {
+        'margin-left': '10px',
+        'margin-right': '10px',
+        'margin-bottom': '10px'
+     }
   });
-
-/*function createItemArray() {
-    var itemArray = [];
-    for (var i = 0; i < 50; i++) {
-        var item = [i, "Naglfar", "1.2B", "https://wiki.eveuniversity.org/images/thumb/f/f9/Naglfar.jpg/256px-Naglfar.jpg"];
-        itemArray.push(item);
-    }
-    return itemArray;
-}*/
 
 class ItemGrid extends React.Component {
 
@@ -62,6 +60,18 @@ class ItemGrid extends React.Component {
     render() {
         const { classes } = this.props;
         var itemArray = this.props.items;
+        var newArray = [];
+        for (var i = 0; i < itemArray.length; i++) {
+            if (itemArray[i].category == 6) {
+                newArray.push(itemArray[i]);
+            }
+        }
+        for (var i = 0; i < itemArray.length; i++) {
+            if (itemArray[i].category != 6) {
+                newArray.push(itemArray[i]);
+            }
+        }
+        itemArray = newArray;
         return (
             <div className={classes.root}>
             <Grid container spacing={8} className={classes.container}>
@@ -69,13 +79,15 @@ class ItemGrid extends React.Component {
                     <Grid container className="item-grid" justify="space-evenly" alighitems="center" spacing={0}>
                         {itemArray.map(function(item, id) {
                         return  <Paper className={classes.gridItem} key={id}>
-                            <div className={classes.itemImg}><img src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} alt={item[1]} className={classes.itemImg}></img></div>
+                            {getImage(classes, item)}
                             <Typography className={classes.itemName}>{item.name}</Typography>
                             <Typography className={classes.itemPrice}>Price: {numberWithCommas(item.price)} ISK</Typography>
+                            <div className={classes.addButtonDiv}>
                             <Button variant="contained" className={classes.addButton} onClick={() => this.handleCart(item.id)}>
                                 Add to cart
                                 <CartIcon/>
                             </Button>
+                            </div>
                             </Paper>
                         }, this)}
                     </Grid>
@@ -83,6 +95,14 @@ class ItemGrid extends React.Component {
             </Grid>
             </div>
         );
+    }
+}
+
+function getImage(classes, item) {
+    if (item.category == 6) {
+        return <div className={classes.itemImg}><img src={"https://image.eveonline.com/Render/" + item.id + "_256.png"} alt={item[1]} className={classes.itemImg}></img></div>
+    } else {
+        return <div className={classes.itemImg}><img src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} alt={item[1]} className={classes.itemImg}></img></div>
     }
 }
 

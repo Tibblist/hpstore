@@ -1,7 +1,6 @@
 import React from 'react';
 import StoreHeader from './store-header';
 import ItemGrid from '../utils/item-grid';
-import { DropDownButton } from '../utils/buttons';
 import '../../css/store.css';
 import { AuthService } from '../../backend/client/auth';
 const request = require('superagent');
@@ -12,6 +11,7 @@ export default class Store extends React.Component {
     this.state = {
       suggestions: [],
       itemArray: [],
+      cart: [],
     }
     this.fetchData = this.fetchData.bind(this);
     //console.log("Constructor ran");
@@ -46,170 +46,50 @@ export default class Store extends React.Component {
         })
     }
 
-    addToCart = (id, event) => {
-
+    addToCart = (id) => {
+      var item = findItemByID(id, this.state.itemArray);
+      if (item == null) {
+        return;
+      }
+      var cartItem = {
+        id: item.id,
+        name: item.name,
+        quantity: 1,
+        price: item.price
+      }
+      var newCart = this.state.cart;
+      newCart = addItemToCart(cartItem, newCart);
+      this.setState({
+        cart: newCart,
+      });
     }
 
     render() {
         return (
             <div>
-                <StoreHeader suggestions={this.state.suggestions}></StoreHeader>
+                <StoreHeader suggestions={this.state.suggestions} cart={this.state.cart}></StoreHeader>
                 <ItemGrid addFunction={this.addToCart} items={this.state.itemArray}></ItemGrid>
-                <SideMenu></SideMenu>
             </div>
         );
     }
 }
 
-class SideMenu extends React.Component {
-    constructor(props){
-        super(props)
-        this.toggleSelected = this.toggleSelected.bind(this);
-        this.state = {
-          capitals: [
-            {
-                id: 0,
-                title: 'All',
-                selected: false,
-                key: 'capitals'
-            },
-            {
-              id: 1,
-              title: 'Amarr',
-              selected: false,
-              key: 'capitals'
-            },
-            {
-              id: 2,
-              title: 'Caldari',
-              selected: false,
-              key: 'capitals'
-            },
-            {
-              id: 3,
-              title: 'Gallente',
-              selected: false,
-              key: 'capitals'
-            },
-            {
-              id: 4,
-              title: 'Minmatar',
-              selected: false,
-              key: 'capitals'
-            },
-            {
-              id: 5,
-              title: 'Faction',
-              selected: false,
-              key: 'capitals'
-            }
-          ],
-          supercapitals: [
-            {
-                id: 0,
-                title: 'All',
-                selected: false,
-                key: 'supercapitals'
-            },
-            {
-              id: 1,
-              title: 'Amarr',
-              selected: false,
-              key: 'supercapitals'
-            },
-            {
-              id: 2,
-              title: 'Caldari',
-              selected: false,
-              key: 'supercapitals'
-            },
-            {
-              id: 3,
-              title: 'Gallente',
-              selected: false,
-              key: 'supercapitals'
-            },
-            {
-              id: 4,
-              title: 'Minmatar',
-              selected: false,
-              key: 'supercapitals'
-            },
-            {
-              id: 5,
-              title: 'Faction',
-              selected: false,
-              key: 'supercapitals'
-            }
-          ],
-          fullfits: [
-            {
-                id: 0,
-                title: 'All',
-                selected: false,
-                key: 'fullfits'
-            },
-            {
-              id: 1,
-              title: 'Amarr',
-              selected: false,
-              key: 'fullfits'
-            },
-            {
-              id: 2,
-              title: 'Caldari',
-              selected: false,
-              key: 'fullfits'
-            },
-            {
-              id: 3,
-              title: 'Gallente',
-              selected: false,
-              key: 'fullfits'
-            },
-            {
-              id: 4,
-              title: 'Minmatar',
-              selected: false,
-              key: 'fullfits'
-            },
-            {
-              id: 5,
-              title: 'Faction',
-              selected: false,
-              key: 'fullfits'
-            }
-          ],
-        }
+function findItemByID(id, items) {
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].id == id) {
+      return items[i];
     }
+  }
+  return null;
+}
 
-    toggleSelected(id, key){
-        console.log(id, key);
-        let temp = this.state[key]
-        temp[id].selected = !temp[id].selected
-        this.setState({
-          [key]: temp
-        })
+function addItemToCart(item, cart) {
+  for (var i = 0; i < cart.length; i++) {
+    if (item.id == cart[i].id) {
+      cart[i].quantity = cart[i].quantity + item.quantity;
+      return cart;
     }
-    
-    render() {
-        return (
-            <div className="sidenav">
-                <ul>
-                    <DropDownButton
-                        titleHelper="Capitals"
-                        title="Capitals"
-                        list={this.state.capitals}
-                        toggleItem={this.toggleSelected}
-                    />
-                    <DropDownButton
-                        titleHelper="Supercapitals"
-                        title="Supercapitals"
-                        list={this.state.supercapitals}
-                        toggleItem={this.toggleSelected}
-                    />
-                </ul>
-            </div>
-        );
-    }
+  }
+  cart.push(item);
+  return cart;
 }
