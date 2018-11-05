@@ -12,7 +12,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 const styles = theme => ({
     container: {
+        'margin-right': '10%',
+        'margin-left': '10%',
+        'margin-top': '10%',
+
+    },
+    list: {
         backgroundColor: 'white'
+
     }
 });
 
@@ -26,7 +33,7 @@ class CheckoutItems extends React.Component {
       const {classes} = this.props;
       return (
         <Paper className={classes.container}>
-            <List>
+            <List className={classes.list}>
                 {this.props.cart.map((item, id) => {
                     return <ListItem key={item.id}>
                     <img alt="" src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} className={classes.itemImg}></img>
