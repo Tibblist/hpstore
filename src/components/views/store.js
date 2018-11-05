@@ -5,6 +5,7 @@ import '../../css/store.css';
 import { AuthService, AuthRoute } from '../../backend/client/auth';
 import {Route} from 'react-router-dom';
 import { Paper } from '@material-ui/core';
+import CheckoutItems from './checkout';
 const request = require('superagent');
 
 export default class Store extends React.Component {
@@ -144,21 +145,6 @@ class ShowItems extends React.Component {
       </div>
     );
   }
-}
-
-class CheckoutItems extends React.Component {
-  
-  render() {
-    console.log(this.props.cart);
-    return (
-      <Paper>
-        {this.props.cart.map((item, id) => {
-          return <Paper key={id}>
-            
-          </Paper>
-        })}
-      </Paper>
-    )}
 }
 
 function cartIsSame(obj1, obj2) {

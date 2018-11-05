@@ -115,7 +115,7 @@ class CheckoutMenu extends React.Component {
                         </Paper>
                     })}
                     <p>Total: {numberWithCommas(total)} ISK</p>
-                    <Link to="/store/checkout">
+                    <Link to="/store/checkout" style={{ textDecoration: 'none' }}>
                         <Button className={classes.chkButton}>
                             Checkout
                         </Button>
