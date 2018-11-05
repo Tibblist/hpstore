@@ -106,7 +106,7 @@ class CheckoutMenu extends React.Component {
             <Collapse in={this.state.open}>
                 <Paper className={classes.openCart}>
                     {this.props.cart.map((item, id) => {
-                        return <Paper key={id}>
+                        return <Paper key={item.id}>
                             <img alt="" src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} className={classes.itemImg}></img>
                             <p className={classes.price}>{abbreviateNumber(item.price)}</p>
                             <p className={"  " + classes.itemName}>{item.name} 

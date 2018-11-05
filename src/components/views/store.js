@@ -95,7 +95,7 @@ export default class Store extends React.Component {
           console.log(e.target.value)
           console.log(e.target.value === "0")
           if (e.target.value === "0") {
-            newCart = newCart.splice(i, 1);
+            newCart.splice(i, 1);
             break;
           }
           if (e.target.value === "") {
