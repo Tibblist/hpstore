@@ -33,6 +33,15 @@ const styles = theme => ({
     itemImg: {
         'display': 'inline-block',
         'padding-right': '3px',
+    },
+    chkButton: {
+        'display': 'block',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
+
+    },
+    price: {
+        //'padding-left': '5px',
     }
   });
 
@@ -85,14 +94,15 @@ class CheckoutMenu extends React.Component {
                     {this.props.cart.map((item, id) => {
                         return <Paper key={id}>
                             <img alt="" src={"https://image.eveonline.com/Type/" + item.id + "_32.png"} className={classes.itemImg}></img>
+                            <p className={classes.price}>{abbreviateNumber(item.price)}</p>
                             <p className={"  " + classes.itemName}>{item.name} 
-                            {"  x "}<TextField onChange={(e) => this.handleChange(item.id, e)}defaultValue={item.quantity} className={classes.itemQuantity}></TextField>
+                            {"  x   "}<TextField onChange={(e) => this.handleChange(item.id, e)}defaultValue={item.quantity} className={classes.itemQuantity}></TextField>
                             </p>
                         </Paper>
                     })}
                     <p>Total: {numberWithCommas(total)} ISK</p>
                     <Link to="/store/checkout">
-                        <Button>
+                        <Button className={classes.chkButton}>
                             Checkout
                         </Button>
                     </Link>
