@@ -57,6 +57,16 @@ class ItemGrid extends React.Component {
         this.props.addFunction(id);
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        if (this.props.items == undefined) {
+            return true;
+        }
+        if (this.props.items.length === nextProps.items.length) {
+            return false;
+        }
+        return true;
+    }
+
     render() {
         const { classes } = this.props;
         var itemArray = this.props.items;

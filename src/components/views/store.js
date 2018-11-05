@@ -88,6 +88,29 @@ export default class Store extends React.Component {
       }
     }
 
+    changeQuantity = (id, e) => {
+      var newCart = this.state.cart;
+      for (var i = 0; i < newCart.length; i++) {
+        if (newCart[i].id == id) {
+          console.log(e.target.value)
+          console.log(e.target.value === "0")
+          if (e.target.value === "0") {
+            newCart = newCart.splice(i, 1);
+            break;
+          }
+          if (e.target.value === "") {
+            newCart[i].quantity = 0;
+            break;
+        }
+          newCart[i].quantity = parseInt(e.target.value, 10);
+        }
+      }
+      console.log(newCart)
+      this.setState({
+        cart: newCart,
+      });
+    }
+
     render() {
       var array = [];
         if (this.state.isSearching) {
@@ -100,11 +123,12 @@ export default class Store extends React.Component {
               <Route
                 path='/store'
                 exact
-                render={(props) => <ShowItems {...props} suggestions={this.state.suggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={array}/>}
+                render={(props) => <ShowItems {...props} changeQuantity={this.changeQuantity} suggestions={this.state.suggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={array}/>}
               />
               <AuthRoute
               path='/store/checkout'
-              render={(props) => <CheckoutItems {...props} cart={this.state.cart}/>}
+              component={CheckoutItems}
+              cart={this.state.cart}
               />
             </div>
         );
@@ -115,7 +139,7 @@ class ShowItems extends React.Component {
   render() {
     return (
       <div>
-          <StoreHeader suggestions={this.props.suggestions} cart={this.props.cart} changeFunction={this.props.changeFunction}></StoreHeader>
+          <StoreHeader suggestions={this.props.suggestions} cart={this.props.cart} changeFunction={this.props.changeFunction} changeQuantity={this.props.changeQuantity}></StoreHeader>
           <ItemGrid addFunction={this.props.addFunction} items={this.props.items}></ItemGrid>
       </div>
     );
@@ -125,6 +149,7 @@ class ShowItems extends React.Component {
 class CheckoutItems extends React.Component {
   
   render() {
+    console.log(this.props.cart);
     return (
       <Paper>
         {this.props.cart.map((item, id) => {
@@ -134,6 +159,20 @@ class CheckoutItems extends React.Component {
         })}
       </Paper>
     )}
+}
+
+function cartIsSame(obj1, obj2) {
+  console.log(obj1)
+  console.log(obj2)
+  if (obj1.length != obj2.length) {
+    return false;
+  }
+  for (var i = 0; i < obj1.length; i++) {
+    if (obj1[i].quantity != obj2.quantity) {
+      return false;
+    }
+  }
+  return true;
 }
 
 function findItemByID(id, items) {

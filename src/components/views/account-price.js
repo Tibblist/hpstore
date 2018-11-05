@@ -68,6 +68,7 @@ class AccountPrice extends React.Component {
 
     handleChange = (id, event) => {
         console.log("id of changed item is: " + id);
+        console.log(event)
         console.log(event.target.value);
         for (var i = 0; i < this.state.matArray.length; i++) {
             if (this.state.matArray[i].id == id) {

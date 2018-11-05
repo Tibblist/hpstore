@@ -19,7 +19,7 @@ class StoreHeader extends React.Component {
         return (
             <Paper className={classes.root}>
                 <SearchBar suggestions={this.props.suggestions} className={classes.search} changeFunction={this.props.changeFunction}/>
-                <Checkout cart={this.props.cart}/>
+                <Checkout cart={this.props.cart} changeQuantity={this.props.changeQuantity}/>
             </Paper>
         );
     }
