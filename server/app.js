@@ -66,8 +66,9 @@ app.post('/api/createOrder', (req, res) => {
 
 app.get('/callback', (req, res) => {
   var code = req.query.code;
+  var redirect = req.query.state
   esi.initialCodeProcessing(res, code).then(function() {
-    res.redirect('/account');
+    res.redirect(redirect);
     res.end();
   }).catch(function(err){
     console.log("ERROR: " + err);

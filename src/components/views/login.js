@@ -24,11 +24,11 @@ export default class Login extends React.Component {
       if (redirectToPreviousRoute) {
         return <Redirect to={from} />;
       }
-  
+      console.log(from);
       return (
         <div>
           <p>You must log in to view the page at: {from.pathname}</p>
-          <a target="_blank" href={"https://login.eveonline.com/oauth/authorize/?response_type=code&redirect_uri=http%3A%2F%2Flocalhost:5000%2Fcallback&client_id=" + CLIENT_ID +"&scope=publicData&state=uniquestate123"}>
+          <a target="_blank" href={"https://login.eveonline.com/oauth/authorize/?response_type=code&redirect_uri=http%3A%2F%2Flocalhost:5000%2Fcallback&client_id=" + CLIENT_ID +"&scope=publicData&state=" + from.pathname}>
             <button>Log in</button>
           </a>
         </div>
