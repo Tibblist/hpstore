@@ -1,6 +1,7 @@
 const Order = require('./../models/order')
 const User = require('./../models/user')
 const Item = require('./../models/item')
+const dataJS = require('./../data');
 
 var exports = module.exports = {};
 
@@ -21,8 +22,16 @@ exports.createOrder = async function(res, obj, user) {
     console.log(obj);
     var order = new Order();
     order.buyer = user;
-    for (var i = 0; i < )
+    var id = getRandomNumber(8);
+    var testOrder = await Order.findOne({transID: id})
+    
+    while (testOrder) {
+        id = getRandomNumber(8);
+        testOrder = await Order.findOne({transID: id})
+    }
 
+    order.transID = id;
+    
 }
 
 exports.findOrderByBuyer = function(res, buyerName) {

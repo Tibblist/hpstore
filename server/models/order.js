@@ -15,8 +15,9 @@ const OrderSchema = new Schema(
         ref: 'User'
     },
     items: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Item'
+        id: Number,
+        name: String,
+        price: Number,
     }],
     price: Number,
     amountPaid: Number,

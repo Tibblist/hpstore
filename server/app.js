@@ -60,8 +60,13 @@ app.get('/api/getOrders', (req,res) => {
 });
 
 app.post('/api/createOrder', (req, res) => {
-  data.push(req.body);
-  console.log("Recieved order: " + req.body);
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsValid(user)) {
+    
+  } else {
+    res.send(403);
+    res.end();
+  }
 });
 
 app.get('/callback', (req, res) => {
