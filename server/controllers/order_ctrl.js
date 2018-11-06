@@ -1,7 +1,8 @@
 const Order = require('./../models/order')
 const User = require('./../models/user')
-const Item = require('./../models/item')
 const dataJS = require('./../data');
+const mongoose = require('mongoose');
+
 
 var exports = module.exports = {};
 
@@ -11,7 +12,7 @@ function getRandomInt(max) {
   
 
 function getRandomNumber(x) {
-    var numberString;
+    var numberString = '';
     for (var i = 0; i < x; i++) {
         numberString = numberString + getRandomInt(9).toString();
     }
@@ -20,11 +21,13 @@ function getRandomNumber(x) {
 
 exports.createOrder = async function(res, obj, user) {
     console.log(obj);
-    var order = new Order();
+    var order = new Order({discountCode: obj.discountCode});
+    order._id = new mongoose.Types.ObjectId();
     order.buyer = user;
     var id = getRandomNumber(8);
     var testOrder = await Order.findOne({transID: id})
-    
+    console.log(id);
+    console.log(testOrder);
     while (testOrder) {
         id = getRandomNumber(8);
         testOrder = await Order.findOne({transID: id})
@@ -32,12 +35,32 @@ exports.createOrder = async function(res, obj, user) {
 
     order.transID = id;
     if (!dataJS.validatePricing(obj.items)) {
+        console.log("Failed to validate pricing");
         res.send("Invalid pricing");
         res.end();
         return;
     }
-
-    
+    var totalPrice = 0;
+    for (var i = 0; i < obj.items.length; i++) {
+        totalPrice += obj.items[i].price * obj.items[i].quantity;
+        var newItem = {
+            id: obj.items[i].id,
+            name: obj.items[i].name,
+            quantity: obj.items[i].quantity,
+            price: obj.items[i].price
+        }
+        order.items.push(newItem);
+    }
+    order.status = 1;
+    order.orderDate = new Date();
+    order.endDate = null;
+    order.deliveredDate = null;
+    order.price = totalPrice;
+    order.amountPaid = 0;
+    order.code = obj.discountCode;
+    order.save();
+    res.send(id);
+    res.end();
 }
 
 exports.findOrderByBuyer = function(res, buyerName) {

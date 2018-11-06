@@ -33,13 +33,13 @@ exports.checkIfUserExists = function(id) {
             if (err) {
                 reject(err);
             }
-            console.log(char); 
+            //console.log(char); 
             if(!char.length) {
                 console.log("No char found");
                 resolve([null, false]);
                 return;
             }
-            console.log(char[0].owner);
+            //console.log(char[0].owner);
             resolve([char[0].owner, true, char[0].name]);
         });
     });

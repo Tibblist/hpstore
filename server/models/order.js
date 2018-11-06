@@ -17,6 +17,7 @@ const OrderSchema = new Schema(
     items: [{
         id: Number,
         name: String,
+        quantity: Number,
         price: Number,
     }],
     price: Number,
@@ -25,7 +26,7 @@ const OrderSchema = new Schema(
     endDate: Date,
     deliveredDate: Date,
     status: String,
-
+    code: String,
   },
   { timestamps: true }
 );

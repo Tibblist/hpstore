@@ -264,7 +264,8 @@ exports.recalcPricing = function() {
     //console.log(itemPriceArray);
 }
 
-exports.validatePricing = function (items, modifier) {
+exports.validatePricing = function (items, code) {
+    var modifier = 1; //CHANGE TO CHECK EXPECTED MODIFIER BASED ON CODE
     for (var i = 0; i < items.length; i++) {
         if (findItemPrice(items[i].id) * modifier != items[i].price) {
             return false;

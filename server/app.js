@@ -7,7 +7,7 @@ var fs = require('fs');
 const esi = require('./esi');
 const dataJS = require('./data');
 const user_ctrl = require('./controllers/user_ctrl');
-
+const order_ctrl = require('./controllers/order_ctrl')
 
 const app = express();
 // Serve the static files from the React app
@@ -59,10 +59,11 @@ app.get('/api/getOrders', (req,res) => {
     console.log('Sent list of orders');
 });
 
-app.post('/api/createOrder', (req, res) => {
+app.post('/api/postOrder', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsValid(user)) {
-    
+    //console.log(req.body);
+    order_ctrl.createOrder(res, req.body, user);
   } else {
     res.send(403);
     res.end();
