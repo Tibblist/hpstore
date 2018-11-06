@@ -31,6 +31,12 @@ exports.createOrder = async function(res, obj, user) {
     }
 
     order.transID = id;
+    if (!dataJS.validatePricing(obj.items)) {
+        res.send("Invalid pricing");
+        res.end();
+        return;
+    }
+
     
 }
 
