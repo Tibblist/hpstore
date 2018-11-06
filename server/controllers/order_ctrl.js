@@ -4,16 +4,25 @@ const Item = require('./../models/item')
 
 var exports = module.exports = {};
 
-exports.createOrder = function(res, obj) {
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
+  }
+  
+
+function getRandomNumber(x) {
+    var numberString;
+    for (var i = 0; i < x; i++) {
+        numberString = numberString + getRandomInt(9).toString();
+    }
+    return numberString;
+}
+
+exports.createOrder = async function(res, obj, user) {
     console.log(obj);
-    new Order(obj).save((err, order) => {
-        if (err) {
-            console.log(err);
-            res.send(err);
-        } else {
-            res.send("OK").end();
-        }
-    });
+    var order = new Order();
+    order.buyer = user;
+    for (var i = 0; i < )
+
 }
 
 exports.findOrderByBuyer = function(res, buyerName) {

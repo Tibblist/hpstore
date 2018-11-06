@@ -14,12 +14,19 @@ const styles = theme => ({
     container: {
         'margin-right': '10%',
         'margin-left': '10%',
-        'margin-top': '10%',
+        'margin-top': '20px',
 
     },
     list: {
         backgroundColor: 'white'
 
+    },
+    submitButton: {
+        'background-color': 'blue',
+        'color': 'white',
+        'display': 'block',
+        'margin-right': 'auto',
+        'margin-left': 'auto'
     }
 });
 
@@ -30,8 +37,12 @@ const numberWithCommas = (x) => {
 class CheckoutItems extends React.Component {
   
     render() {
-      const {classes} = this.props;
-      return (
+        const {classes} = this.props;
+        var total = 0;
+        for (var i = 0; i < this.props.cart.length; i++) {
+            total += this.props.cart[i].quantity * this.props.cart[i].price
+        }
+        return (
         <Paper className={classes.container}>
             <List className={classes.list}>
                 {this.props.cart.map((item, id) => {
@@ -41,6 +52,14 @@ class CheckoutItems extends React.Component {
                     <p>{numberWithCommas(item.price)} ISK</p>
                     </ListItem>
                 })}
+                <ListItem>
+                    <TextField style={{'display': 'inline-block', 'padding-right': '5px'}} placeholder={"Discount Code"}></TextField>
+                    <Button variant="contained" onClick={console.log} style={{'background-color': 'green', 'color': 'white'}}>Verify</Button>
+                    <ListItemText primary={"Total: " + numberWithCommas(total) + " ISK"} style={{'text-align': 'right', display: 'inline-block'}}></ListItemText>
+                </ListItem>
+                <ListItem>
+                    <Button variant="contained" onClick={console.log} className={classes.submitButton}>Submit</Button>
+                </ListItem>
             </List>
         </Paper>
       )}

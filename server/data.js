@@ -264,6 +264,23 @@ exports.recalcPricing = function() {
     //console.log(itemPriceArray);
 }
 
+exports.validatePricing = function (items, modifier) {
+    for (var i = 0; i < items.length; i++) {
+        if (findItemPrice(items[i].id) * modifier != items[i].price) {
+            return false;
+        }
+    }
+    return true;
+}
+
+function findItemPrice(id) {
+    for (var i = 0; i < itemPriceArray.length; i++) {
+        if (itemPriceArray[i].id == id) {
+            return itemPriceArray[i].price;
+        }
+    }
+}
+
 exports.getPriceArray = function() {
     return itemPriceArray;
 }
