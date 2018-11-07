@@ -39,13 +39,15 @@ const styles = theme => ({
     },
     formControl: {
         minWidth: 120,
-        'padding-left': '5%',
+        'padding-left': '5px',
     },
     menu: {
-        'background-color': 'white',
     },
     menuItem: {
         'background-color': 'white'
+    },
+    label: {
+        'padding-left': '3%',
     }
 });
 
@@ -56,18 +58,29 @@ const numberWithCommas = (x) => {
 class CheckoutItems extends React.Component {
     constructor(props) {
         super(props);
+        var character = '';
+        var location = '';
+        if (this.props.character) {
+            character = this.props.character;
+        }
+        if (this.props.location) {
+            location = this.props.location;
+        }
         this.state = { 
             orderSent: false,
             confirmNumber: 0,
             discountCode: '',
-            location: ''
+            location: location,
+            character: character
         };
     }
 
     postOrder = () => {
         var obj = {
             items: this.props.cart,
-            discountCode: this.state.discountCode
+            discountCode: this.state.discountCode,
+            character: this.state.character,
+            location: this.state.location
         }
         request
         .post("/api/postOrder")
@@ -100,6 +113,12 @@ class CheckoutItems extends React.Component {
             location: event.target.value
         })
     }
+
+    handleCharacterChange = (event) => {
+        this.setState({
+            character: event.target.value
+        })
+    }
   
     render() {
         if (this.state.orderSent) {
@@ -130,11 +149,11 @@ class CheckoutItems extends React.Component {
                         </ListItem>
                     })}
                     <ListItem>
-                        <TextField style={{'display': 'inline-block', 'padding-right': '10px'}} onChange={(e) => this.handleCodeChange(e)} placeholder={"Discount Code"}></TextField>
+                        <TextField style={{'display': 'inline-block', 'padding-right': '1%'}} onChange={(e) => this.handleCodeChange(e)} placeholder={"Discount Code"}></TextField>
                         <Button variant="contained" onClick={console.log} style={{'background-color': 'green', 'color': 'white'}}>Verify</Button>
+                        <Typography className={classes.label}>Delivery Location:</Typography>
                         <FormControl className={classes.formControl}>
                             <Select
-                                defaultValue={"Delivery Location"}
                                 value={this.state.location}
                                 onChange={this.handleLocationChange}
                                 inputProps={{
@@ -144,22 +163,33 @@ class CheckoutItems extends React.Component {
                                 className={classes.menu}
                             >
                             <MenuItem className={classes.menuItem} value={1}>
-                            <em>None</em>
+                            <em>1DQ1-A - 1-st Thetastar of Dickbutt</em>
                             </MenuItem>
-                            <MenuItem className={classes.menuItem} value={2}>Ten</MenuItem>
-                            <MenuItem className={classes.menuItem} value={3}>Twenty</MenuItem>
-                            <MenuItem className={classes.menuItem} value={4}>Thirty</MenuItem>
+                            <MenuItem className={classes.menuItem} value={2}>J5A-IX - The Player of Games</MenuItem>
+                            <MenuItem className={classes.menuItem} value={3}>D-W7F0 - #% Gaarastar %#</MenuItem>
+                            <MenuItem className={classes.menuItem} value={4}>F-NXLQ - Babylon 5-Bil</MenuItem>
+                            <MenuItem className={classes.menuItem} value={5}>B17O-R - Onii-chan League Headquarters</MenuItem>
                             </Select>
                         </FormControl>
+                        <TextField style={{'display': 'inline-block', 'padding-left': '3%'}} onChange={(e) => this.handleCharacterChange(e)} defaultValue={this.props.character} placeholder={"Character Name"}></TextField>
                         <ListItemText primary={"Total: " + numberWithCommas(total) + " ISK"} style={{'text-align': 'right', display: 'inline-block'}}></ListItemText>
                     </ListItem>
                     <ListItem>
-                        <Button variant="contained" onClick={this.postOrder} className={classes.submitButton}>Submit</Button>
+                        {isDisabled(this.state.location, this.state.character, this.props.cart)
+                        ? <Button disabled variant="contained" onClick={this.postOrder} className={classes.submitButton}>Submit</Button>
+                        : <Button variant="contained" onClick={this.postOrder} className={classes.submitButton}>Submit</Button>}
                     </ListItem>
                 </List>
             </Paper>
       )}
     }
   }
+
+function isDisabled(loc, char, cart) {
+    if (loc === '' || char === '' || cart.length === 0) {
+        return true;
+    }
+    return false;
+}
 
   export default withStyles(styles)(CheckoutItems);

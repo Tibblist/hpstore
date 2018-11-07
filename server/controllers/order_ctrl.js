@@ -24,6 +24,7 @@ exports.createOrder = async function(res, obj, user) {
     order._id = new mongoose.Types.ObjectId();
     order.buyer = user;
     order.location = obj.location;
+    order.character = obj.character;
     var id = getRandomNumber(8);
     var testOrder = await Order.findOne({transID: id})
     while (testOrder) {

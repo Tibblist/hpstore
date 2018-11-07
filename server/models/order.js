@@ -26,6 +26,7 @@ const OrderSchema = new Schema(
     endDate: Date,
     deliveredDate: Date,
     location: String,
+    character: String,
     status: String,
     code: String,
   },

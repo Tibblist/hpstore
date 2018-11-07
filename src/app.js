@@ -9,6 +9,17 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import {AuthRoute} from './backend/client/auth';
 
 class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = { 
+            userSettings: {
+                character: '',
+                location: ''
+            }
+        };
+    }
+
+
     render() {
         return (
         <div>
