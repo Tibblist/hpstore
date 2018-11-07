@@ -7,6 +7,9 @@ import Button from '@material-ui/core/Button';
 import CartIcon from '@material-ui/icons/AddShoppingCart';
 
 const numberWithCommas = (x) => {
+    if (x === null) {
+        return null;
+    }
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
@@ -82,6 +85,7 @@ class ItemGrid extends React.Component {
             }
         }
         itemArray = newArray;
+        console.log(itemArray);
         return (
             <div className={classes.root}>
             <Grid container spacing={8} className={classes.container}>

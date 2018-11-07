@@ -1,0 +1,192 @@
+[
+ {
+  "id": "25",
+  "name": "Frigate",
+  "margin": "10"
+ },
+ {
+  "id": "26",
+  "name": "Cruiser",
+  "margin": 0
+ },
+ {
+  "id": "27",
+  "name": "Battleship",
+  "margin": "50"
+ },
+ {
+  "id": "28",
+  "name": "Industrial",
+  "margin": 0
+ },
+ {
+  "id": "30",
+  "name": "Titan",
+  "margin": 0
+ },
+ {
+  "id": "324",
+  "name": "Assault Frigate",
+  "margin": 0
+ },
+ {
+  "id": "358",
+  "name": "Heavy Assault Cruiser",
+  "margin": 0
+ },
+ {
+  "id": "380",
+  "name": "Deep Space Transport",
+  "margin": 0
+ },
+ {
+  "id": "419",
+  "name": "Combat Battlecruiser",
+  "margin": 0
+ },
+ {
+  "id": "420",
+  "name": "Destroyer",
+  "margin": 0
+ },
+ {
+  "id": "463",
+  "name": "Mining Barge",
+  "margin": 0
+ },
+ {
+  "id": "485",
+  "name": "Dreadnought",
+  "margin": 0
+ },
+ {
+  "id": "513",
+  "name": "Freighter",
+  "margin": 0
+ },
+ {
+  "id": "540",
+  "name": "Command Ship",
+  "margin": 0
+ },
+ {
+  "id": "541",
+  "name": "Interdictor",
+  "margin": 0
+ },
+ {
+  "id": "543",
+  "name": "Exhumer",
+  "margin": 0
+ },
+ {
+  "id": "547",
+  "name": "Carrier",
+  "margin": 0
+ },
+ {
+  "id": "659",
+  "name": "Supercarrier",
+  "margin": 0
+ },
+ {
+  "id": "830",
+  "name": "Covert Ops",
+  "margin": 0
+ },
+ {
+  "id": "831",
+  "name": "Interceptor",
+  "margin": 0
+ },
+ {
+  "id": "832",
+  "name": "Logistics",
+  "margin": 0
+ },
+ {
+  "id": "833",
+  "name": "Force Recon Ship",
+  "margin": 0
+ },
+ {
+  "id": "834",
+  "name": "Stealth Bomber",
+  "margin": 0
+ },
+ {
+  "id": "883",
+  "name": "Capital Industrial Ship",
+  "margin": 0
+ },
+ {
+  "id": "893",
+  "name": "Electronic Attack Ship",
+  "margin": 0
+ },
+ {
+  "id": "894",
+  "name": "Heavy Interdiction Cruiser",
+  "margin": 0
+ },
+ {
+  "id": "898",
+  "name": "Black Ops",
+  "margin": 0
+ },
+ {
+  "id": "900",
+  "name": "Marauder",
+  "margin": 0
+ },
+ {
+  "id": "902",
+  "name": "Jump Freighter",
+  "margin": 0
+ },
+ {
+  "id": "906",
+  "name": "Combat Recon Ship",
+  "margin": 0
+ },
+ {
+  "id": "941",
+  "name": "Industrial Command Ship",
+  "margin": 0
+ },
+ {
+  "id": "1201",
+  "name": "Attack Battlecruiser",
+  "margin": 0
+ },
+ {
+  "id": "1202",
+  "name": "Blockade Runner",
+  "margin": 0
+ },
+ {
+  "id": "1283",
+  "name": "Expedition Frigate",
+  "margin": 0
+ },
+ {
+  "id": "1305",
+  "name": "Tactical Destroyer",
+  "margin": 0
+ },
+ {
+  "id": "1527",
+  "name": "Logistics Frigate",
+  "margin": 0
+ },
+ {
+  "id": "1534",
+  "name": "Command Destroyer",
+  "margin": 0
+ },
+ {
+  "id": "1538",
+  "name": "Force Auxiliary",
+  "margin": 0
+ }
+]

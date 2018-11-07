@@ -15,6 +15,7 @@ var productsArray = [];
 var itemArray = [];
 var materialArray = [];
 var itemPriceArray = [];
+var groupArray = [];
 
 var exports = module.exports = {};
 
@@ -25,6 +26,7 @@ exports.init = function() {
     mapGroupToCatagory();
     mapPublished();
     mapMeta();
+    createMarginMap();
     createItemArray();
 }
 
@@ -68,6 +70,37 @@ function createConversionMap() {
             continue;
         }
         bpMap.set(parseInt(conversions[i].typeID, 10), {itemID: parseInt(conversions[i].productTypeID, 10), quantityPerRun: parseInt(conversions[i].quantity, 10)});
+    }
+}
+
+function createMarginMap() {
+    
+}
+
+function initialMarginCreation() {
+    var groups = [];
+    for (var i = 0; i < itemGroups.length; i++) {
+        if (!groupArray.includes(parseInt(itemGroups[i].groupID, 10))) {
+            continue;
+        }
+        groups.push({id: itemGroups[i].groupID, name: itemGroups[i].groupName, margin: 0})
+    }
+    var json = JSON.stringify(groups, null, 4);
+    fs.writeFile('margins.json', json, 'utf8', function(){
+
+    });
+}
+
+function createCategoryArray() {
+    for (var i = 0; i < itemArray.length; i++) {
+        if(itemArray[i].category != 6) {
+            continue;
+        }
+        var groupID = parseInt(itemGroupMap.get(itemArray[i].id), 10);
+        if (groupArray.includes(groupID)) {
+            continue;
+        }
+        groupArray.push(groupID);
     }
 }
 
@@ -145,6 +178,8 @@ function createItemArray() {
     cleanDuplicates();
     filterArray();
 
+    //createCategoryArray();
+    //initialMarginCreation();
 
     //recalcPricing();
     
@@ -217,6 +252,11 @@ function filterArray() {
             } else if ((itemGroupMap.get(value.id) > 772 && itemGroupMap.get(value.id) < 790) || (itemGroupMap.get(value.id) > 1231 && itemGroupMap.get(value.id) < 1235)) {
                 return false;
             }
+            for (var i = 0; i < nameExceptions.length; i++) {
+                if (value.name.includes(nameExceptions[i])) {
+                    return false;
+                }
+            }
             return true;
         });
     }
@@ -225,10 +265,17 @@ function filterArray() {
 exports.recalcPricing = function() {
     //console.log("Recalcing price");
     const mats = require('./mats');
+    const margins = require('./margins');
+    itemPriceArray = [];
     var matsMap = new Map();
+    var marginMap = new Map();
     for (var i = 0; i < mats.length; i++) {
         //console.log(parseInt(mats[i].id, 10) + ", " + parseInt(mats[i].price, 10));
         matsMap.set(parseInt(mats[i].id, 10), parseInt(mats[i].price, 10));
+    }
+    for (var i = 0; i < margins.length; i++) {
+        //console.log(parseInt(mats[i].id, 10) + ", " + parseInt(mats[i].price, 10));
+        marginMap.set(parseInt(margins[i].id, 10), parseInt(margins[i].margin, 10)/100);
     }
     //console.log(matsMap);
     for (var i = 0; i < itemArray.length; i++) {
@@ -249,15 +296,26 @@ exports.recalcPricing = function() {
             newPrice += (itemArray[i].mats[j].quantity * matsMap.get(itemArray[i].mats[j].id));
             //if (itemArray[i].id == 12005) console.log(newPrice);
         }
-        //console.log(newPrice);
+        if(newItem.category == 6) {
+            var groupID = itemGroupMap.get(newItem.id);
+            var margin = marginMap.get(groupID);
+            //var oldPrice = new Number(newPrice);
+            newPrice = newPrice + (newPrice * margin);
+            /*if (newPrice != oldPrice) {
+                console.log("changing price of " + newItem.name + " from: " + oldPrice + " to: " + newPrice + " with margin " + margin);
+                console.log("Amount added = " + newPrice * margin)
+            }*/
+        }
+
         newPrice = Math.round(newPrice);
-        if (newPrice < 1000000 && newItem.category != 8) {
+        if (newPrice < 500000 && newItem.category != 8) {
             if (itemArray[i].meta == 0) {
-                newPrice = 1000000;
+                newPrice = 500000;
             } else {
-                newPrice = 2000000;
+                newPrice = 1500000;
             }
         }
+
         newItem.price = newPrice;
         itemPriceArray.push(newItem);
     }
@@ -385,3 +443,154 @@ function doesMatExist(matID) {
     }
     return false;
 }
+
+const nameExceptions = [
+    "Etana",
+    "Cambion",
+    "Gnosis",
+    "Moracha",
+    "Chremoas",
+    "Astero",
+    "Stratios",
+    "Nestor",
+    "Leopard",
+    "Whiptail",
+    "Chameleon",
+    "Garmur",
+    "Orthrus",
+    "Barghest",
+    "Caldari Navy Hookbill",
+    "Phantasm",
+    "Cynabal",
+    "Republic Fleet Firetail",
+    "Succubus",
+    "Cruor",
+    "Daredevil",
+    "Dramiel",
+    "Confessor",
+    "Shuttle",
+    "Svipul",
+    "Jackdaw",
+    "Utu",
+    "Adrestia",
+    "Imp",
+    "Fiend",
+    "Malice",
+    "Vangel",
+    "Pacifier",
+    "Imperial Navy Slicer",
+    "Nightmare",
+    "Machariel",
+    "Federation Navy Comet",
+    "Ashimmu",
+    "Rabisu",
+    "Caedes",
+    "Victor",
+    "Sunesis",
+    "Enforcer",
+    "Marshal",
+    "Virtuoso",
+    "Prototype Seven",
+    "Tengu",
+    "Legion",
+    "Proteus",
+    "Loki",
+    "Freki",
+    "Mimir",
+    "Modal Enduring Triple Neutron Blaster Cannon",
+    "Limited Jump Drive Economizer",
+    "Prototype Jump Drive Economizer",
+    "Large Higgs Anchor I",
+    "Medium Higgs Anchor I",
+    "Shadow",
+    "Mining Foreman Link - Harvester Capacitor Efficiency II",
+    "Mining Foreman Link - Mining Laser Field Enhancement I",
+    "Mining Foreman Link - Harvester Capacitor Efficiency I",
+    "Limited Hyperspatial Accelerator",
+    "Experimental Hyperspatial Accelerator",
+    "Prototype Hyperspatial Accelerator",
+    "Pandemic SPHERE Modified Entosis Link",
+    "Affirmative. Modified Entosis Link",
+    "Spectre Fleet's Modified Entosis Link",
+    "Noir. Modified Entosis Link",
+    "Capital Implacable Compact Emergency Hull Energizer",
+    "Capital Indefatigable Enduring Emergency Hull Energizer",
+    "Anode Scoped Triple Neutron Blaster Cannon",
+    "Modulated Compact Quad Mega Pulse Laser",
+    "Modal Enduring Quad Mega Pulse Laser",
+    "Anode Scoped Quad Mega Pulse Laser",
+    "Afocal Precise Quad Mega Pulse Laser",
+    "Regulated Compact Triple Neutron Blaster Cannon",
+    "Limited Precise Triple Neutron Blaster Cannon",
+    "Compact Carbine Quad 800mm Repeating Cannon",
+    "Ample Gallium Quad 800mm Repeating Cannon",
+    "Scout Scoped Quad 800mm Repeating Cannon",
+    "Prototype Precise Quad 800mm Repeating Cannon",
+    "Modulated Compact Dual Giga Pulse Laser",
+    "Modal Enduring Dual Giga Pulse Laser",
+    "Anode Scoped Dual Giga Pulse Laser",
+    "Afocal Precise Dual Giga Pulse Laser",
+    "Modulated Compact Dual Giga Beam Laser",
+    "Modal Enduring Dual Giga Beam Laser",
+    "Anode Scoped Dual Giga Beam Laser",
+    "Afocal Precise Dual Giga Beam Laser",
+    "Regulated Compact Ion Siege Blaster",
+    "Modal Enduring Ion Siege Blaster",
+    "Anode Scoped Ion Siege Blaster",
+    "Limited Precise Ion Siege Blaster",
+    "Carbide Compact Dual 1000mm Railgun",
+    "Compressed Enduring Dual 1000mm Railgun",
+    "Scout Scoped Dual 1000mm Railgun",
+    "Prototype Precise Dual 1000mm Railgun",
+    "Carbine Compact Hexa 2500mm Repeating Cannon",
+    "Gallium Ample Hexa 2500mm Repeating Cannon",
+    "Scout Scoped Hexa 2500mm Repeating Cannon",
+    "Prototype Precise Hexa 2500mm Repeating Cannon",
+    "Carbide Compact Quad 3500mm Siege Artillery",
+    "Gallium Ample Quad 3500mm Siege Artillery",
+    "Scout Scoped Quad 3500mm Siege Artillery",
+    "Prototype Precise Quad 3500mm Siege Artillery",
+    "Arbalest Compact XL Cruise Missile Launcher",
+    "TE-2100 Ample XL Cruise Missile Launcher",
+    "Arbalest Compact XL Torpedo Launcher",
+    "TE-2100 Ample XL Torpedo Launcher",
+    "Arbalest Compact Rapid Torpedo Launcher",
+    "TE-2100 Ample Rapid Torpedo Launcher",
+    "10000MN Y-S8 Compact Afterburner",
+    "10000MN Monopropellant Enduring Afterburner",
+    "50000MN Y-T8 Compact Microwarpdrive",
+    "50000MN Quad LiF Restrained Microwarpdrive",
+    "50000MN Cold-Gas Enduring Microwarpdrive",
+    "Hermes Compact Fighter Support Unit",
+    "Capital Coaxial Compact Remote Armor Repairer",
+    "25000mm Rolled Tungsten Compact Plates",
+    "25000mm Crystalline Carbonide Restrained Plates",
+    "Capital Azeotropic Restrained Shield Extender",
+    "Capital F-S9 Regolith Compact Shield Extender",
+    "Capital I-a Enduring Armor Repairer",
+    "Capital ACM Compact Armor Repairer",
+    "Capital Solace Scoped Remote Armor Repairer",
+    "Capital I-b Enduring Hull Repairer",
+    "Capital IEF Compact Hull Repairer",
+    "Capital C-5L Compact Shield Booster",
+    "Capital Clarity Ward Enduring Shield Booster",
+    "Capital Compact Pb-Acid Cap Battery",
+    "Capital F-RX Compact Capacitor Booster",
+    "Small Ancillary Remote Shield Booster",
+    "Medium Ancillary Remote Shield Booster",
+    "Large Ancillary Remote Shield Booster",
+    "Small Ancillary Remote Armor Repairer",
+    "Capital Ancillary Remote Shield Booster",
+    "Medium Ancillary Remote Armor Repairer",
+    "Large Ancillary Remote Armor Repairer",
+    "Capital Ancillary Remote Armor Repairer",
+    "Capital Asymmetric Enduring Remote Shield Booster",
+    "Capital Murky Compact Remote Shield Booster",
+    "Mining Foreman Link - Laser Optimization II",
+    "Capital Higgs Anchor I",
+    "'Plow' Gas Cloud Harvester",
+    "'Crop' Gas Cloud Harvester",
+    "Capital Radiative Scoped Remote Capacitor Transmitter",
+    "Capital S95a Scoped Remote Shield Booster",
+    "Mining Foreman Link - Mining Laser Field Enhancement II",
+]

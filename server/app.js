@@ -75,6 +75,32 @@ app.get('/api/getItems', (req,res) => {
   res.json(dataJS.getPriceArray());
 });
 
+app.get('/api/getMargins', async (req,res) => {
+  const margins = require('./margins');
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    res.json(margins);
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
+app.post('/api/postMargins', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    fs.writeFile('margins.json', JSON.stringify(req.body, null, 1), 'utf8', function(){
+      console.log("Saved margins to disk");
+      dataJS.recalcPricing();
+    });
+    res.send("OK");
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
 app.get('/api/getMatPrices', async (req,res) => {
   const mats = require('./mats');
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
@@ -84,13 +110,10 @@ app.get('/api/getMatPrices', async (req,res) => {
     res.send(403);
     res.end();
   }
-  console.log('Sent list of mats');
 });
 
 app.post('/api/postMatPrices', async (req, res) => {
-  console.log(req.get('Authorization'));
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
-  console.log(user);
   if (user_ctrl.userIsBuilder(user)) {
     fs.writeFile('mats.json', JSON.stringify(req.body, null, 1), 'utf8', function(){
       console.log("Saved prices to disk");
@@ -130,7 +153,7 @@ function parseOrdersToArray(orders, user) {
         subArray.push(orders[i].builder.primaryCharacter.name);
       }
       subArray.push(orders[i].buyer.primaryCharacter.name);
-      subArray.push(orders[i].price);
+      subArray.push(numberWithCommas(orders[i].price));
       var itemString = '';
       for (var j = 0; j < orders[i].items.length; j++) {
         if (j == 0) {
@@ -169,7 +192,7 @@ function parseOrdersToArray(orders, user) {
       } else {
         subArray.push(orders[i].builder.primaryCharacter.name);
       }
-      subArray.push(orders[i].price);
+      subArray.push(numberWithCommas(orders[i].price));
       var itemString = '';
       for (var j = 0; j < orders[i].items.length; j++) {
         if (j == 0) {
