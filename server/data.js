@@ -593,4 +593,5 @@ const nameExceptions = [
     "Capital Radiative Scoped Remote Capacitor Transmitter",
     "Capital S95a Scoped Remote Shield Booster",
     "Mining Foreman Link - Mining Laser Field Enhancement II",
+    "Ancillary"
 ]
