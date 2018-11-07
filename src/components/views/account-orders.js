@@ -14,10 +14,6 @@ const Status = Object.freeze({
     REJECT: <TableCell style={{backgroundColor: "red"}}><b style={{color: "black"}}>Rejected</b></TableCell>,
 });
 
-const numberWithCommas = (x) => {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
 const styles = theme => ({
     root: {
         'margin-left': '20%',
@@ -30,7 +26,7 @@ const styles = theme => ({
     },
 });
 
-const columns = [
+const userColumns = [
     {
      name: "Transaction ID",
      options: {
@@ -39,7 +35,7 @@ const columns = [
      }
     },
     {
-     name: "Name",
+     name: "Builder",
      options: {
       filter: true,
       sort: true,
@@ -47,6 +43,79 @@ const columns = [
     },
     {
      name: "Price",
+     options: {
+      filter: true,
+      sort: true,
+     }
+    },
+    {
+     name: "Items",
+     options: {
+      filter: true,
+      sort: true,
+     }
+    },
+    {
+     name: "Order Date",
+     options: {
+      filter: false,
+      sort: false,
+     }
+    },
+    {
+     name: "Expected End Date",
+     options: {
+      filter: false,
+      sort: false,
+     }
+    },
+    {
+     name: "Delivered Date",
+     options: {
+      filter: false,
+      sort: false,
+     }
+    },
+    {
+     name: "Status",
+     options: {
+      filter: false,
+      sort: false,
+     }
+    },
+];
+
+const builderColumns = [
+    {
+     name: "Transaction ID",
+     options: {
+      filter: false,
+      sort: true,
+     }
+    },
+    {
+     name: "Builder",
+     options: {
+      filter: true,
+      sort: true,
+     }
+    },
+    {
+     name: "Buyer",
+     options: {
+      filter: true,
+      sort: true,
+     }
+    },
+    {
+     name: "Price",
+     options: {
+      filter: true,
+      sort: true,
+     }
+    },
+    {
+     name: "Items",
      options: {
       filter: true,
       sort: true,
@@ -87,10 +156,6 @@ const options = {
     selectableRows: false,
 };
 
-function prepData(transID, name, price, startDate, expectedDate, deliveredDate, status) {
-    return {transID, name, price, startDate, expectedDate, deliveredDate, status};
-}
-
 class AccountOrders extends React.Component {
     constructor(props) {
         super(props);
@@ -98,8 +163,6 @@ class AccountOrders extends React.Component {
             data: [] 
         };
         this.fetchData = this.fetchData.bind(this);
-        this.testSendOrder = this.testSendOrder.bind(this);
-        console.log("Showing orders");
     }
 
     componentDidMount() {
@@ -108,60 +171,56 @@ class AccountOrders extends React.Component {
 
     fetchData = () => {
         request
-        .get("/api/getOrders")  
+        .get("/api/getOrders")
+        .set('Authorization', AuthService.getToken())
         .end((err, res) => {
-            if (res == null) {
+            console.log(res.body);
+            if (err) {
                 console.log(err);
+            }
+            if (res.body == null) {
                 return;
             }
-            var newData = [];
-            for (var i = 0; i < res.body.length; i++) {
-                var keys = Object.keys(res.body[i]);
-                var temp = [];
-                keys.forEach(function(key){
-                    if (key === "status") {
-                        temp.push(showStatus(res.body[i][key]));
-                        //temp.push("Hello");
-                        return;
-                    } else if (key === "price") {
-                        temp.push(numberWithCommas(res.body[i][key]) + " ISK");
-                        return;
-                    }
-                    temp.push(res.body[i][key]);
-                });
-                newData.push(temp);
+            for (var i = 0; i < res.body.data.length; i++) {
+                if (res.body.isBuilder) {
+                    res.body.data[i][8] = showStatus(parseInt(res.body.data[i][8], 10));
+                } else {
+                    res.body.data[i][7] = showStatus(parseInt(res.body.data[i][7], 10));
+                }
             }
-            console.log(newData);
             this.setState({
-                data: newData
-            });
+                isBuilder: res.body.isBuilder,
+                data: res.body.data
+            })
         });
-    }
-
-    testSendOrder() {
-        request
-            .post('/api/createOrder')
-            .set('Content-Type', 'application/json')
-            .send(prepData(120, "Naglfar", 1200000000, "10/20/18", "10/27/18", "", 1))
-            .then(
-                this.fetchData()
-            );
     }
 
     render() {
         const { classes } = this.props;
         console.log(this.state.data);
-        return (
-        <div className={classes.root}>
-            <MUIDataTable
-                title={"Users Orders"}
-                data={this.state.data}
-                columns={columns}
-                options={options}
-            />
-                        <button style={{marginLeft: '50%', marginRight: '50%'}} onClick={this.testSendOrder}>Add an order</button>
-        </div>
+        if (this.state.isBuilder) {
+            return (
+                <div className={classes.root}>
+                    <MUIDataTable
+                        title={"All Orders"}
+                        data={this.state.data}
+                        columns={builderColumns}
+                        options={options}
+                    />
+                </div>
+            );
+        } else {
+            return (
+            <div className={classes.root}>
+                <MUIDataTable
+                    title={"Users Orders"}
+                    data={this.state.data}
+                    columns={userColumns}
+                    options={options}
+                />
+            </div>
         );
+        }
     }
 }
 

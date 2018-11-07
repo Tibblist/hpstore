@@ -34,29 +34,19 @@ db.once("open", () => {
 
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
-const Status = Object.freeze({
-  PAY:    1,
-  BUILD:  2,
-  DELAY:  3,
-  REJECT: 4,
-});
-
-var data = [
-  prepData(110, "Naglfar", 1200000000, "10/20/18", "10/27/18", "1", Status.BUILD),
-  prepData(114, "Naglfar", 1200000000, "10/20/18", "10/27/18", "1", Status.PAY),
-  prepData(120, "Naglfar", 1200000000, "10/20/18", "10/27/18", "1", Status.DELAY),
-  prepData(123, "Naglfar", 1200000000, "10/20/18", "10/27/18", "1", Status.REJECT),
-  prepData(125, "Naglfar", 1200000000, "10/20/18", "10/27/18", "1", Status.REJECT),
-]
-
-function prepData(transID, name, price, startDate, expectedDate, deliveredDate, status) {
-  return {transID, name, price, startDate, expectedDate, deliveredDate, status};
-}
-
 // An api endpoint that returns all the orders for a all users
-app.get('/api/getOrders', (req,res) => {
-    res.json(data);
-    console.log('Sent list of orders');
+app.get('/api/getOrders', async (req,res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsValid(user)) {
+    var orders = await order_ctrl.findOrderByBuyer(user);
+    console.log(orders);
+    var ret = parseOrdersToArray(orders, user);
+    res.json(ret);
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
 });
 
 app.post('/api/postOrder', async (req, res) => {
@@ -77,14 +67,12 @@ app.get('/callback', (req, res) => {
     res.redirect(redirect);
     res.end();
   }).catch(function(err){
-    console.log("ERROR: " + err);
+    console.log(err);
   });
 });
 
 app.get('/api/getItems', (req,res) => {
   res.json(dataJS.getPriceArray());
-  //console.log('Sent list of items');
-  //console.log(dataJS.getPriceArray());
 });
 
 app.get('/api/getMatPrices', async (req,res) => {
@@ -125,3 +113,97 @@ const port = process.env.PORT || 5000;
 app.listen(port);
 
 console.log('App is listening on port ' + port);
+
+function parseOrdersToArray(orders, user) {
+  var ret = {
+    isBuilder: user_ctrl.userIsBuilder(user),
+    data: []
+  };
+  var date;
+  if (ret.isBuilder) {
+    for (var i = 0; i < orders.length; i++) {
+      var subArray = [];
+      subArray.push(orders[i].transID);
+      if (orders[i].builder == undefined) {
+        subArray.push("Unclaimed");
+      } else {
+        subArray.push(orders[i].builder.primaryCharacter.name);
+      }
+      subArray.push(orders[i].buyer.primaryCharacter.name);
+      subArray.push(orders[i].price);
+      var itemString = '';
+      for (var j = 0; j < orders[i].items.length; j++) {
+        if (j == 0) {
+          itemString += orders[i].items[j].name + " x" + orders[i].items[j].quantity
+        } else {
+          itemString += "\n" + orders[i].items[j].name + " x" + orders[i].items[j].quantity
+        }
+      }
+      subArray.push(itemString);
+      date = Date.parse(orders[i].orderDate);
+      date = new Date(date);
+      subArray.push(date.toDateString());
+      if (orders[i].endDate == null) {
+        subArray.push("Not in build yet");
+      } else {
+        date = Date.parse(orders[i].endDate);
+        date = new Date(date);
+        subArray.push(date.toDateString());
+      }
+      if (orders[i].deliveredDate == null) {
+        subArray.push("");
+      } else {
+        date = Date.parse(orders[i].deliveredDate);
+        date = new Date(date);
+        subArray.push(date.toDateString());
+      }
+      subArray.push(orders[i].status);
+      ret.data.push(subArray);
+    }
+  } else {
+    for (var i = 0; i < orders.length; i++) {
+      var subArray = [];
+      subArray.push(orders[i].transID);
+      if (orders[i].builder == undefined) {
+        subArray.push("Unclaimed");
+      } else {
+        subArray.push(orders[i].builder.primaryCharacter.name);
+      }
+      subArray.push(orders[i].price);
+      var itemString = '';
+      for (var j = 0; j < orders[i].items.length; j++) {
+        if (j == 0) {
+          itemString += orders[i].items[j].name + " x" + orders[i].items[j].quantity
+        } else {
+          itemString += "\n" + orders[i].items[j].name + " x" + orders[i].items[j].quantity
+        }
+      }
+      subArray.push(itemString);
+      date = Date.parse(orders[i].orderDate);
+      date = new Date(date);
+      subArray.push(date.toDateString());
+      if (orders[i].endDate == null) {
+        subArray.push("Not in build yet");
+      } else {
+        date = Date.parse(orders[i].endDate);
+        date = new Date(date);
+        subArray.push(date.toDateString());
+      }
+      if (orders[i].deliveredDate == null) {
+        subArray.push("");
+      } else {
+        date = Date.parse(orders[i].deliveredDate);
+        date = new Date(date);
+        subArray.push(date.toDateString());
+      }
+      subArray.push(orders[i].status);
+      ret.data.push(subArray);
+    }
+  }
+
+  return ret;
+}
+
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}

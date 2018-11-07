@@ -254,3 +254,46 @@ class SideMenu extends React.Component {
         );
     }
 }
+
+//OLD FETCHDATA FOR ORDERS
+fetchData = () => {
+    request
+    .get("/api/getOrders")  
+    .end((err, res) => {
+        if (res == null) {
+            console.log(err);
+            return;
+        }
+        var newData = [];
+        for (var i = 0; i < res.body.length; i++) {
+            var keys = Object.keys(res.body[i]);
+            var temp = [];
+            keys.forEach(function(key){
+                if (key === "status") {
+                    temp.push(showStatus(res.body[i][key]));
+                    //temp.push("Hello");
+                    return;
+                } else if (key === "price") {
+                    temp.push(numberWithCommas(res.body[i][key]) + " ISK");
+                    return;
+                }
+                temp.push(res.body[i][key]);
+            });
+            newData.push(temp);
+        }
+        console.log(newData);
+        this.setState({
+            data: newData
+        });
+    });
+}
+
+function testSendOrder() {
+    request
+        .post('/api/createOrder')
+        .set('Content-Type', 'application/json')
+        .send(prepData(120, "Naglfar", 1200000000, "10/20/18", "10/27/18", "", 1))
+        .then(
+            this.fetchData()
+        );
+}

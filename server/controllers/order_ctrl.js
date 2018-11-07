@@ -20,14 +20,11 @@ function getRandomNumber(x) {
 }
 
 exports.createOrder = async function(res, obj, user) {
-    console.log(obj);
     var order = new Order({discountCode: obj.discountCode});
     order._id = new mongoose.Types.ObjectId();
     order.buyer = user;
     var id = getRandomNumber(8);
     var testOrder = await Order.findOne({transID: id})
-    console.log(id);
-    console.log(testOrder);
     while (testOrder) {
         id = getRandomNumber(8);
         testOrder = await Order.findOne({transID: id})
@@ -35,7 +32,7 @@ exports.createOrder = async function(res, obj, user) {
 
     order.transID = id;
     if (!dataJS.validatePricing(obj.items)) {
-        console.log("Failed to validate pricing");
+        console.log("Failed to validate pricing for: " + user.primaryCharacter.name);
         res.send("Invalid pricing");
         res.end();
         return;
@@ -63,13 +60,10 @@ exports.createOrder = async function(res, obj, user) {
     res.end();
 }
 
-exports.findOrderByBuyer = function(res, buyerName) {
-    Order.find({'buyer.primaryCharacter.name': buyerName}, function(err, order) {
-        if (err) {
-            console.log(err);
-        }
-        res.send(order);
-    });
+exports.findOrderByBuyer = async function(user) {
+    var orders = await Order.find().populate({path: 'buyer', match: {token: user.token}, populate: {path: 'primaryCharacter'}}).populate({path: 'builder', populate: {path: 'primaryCharacter'}}).exec();
+    console.log(orders);
+    return orders;
 }
 
 exports.findOrderByTID = function (res, tid) {
