@@ -6,12 +6,17 @@ import { withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
 import {Link} from 'react-router-dom';
 import { TextField } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+
 
 const styles = theme => ({
     cart: {
         //'margin-left': '20%',
         //'display': 'inline-block',
-        'float': 'right'
+        'float': 'right',
+        position: 'absolute',
+        'margin-left': '90%',
+
     },
     icon: {
         'display': 'inline-block',
@@ -19,7 +24,8 @@ const styles = theme => ({
         'height': '50px'
     },
     openCart: {
-        'float': 'right'
+        'float': 'right',
+        //zIndex: 1,
     },
     itemName: {
         'display': 'block',
@@ -110,7 +116,7 @@ class CheckoutMenu extends React.Component {
                             <img alt="" src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} className={classes.itemImg}></img>
                             <p className={classes.price}>{abbreviateNumber(item.price)}</p>
                             <p className={"  " + classes.itemName}>{item.name} 
-                            {"  x   "}<TextField onChange={(e) => this.handleChange(item.id, e)} defaultValue={item.quantity} className={classes.itemQuantity}></TextField>
+                            {"  x   "}<TextField onChange={(e) => this.handleChange(item.id, e)} value={item.quantity} className={classes.itemQuantity}></TextField>
                             </p>
                         </Paper>
                     })}

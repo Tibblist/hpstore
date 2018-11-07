@@ -2,7 +2,7 @@
  {
   "id": "25",
   "name": "Frigate",
-  "margin": "10"
+  "margin": "0"
  },
  {
   "id": "26",
@@ -12,7 +12,7 @@
  {
   "id": "27",
   "name": "Battleship",
-  "margin": "50"
+  "margin": "0"
  },
  {
   "id": "28",

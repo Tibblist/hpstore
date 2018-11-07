@@ -11,6 +11,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { AuthService } from '../../backend/client/auth';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const request = require('superagent');
 
@@ -32,6 +36,16 @@ const styles = theme => ({
         'display': 'block',
         'margin-right': 'auto',
         'margin-left': 'auto'
+    },
+    formControl: {
+        minWidth: 120,
+        'padding-left': '5%',
+    },
+    menu: {
+        'background-color': 'white',
+    },
+    menuItem: {
+        'background-color': 'white'
     }
 });
 
@@ -45,7 +59,8 @@ class CheckoutItems extends React.Component {
         this.state = { 
             orderSent: false,
             confirmNumber: 0,
-            discountCode: ''
+            discountCode: '',
+            location: ''
         };
     }
 
@@ -79,6 +94,12 @@ class CheckoutItems extends React.Component {
             discountCode: event.target.value
         });
     }
+
+    handleLocationChange = (event) => {
+        this.setState({
+            location: event.target.value
+        })
+    }
   
     render() {
         if (this.state.orderSent) {
@@ -109,8 +130,27 @@ class CheckoutItems extends React.Component {
                         </ListItem>
                     })}
                     <ListItem>
-                        <TextField style={{'display': 'inline-block', 'padding-right': '5px'}} onChange={(e) => this.handleCodeChange(e)} placeholder={"Discount Code"}></TextField>
+                        <TextField style={{'display': 'inline-block', 'padding-right': '10px'}} onChange={(e) => this.handleCodeChange(e)} placeholder={"Discount Code"}></TextField>
                         <Button variant="contained" onClick={console.log} style={{'background-color': 'green', 'color': 'white'}}>Verify</Button>
+                        <FormControl className={classes.formControl}>
+                            <Select
+                                defaultValue={"Delivery Location"}
+                                value={this.state.location}
+                                onChange={this.handleLocationChange}
+                                inputProps={{
+                                name: 'Delivery Location',
+                                id: 'location',
+                                }}
+                                className={classes.menu}
+                            >
+                            <MenuItem className={classes.menuItem} value={1}>
+                            <em>None</em>
+                            </MenuItem>
+                            <MenuItem className={classes.menuItem} value={2}>Ten</MenuItem>
+                            <MenuItem className={classes.menuItem} value={3}>Twenty</MenuItem>
+                            <MenuItem className={classes.menuItem} value={4}>Thirty</MenuItem>
+                            </Select>
+                        </FormControl>
                         <ListItemText primary={"Total: " + numberWithCommas(total) + " ISK"} style={{'text-align': 'right', display: 'inline-block'}}></ListItemText>
                     </ListItem>
                     <ListItem>

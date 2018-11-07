@@ -1,7 +1,6 @@
 import React from 'react';
 import StoreHeader from './store-header';
 import ItemGrid from '../utils/item-grid';
-import '../../css/store.css';
 import { AuthService, AuthRoute } from '../../backend/client/auth';
 import {Route} from 'react-router-dom';
 import { Paper } from '@material-ui/core';
@@ -145,20 +144,6 @@ class ShowItems extends React.Component {
       </div>
     );
   }
-}
-
-function cartIsSame(obj1, obj2) {
-  console.log(obj1)
-  console.log(obj2)
-  if (obj1.length != obj2.length) {
-    return false;
-  }
-  for (var i = 0; i < obj1.length; i++) {
-    if (obj1[i].quantity != obj2.quantity) {
-      return false;
-    }
-  }
-  return true;
 }
 
 function findItemByID(id, items) {
