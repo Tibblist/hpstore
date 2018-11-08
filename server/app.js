@@ -38,9 +38,40 @@ db.on("error", console.error.bind(console, "MongoDB connection error:"));
 app.get('/api/getOrders', async (req,res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsValid(user)) {
-    var orders = await order_ctrl.findOrderByBuyer(user);
-    console.log(orders);
+    var orders = await order_ctrl.getOrders(user, user_ctrl.userIsBuilder(user));
+    //console.log(orders);
     var ret = parseOrdersToArray(orders, user);
+    res.json(ret);
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
+app.get('/api/getOrder', async (req,res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    var order = await order_ctrl.findOrderByTID(req.query.id);
+    var builder = '';
+    if (order.builder == undefined) {
+      builder = "Unclaimed";
+    } else {
+      builder = order.builder.primaryCharacter.name;
+    }
+    var ret = {
+      id: order.transID,
+      items: order.items,
+      price: order.price,
+      buyer: order.buyer.primaryCharacter.name,
+      builder: builder,
+      amountPaid: order.amountPaid,
+      endDate: order.endDate,
+      deliveredDate: order.deliveredDate,
+      location: order.location,
+      character: order.character,
+      status: order.status
+    }
     res.json(ret);
     res.end();
   } else {
@@ -151,6 +182,9 @@ function parseOrdersToArray(orders, user) {
         subArray.push("Unclaimed");
       } else {
         subArray.push(orders[i].builder.primaryCharacter.name);
+      }
+      if (orders[i].buyer === null) {
+        //console.log(orders[i]);
       }
       subArray.push(orders[i].buyer.primaryCharacter.name);
       subArray.push(numberWithCommas(orders[i].price));

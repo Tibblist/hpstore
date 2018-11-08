@@ -62,19 +62,23 @@ exports.createOrder = async function(res, obj, user) {
     res.end();
 }
 
-exports.findOrderByBuyer = async function(user) {
-    var orders = await Order.find().populate({path: 'buyer', match: {token: user.token}, populate: {path: 'primaryCharacter'}}).populate({path: 'builder', populate: {path: 'primaryCharacter'}}).exec();
-    console.log(orders);
-    return orders;
+exports.getOrders = async function(user, isBuilder) {
+    var orders = await Order.find().populate({path: 'buyer', populate: {path: 'primaryCharacter'}}).populate({path: 'builder', populate: {path: 'primaryCharacter'}}).exec();
+    if (isBuilder) {
+        return orders;
+    } else {
+        var newArray = [];
+        for (order in orders) {
+            if (order.buyer.token == user.token) {
+                newArray.push(order);
+            }
+        }
+        return newArray;
+    }
 }
 
-exports.findOrderByTID = function (res, tid) {
-    Order.find({transID: tid}, function(err, order) {
-        if (err) {
-            console.log(err);
-        }
-        res.send(order);
-    });
+exports.findOrderByTID = async function (tid) {
+    return await Order.find({transID: tid});
 }
 
 exports.updateOrderPrice = function (tid, newPrice) {

@@ -46,9 +46,7 @@ exports.checkIfUserExists = function(id) {
 }
 
 exports.getUserWithToken = async function(token) {
-    console.log(token);
     var user = await User.findOne({'token': token}).populate('primaryCharacter');
-    console.log(user);
     return user;
 }
 

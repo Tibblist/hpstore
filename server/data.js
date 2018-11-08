@@ -266,10 +266,10 @@ exports.recalcPricing = function() {
     //console.log("Recalcing price");
     const mats = require('./mats');
     const margins = require('./margins');
-    var oldArray = itemPriceArray;
     itemPriceArray = [];
     var matsMap = new Map();
     var marginMap = new Map();
+    var universalMargin = parseInt(margins[0].margin);
     for (var i = 0; i < mats.length; i++) {
         //console.log(parseInt(mats[i].id, 10) + ", " + parseInt(mats[i].price, 10));
         matsMap.set(parseInt(mats[i].id, 10), parseInt(mats[i].price, 10));
@@ -278,7 +278,7 @@ exports.recalcPricing = function() {
         //console.log(parseInt(mats[i].id, 10) + ", " + parseInt(mats[i].price, 10));
         marginMap.set(parseInt(margins[i].id, 10), parseInt(margins[i].margin, 10)/100);
     }
-    console.log(marginMap);
+    //console.log(marginMap);
     //console.log(matsMap);
     for (var i = 0; i < itemArray.length; i++) {
         //if (itemArray[i].id == 12005) console.log(itemArray[i])
@@ -320,9 +320,6 @@ exports.recalcPricing = function() {
 
         newItem.price = newPrice;
         itemPriceArray.push(newItem);
-    }
-    if (oldArray[0] === undefined) {
-        return;
     }
     delete require.cache[require.resolve('./mats')]
     delete require.cache[require.resolve('./margins')]

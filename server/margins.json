@@ -1,5 +1,10 @@
 [
  {
+  "id": "1",
+  "name": "Universal Margin",
+  "margin": "0"
+ },
+ {
   "id": "25",
   "name": "Frigate",
   "margin": "10"
@@ -7,7 +12,7 @@
  {
   "id": "26",
   "name": "Cruiser",
-  "margin": "100"
+  "margin": "-50"
  },
  {
   "id": "27",

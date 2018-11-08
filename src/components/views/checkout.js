@@ -1,9 +1,7 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
-import CartIcon from '@material-ui/icons/ShoppingCart';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/core/styles';
-import Collapse from '@material-ui/core/Collapse';
 import {Link} from 'react-router-dom';
 import { TextField } from '@material-ui/core';
 import List from '@material-ui/core/List';
@@ -11,7 +9,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Typography from '@material-ui/core/Typography';
 import { AuthService } from '../../backend/client/auth';
-import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -162,13 +159,13 @@ class CheckoutItems extends React.Component {
                                 }}
                                 className={classes.menu}
                             >
-                            <MenuItem className={classes.menuItem} value={1}>
+                            <MenuItem className={classes.menuItem} value={"1DQ1-A - 1-st Thetastar of Dickbutt"}>
                             <em>1DQ1-A - 1-st Thetastar of Dickbutt</em>
                             </MenuItem>
-                            <MenuItem className={classes.menuItem} value={2}>J5A-IX - The Player of Games</MenuItem>
-                            <MenuItem className={classes.menuItem} value={3}>D-W7F0 - #% Gaarastar %#</MenuItem>
-                            <MenuItem className={classes.menuItem} value={4}>F-NXLQ - Babylon 5-Bil</MenuItem>
-                            <MenuItem className={classes.menuItem} value={5}>B17O-R - Onii-chan League Headquarters</MenuItem>
+                            <MenuItem className={classes.menuItem} value={"J5A-IX - The Player of Games"}>J5A-IX - The Player of Games</MenuItem>
+                            <MenuItem className={classes.menuItem} value={"D-W7F0 - #% Gaarastar %#"}>D-W7F0 - #% Gaarastar %#</MenuItem>
+                            <MenuItem className={classes.menuItem} value={"F-NXLQ - Babylon 5-Bil"}>F-NXLQ - Babylon 5-Bil</MenuItem>
+                            <MenuItem className={classes.menuItem} value={"B17O-R - Onii-chan League Headquarters"}>B17O-R - Onii-chan League Headquarters</MenuItem>
                             </Select>
                         </FormControl>
                         <TextField style={{'display': 'inline-block', 'padding-left': '3%'}} onChange={(e) => this.handleCharacterChange(e)} defaultValue={this.props.character} placeholder={"Character Name"}></TextField>
