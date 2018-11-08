@@ -38,6 +38,10 @@ class AccountReports extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.fetchData();
+    }
+
     fetchData = () => {
         request
         .get("/api/getOrder")
@@ -50,23 +54,89 @@ class AccountReports extends React.Component {
         });
     }
 
+    handlePriceChange = (event) => {
+        var newOrder = this.state.order;
+        newOrder.price = event.target.value;
+        this.setState({
+            order: newOrder
+        })
+    }
+
+    /*handleBuyerChange = (event) => {
+        var newOrder = this.state.order;
+        newOrder.buyer = event.target.value;
+        this.setState({
+            order: newOrder
+        })
+    }*/
+
+    handleBuilderChange = (event) => {
+        var newOrder = this.state.order;
+        newOrder.builder = event.target.value;
+        this.setState({
+            order: newOrder
+        })
+    }
+
+    handleAmountPaidChange = (event) => {
+        var newOrder = this.state.order;
+        newOrder.amountPaid = event.target.value;
+        this.setState({
+            order: newOrder
+        })
+    }
+
+    handleEndDateChange = (event) => {
+        var newOrder = this.state.order;
+        newOrder.endDate = event.target.value;
+        this.setState({
+            order: newOrder
+        })
+    }
+
+    handleDeliveredDateChange = (event) => {
+        var newOrder = this.state.order;
+        newOrder.deliveredDate = event.target.value;
+        this.setState({
+            order: newOrder
+        })
+    }
+
+    handleLocationChange = (event) => {
+        var newOrder = this.state.order;
+        newOrder.location = event.target.value;
+        this.setState({
+            order: newOrder
+        })
+    }
+
+    handleCharacterChange = (event) => {
+        var newOrder = this.state.order;
+        newOrder.character = event.target.value;
+        this.setState({
+            order: newOrder
+        })
+    }
+
+    handleStatusChange = (event) => {
+        var newOrder = this.state.order;
+        newOrder.character = event.target.value;
+        this.setState({
+            order: newOrder
+        })
+    }
+
     render() {
         const { classes } = this.props;
         return (
             <Paper className={classes.container}>
+                <Typography></Typography>
                 <Typography className={classes.label}>Price: </Typography>
                 <TextField 
                     className={classes.text} 
                     defaultValue={this.state.order.price} 
                     placeholder={String(this.state.order.price)}
                     onChange={(e) => this.handlePriceChange(e)}>
-                </TextField>
-                <Typography className={classes.label}>Buyer: </Typography>
-                <TextField 
-                    className={classes.text} 
-                    defaultValue={this.state.order.buyer} 
-                    placeholder={String(this.state.order.buyer)}
-                    onChange={(e) => this.handleBuyerChange(e)}>
                 </TextField>
                 <Typography className={classes.label}>Builder: </Typography>
                 <TextField 
