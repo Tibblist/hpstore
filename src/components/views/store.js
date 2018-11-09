@@ -23,6 +23,14 @@ export default class Store extends React.Component {
 
   componentDidMount() {
     this.fetchData();
+    var cart = localStorage.getItem("Cart");
+    if (cart !== null) {
+      console.log(cart);
+      cart = JSON.parse(cart);
+      this.setState({
+        cart: cart,
+      })
+    }
   }
 
   fetchData = () => {
@@ -66,6 +74,11 @@ export default class Store extends React.Component {
       this.setState({
         cart: newCart,
       });
+    }
+
+    componentDidUpdate(props) {
+      console.log(JSON.stringify(this.state.cart));
+      localStorage.setItem("Cart", JSON.stringify(this.state.cart));
     }
 
     filterArray = (string) => {

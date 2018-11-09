@@ -269,7 +269,7 @@ exports.recalcPricing = function() {
     itemPriceArray = [];
     var matsMap = new Map();
     var marginMap = new Map();
-    var universalMargin = parseInt(margins[0].margin);
+    var universalMargin = parseInt(margins[0].margin)/100;
     for (var i = 0; i < mats.length; i++) {
         //console.log(parseInt(mats[i].id, 10) + ", " + parseInt(mats[i].price, 10));
         matsMap.set(parseInt(mats[i].id, 10), parseInt(mats[i].price, 10));
@@ -302,7 +302,7 @@ exports.recalcPricing = function() {
             var groupID = itemGroupMap.get(newItem.id);
             var margin = marginMap.get(groupID);
             //var oldPrice = new Number(newPrice);
-            newPrice = newPrice + (newPrice * margin);
+            newPrice = newPrice + (newPrice * margin) + (newPrice * universalMargin);
             /*if (newPrice != oldPrice) {
                 console.log("changing price of " + newItem.name + " from: " + oldPrice + " to: " + newPrice + " with margin " + margin);
                 console.log("Amount added = " + newPrice * margin)

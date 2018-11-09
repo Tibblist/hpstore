@@ -40,7 +40,12 @@ export class AuthService {
       }
 
       static isAdmin() {
-          return _isAdmin;
+          return parseInt(Cookies.get('group'), 10) === 3;
+      }
+
+      static isBuilder() {
+          console.log(Cookies.get('group'));
+        return parseInt(Cookies.get('group'), 10) > 1;
       }
 }
 

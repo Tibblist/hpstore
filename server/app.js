@@ -52,8 +52,15 @@ app.get('/api/getOrders', async (req,res) => {
 app.get('/api/getOrder', async (req,res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
+    //console.log(req.query);
     var order = await order_ctrl.findOrderByTID(req.query.id);
+    if (order === null) {
+      res.send({status: "Not Found"});
+      res.end();
+      return;
+    }
     var builder = '';
+    console.log(order);
     if (order.builder == undefined) {
       builder = "Unclaimed";
     } else {
@@ -80,10 +87,31 @@ app.get('/api/getOrder', async (req,res) => {
   }
 });
 
+app.post('/api/postOrderUpdate', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    order_ctrl.updateOrder(req.body);
+    res.send("OK");
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
+app.post('/api/claimOrder', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    order_ctrl.claimOrder(req.body.id, user, res);
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
 app.post('/api/postOrder', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsValid(user)) {
-    //console.log(req.body);
     order_ctrl.createOrder(res, req.body, user);
   } else {
     res.send(403);
@@ -197,6 +225,8 @@ function parseOrdersToArray(orders, user) {
         }
       }
       subArray.push(itemString);
+      subArray.push(orders[i].location);
+      subArray.push(orders[i].character);
       date = Date.parse(orders[i].orderDate);
       date = new Date(date);
       subArray.push(date.toDateString());
@@ -236,6 +266,8 @@ function parseOrdersToArray(orders, user) {
         }
       }
       subArray.push(itemString);
+      subArray.push(orders[i].location);
+      subArray.push(orders[i].character);
       date = Date.parse(orders[i].orderDate);
       date = new Date(date);
       subArray.push(date.toDateString());

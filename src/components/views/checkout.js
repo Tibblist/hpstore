@@ -87,9 +87,12 @@ class CheckoutItems extends React.Component {
         .end((err, res) => {
             if (err) {
                 console.log(err);
+                return;
             }
-            if (res.body === "Invalid pricing") {
+            if (res.body.status === 5) {
                 console.alert("Invalid item pricing, please reload the store and try again")
+                localStorage.removeItem("Cart");
+                return;
             }
             //console.log(res);
             this.setState({
@@ -125,7 +128,8 @@ class CheckoutItems extends React.Component {
                         Thank you for your order.
                     </Typography>
                     <Typography variant="subtitle1">
-                        Your order number is #{this.state.confirmNumber}. You can find the status of your order <Link to='/account/orders'><p>Here.</p></Link>
+                        Your transaction ID is <b>#{this.state.confirmNumber}</b> Make sure to send your deposit to the corp Hole Punchers in game with your transaction ID as the reason text. It is important you do this right for your order to be processed in a timely manner. 
+                        You can find the status of your order <Link to='/account/orders'>Here.</Link>
                     </Typography>
                 </Paper>
             )
@@ -170,6 +174,12 @@ class CheckoutItems extends React.Component {
                         </FormControl>
                         <TextField style={{'display': 'inline-block', 'padding-left': '3%'}} onChange={(e) => this.handleCharacterChange(e)} defaultValue={this.props.character} placeholder={"Character Name"}></TextField>
                         <ListItemText primary={"Total: " + numberWithCommas(total) + " ISK"} style={{'text-align': 'right', display: 'inline-block'}}></ListItemText>
+                    </ListItem>
+                    <ListItem>
+                    <ListItemText primary={"This transaction will require a 25% deposit after you order before it will be put into build."} style={{'text-align': 'center', }}></ListItemText>
+                    </ListItem>
+                    <ListItem>
+                    <ListItemText primary={"By submitting this order you agree to accept the final contract within 1 week of it being issued, otherwise your order will be forfeit. In return we agree to produce your order in a reasonable timeframe."} style={{'text-align': 'center', }}></ListItemText>
                     </ListItem>
                     <ListItem>
                         {isDisabled(this.state.location, this.state.character, this.props.cart)

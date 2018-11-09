@@ -35,7 +35,7 @@ exports.createOrder = async function(res, obj, user) {
     order.transID = id;
     if (!dataJS.validatePricing(obj.items)) {
         console.log("Failed to validate pricing for: " + user.primaryCharacter.name);
-        res.send("Invalid pricing");
+        res.send({status: 5});
         res.end();
         return;
     }
@@ -78,23 +78,41 @@ exports.getOrders = async function(user, isBuilder) {
 }
 
 exports.findOrderByTID = async function (tid) {
-    return await Order.find({transID: tid});
+    //console.log(tid);
+    var order = await Order.findOne({transID: tid}).populate({path: 'buyer', populate: {path: 'primaryCharacter'}}).populate({path: 'builder', populate: {path: 'primaryCharacter'}});
+    //console.log(order);
+    return order;
 }
 
-exports.updateOrderPrice = function (tid, newPrice) {
-    Order.findOne({transID: tid}, function(err, order){
-        if (err) {
+exports.updateOrder = async function (newOrder) {
+    Order.findOne({transID: newOrder.id}, function (err, order) {
+        if (order === null || err) {
+            console.log("Error updating order #" + tid);
             console.log(err);
+            return null;
         }
-        order.changePrice(newPrice);
+        order.items = newOrder.items;
+        order.price = newOrder.price;
+        order.amountPaid = newOrder.amountPaid;
+        order.endDate = newOrder.endDate;
+        order.deliveredDate = newOrder.deliveredDate;
+        order.location = newOrder.location;
+        order.character = newOrder.character;
+        order.status = newOrder.status;
+        order.save();
     });
 }
 
-exports.updateOrderPaid = function (tid, newPaid) {
-    Order.findOne({transID: tid}, function(err, order){
+exports.claimOrder = async function (tid, user, res) {
+    //console.log(tid);
+    Order.findOne({transID: tid}, async function (err, order) {
         if (err) {
-            console.log(err);
+            console.log("Didn't find order #" + tid);
+            return null;
         }
-        order.changePaid(newPaid);
-    })
+        order.builder = user;
+        await order.save();
+        res.send("OK");
+        res.end();
+    });
 }

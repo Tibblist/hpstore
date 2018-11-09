@@ -38,7 +38,7 @@ class AccountHome extends React.Component {
         .get("/api/getOrders")
         .set('Authorization', AuthService.getToken())
         .end((err, res) => {
-            console.log(res.body);
+            //console.log(res.body);
             if (err) {
                 console.log(err);
             }
@@ -47,9 +47,9 @@ class AccountHome extends React.Component {
             }
             for (var i = 0; i < res.body.data.length; i++) {
                 if (res.body.isBuilder) {
-                    res.body.data[i][8] = showStatus(parseInt(res.body.data[i][8], 10));
+                    res.body.data[i][10] = showStatus(parseInt(res.body.data[i][10], 10));
                 } else {
-                    res.body.data[i][7] = showStatus(parseInt(res.body.data[i][7], 10));
+                    res.body.data[i][9] = showStatus(parseInt(res.body.data[i][9], 10));
                 }
             }
             this.setState({
@@ -69,7 +69,7 @@ class AccountHome extends React.Component {
             )}/>
             <Route path="/account/orders" 
             render={(routeProps) => (
-                <AccountOrders {...routeProps} data={this.state.data} isBuilder={this.state.isBuilder}/>
+                <AccountOrders {...routeProps} data={this.state.data} isBuilder={this.state.isBuilder} updateOrders={this.fetchData}/>
             )}/>
             <Route path="/account/users" component={AccountUsers}/>
             <Route path="/account/reports" component={AccountReports}/>

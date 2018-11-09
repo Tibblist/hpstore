@@ -43,7 +43,7 @@ class SideBar extends React.Component {
 }
 
 function listItems() {
-    if (AuthService.isAdmin() === true) {
+    if (AuthService.isBuilder() === true) {
         return builderListItems;
     } else {
         return userListItems;

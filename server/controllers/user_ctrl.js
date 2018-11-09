@@ -40,7 +40,7 @@ exports.checkIfUserExists = function(id) {
                 return;
             }
             //console.log(char[0].owner);
-            resolve([char[0].owner, true, char[0].name]);
+            resolve([char[0].owner, true, char[0].name, char[0].owner.group]);
         });
     });
 }
