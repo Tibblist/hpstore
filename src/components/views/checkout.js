@@ -89,7 +89,7 @@ class CheckoutItems extends React.Component {
                 console.log(err);
                 return;
             }
-            if (res.body.status === 5) {
+            if (res.body != null && res.body.status === 5) {
                 console.alert("Invalid item pricing, please reload the store and try again")
                 localStorage.removeItem("Cart");
                 return;
