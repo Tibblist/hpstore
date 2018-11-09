@@ -25,6 +25,13 @@ exports.createNewUser = function(charID, charName, charCorpID, charAllianceID) {
     return newUser;
 }
 
+exports.changeUserSettings = async function(user, character, location) {
+    user.defaultShipping = location;
+    user.defaultCharacter = character;
+    user.save();
+    //console.log(user);
+}
+
 exports.checkIfUserExists = function(id) {
     return new Promise(function (resolve, reject) {
         Character.find({charID: id})

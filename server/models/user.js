@@ -12,6 +12,7 @@ let UserSchema = new mongoose.Schema(
             ref: 'Character'
         }],
         defaultShipping: String,
+        defaultCharacter: String,
         group: Number,
         token: String,
 

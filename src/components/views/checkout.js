@@ -55,20 +55,12 @@ const numberWithCommas = (x) => {
 class CheckoutItems extends React.Component {
     constructor(props) {
         super(props);
-        var character = '';
-        var location = '';
-        if (this.props.character) {
-            character = this.props.character;
-        }
-        if (this.props.location) {
-            location = this.props.location;
-        }
         this.state = { 
             orderSent: false,
             confirmNumber: 0,
             discountCode: '',
-            location: location,
-            character: character
+            location: '1DQ1-A - 1-st Thetastar of Dickbutt',
+            character: ''
         };
     }
 
@@ -89,16 +81,32 @@ class CheckoutItems extends React.Component {
                 console.log(err);
                 return;
             }
+            //console.log(res)
             if (res.body != null && res.body.status === 5) {
                 console.alert("Invalid item pricing, please reload the store and try again")
                 localStorage.removeItem("Cart");
                 return;
             }
-            //console.log(res);
             this.setState({
                 confirmNumber: res.text,
                 orderSent: true
             })
+        })
+    }
+
+    fetchData = () => {
+        request
+        .get("/api/getSettings")
+        .set('Authorization', AuthService.getToken())
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            this.setState({
+                character: res.body.character,
+                location: res.body.location
+            });
         })
     }
 

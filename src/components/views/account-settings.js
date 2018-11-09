@@ -8,6 +8,12 @@ import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import { AuthService } from '../../backend/client/auth';
+
+const request = require('superagent');
 
 const styles = theme => ({
   root: {
@@ -29,14 +35,23 @@ const styles = theme => ({
     'margin-right': 'auto',
   },
   submitButton: {
-      'margin-left': '10px',
-      'margin-bottom': '0px',
+    'display': 'block',
+    'margin-left': 'auto',
+    'margin-right': 'auto',
+    'margin-top': '30px'
+  },
+  formControl: {
+        'display': 'block',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
   }
 });
 
 class AccountSettings extends React.Component {
   state = {
     expanded: null,
+    location: "1DQ1-A - 1-st Thetastar of Dickbutt",
+    character: ''
   };
 
   handleChange = panel => (event, expanded) => {
@@ -44,6 +59,31 @@ class AccountSettings extends React.Component {
       expanded: expanded ? panel : false,
     });
   };
+
+  handleLocationChange = (event) => {
+    this.setState({
+        location: event.target.value
+    })
+  }
+
+  handleCharacterChange = (event) => {
+    this.setState({
+      character: event.target.value
+    })
+  }
+
+  updateSettings = () => {
+    request
+        .post("/api/postSettings")
+        .set('Authorization', AuthService.getToken())
+        .send({character: this.state.character, location: this.state.location})
+        .retry(2)
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+            }
+        })
+  }
 
   render() {
     const { classes } = this.props;
@@ -58,11 +98,8 @@ class AccountSettings extends React.Component {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <div className={classes.expContent}>
-                <TextField placeholder="Name">
+                <TextField placeholder="Name" onChange={this.handleCharacterChange}>
                 </TextField>
-                <Button variant="contained" className={classes.submitButton}>
-                    Submit
-                </Button>
             </div>
           </ExpansionPanelDetails>
         </ExpansionPanel>
@@ -74,34 +111,30 @@ class AccountSettings extends React.Component {
             </Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
-            <Typography>
-              TO BE DONE LATER
-            </Typography>
+            <FormControl className={classes.formControl}>
+              <Select
+                value={this.state.location}
+                onChange={this.handleLocationChange}
+                inputProps={{
+                  name: 'Delivery Location',
+                  id: 'location',
+                }}
+                className={classes.menu}
+              >
+                <MenuItem className={classes.menuItem} value={"1DQ1-A - 1-st Thetastar of Dickbutt"}>
+                  <em>1DQ1-A - 1-st Thetastar of Dickbutt</em>
+                </MenuItem>
+                <MenuItem className={classes.menuItem} value={"J5A-IX - The Player of Games"}>J5A-IX - The Player of Games</MenuItem>
+                <MenuItem className={classes.menuItem} value={"D-W7F0 - #% Gaarastar %#"}>D-W7F0 - #% Gaarastar %#</MenuItem>
+                <MenuItem className={classes.menuItem} value={"F-NXLQ - Babylon 5-Bil"}>F-NXLQ - Babylon 5-Bil</MenuItem>
+                <MenuItem className={classes.menuItem} value={"B17O-R - Onii-chan League Headquarters"}>B17O-R - Onii-chan League Headquarters</MenuItem>
+              </Select>
+            </FormControl>
           </ExpansionPanelDetails>
         </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel3'} onChange={this.handleChange('panel3')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>some other setting</Typography>
-            <Typography className={classes.secondaryHeading}>
-              rick is gay
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              TO BE DONE
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <ExpansionPanel expanded={expanded === 'panel4'} onChange={this.handleChange('panel4')}>
-          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography className={classes.heading}>another thing</Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails>
-            <Typography>
-              more words
-            </Typography>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
+        <Button variant="contained" className={classes.submitButton} onClick={this.updateSettings}>
+          Save
+        </Button>
       </div>
     );
   }

@@ -25,7 +25,7 @@ export default class Store extends React.Component {
     this.fetchData();
     var cart = localStorage.getItem("Cart");
     if (cart !== null) {
-      console.log(cart);
+      //console.log(cart);
       cart = JSON.parse(cart);
       this.setState({
         cart: cart,
@@ -77,12 +77,12 @@ export default class Store extends React.Component {
     }
 
     componentDidUpdate(props) {
-      console.log(JSON.stringify(this.state.cart));
+      //console.log(JSON.stringify(this.state.cart));
       localStorage.setItem("Cart", JSON.stringify(this.state.cart));
     }
 
     filterArray = (string) => {
-      console.log("Filtering for: " + string);
+      //console.log("Filtering for: " + string);
       var inputLength = string.length;
       var newItemArray = this.state.itemArray.filter(function (value, index, arr) {
         return value.name.slice(0, inputLength).toLowerCase() === string.toLowerCase();
@@ -105,8 +105,6 @@ export default class Store extends React.Component {
       var newCart = this.state.cart;
       for (var i = 0; i < newCart.length; i++) {
         if (newCart[i].id == id) {
-          console.log(e.target.value)
-          console.log(e.target.value === "0")
           if (e.target.value === "0") {
             newCart.splice(i, 1);
             break;
@@ -118,7 +116,7 @@ export default class Store extends React.Component {
           newCart[i].quantity = parseInt(e.target.value, 10);
         }
       }
-      console.log(newCart)
+      //console.log(newCart)
       this.setState({
         cart: newCart,
       });
