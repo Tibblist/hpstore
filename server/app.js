@@ -163,8 +163,19 @@ app.post('/api/postMargins', async (req, res) => {
 app.get('/api/getMatPrices', async (req,res) => {
   const mats = require('./mats');
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
-  if (user_ctrl.userIsBuilder(user)) {
+  if (user_ctrl.userIsValid(user)) {
     res.json(mats);
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
+app.get('/api/getMatPrices', async (req,res) => {
+  const mats = require('./mats');
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    res.json({character: user.defaultCharacter, location: user.defaultShipping});
   } else {
     res.send(403);
     res.end();
@@ -178,6 +189,18 @@ app.post('/api/postMatPrices', async (req, res) => {
       console.log("Saved prices to disk");
       dataJS.recalcPricing();
     });
+    res.send("OK");
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
+app.post('/api/postSettings', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsValid(user)) {
+    user_ctrl.changeUserSettings(user, req.body.character, req.body.location);
     res.send("OK");
     res.end();
   } else {
