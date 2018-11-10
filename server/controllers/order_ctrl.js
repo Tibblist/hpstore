@@ -69,7 +69,7 @@ exports.getOrders = async function(user, isBuilder) {
     } else {
         var newArray = [];
         for (order in orders) {
-            if (order.buyer.token == user.token) {
+            if (order.buyer.token === user.token) {
                 newArray.push(order);
             }
         }
