@@ -68,9 +68,10 @@ exports.getOrders = async function(user, isBuilder) {
         return orders;
     } else {
         var newArray = [];
-        for (order in orders) {
-            if (order.buyer.token === user.token) {
-                newArray.push(order);
+        for (var i = 0; i < orders.length; i++) {
+            if (orders[i].buyer.token === user.token) {
+                //console.log("Pushing order");
+                newArray.push(orders[i]);
             }
         }
         return newArray;

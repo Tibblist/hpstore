@@ -191,6 +191,7 @@ const builderColumns = [
 const options = {
     //serverSide: true,
     selectableRows: false,
+    responsive: 'scroll',
 };
 
 class AccountOrders extends React.Component {
