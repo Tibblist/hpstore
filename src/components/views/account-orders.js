@@ -215,7 +215,7 @@ class AccountOrders extends React.Component {
     }
 
     submitClaim = () => {
-        console.log("Sending " + this.state.claimID);
+        //console.log("Sending " + this.state.claimID);
         request
         .post("/api/claimOrder")
         .set('Authorization', AuthService.getToken())
