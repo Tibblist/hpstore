@@ -171,7 +171,7 @@ app.get('/api/getMatPrices', async (req,res) => {
   }
 });
 
-app.get('/api/getMatPrices', async (req,res) => {
+app.get('/api/getSettings', async (req,res) => {
   const mats = require('./mats');
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {

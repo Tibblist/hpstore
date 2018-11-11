@@ -64,6 +64,10 @@ class CheckoutItems extends React.Component {
         };
     }
 
+    componentWillMount() {
+        this.fetchData();
+    }
+
     postOrder = () => {
         var obj = {
             items: this.props.cart,
@@ -82,9 +86,9 @@ class CheckoutItems extends React.Component {
                 return;
             }
             //console.log(res)
+            localStorage.removeItem("Cart");
             if (res.body != null && res.body.status === 5) {
                 console.alert("Invalid item pricing, please reload the store and try again")
-                localStorage.removeItem("Cart");
                 return;
             }
             this.setState({
@@ -180,7 +184,7 @@ class CheckoutItems extends React.Component {
                             <MenuItem className={classes.menuItem} value={"B17O-R - Onii-chan League Headquarters"}>B17O-R - Onii-chan League Headquarters</MenuItem>
                             </Select>
                         </FormControl>
-                        <TextField style={{'display': 'inline-block', 'padding-left': '3%'}} onChange={(e) => this.handleCharacterChange(e)} defaultValue={this.props.character} placeholder={"Character Name"}></TextField>
+                        <TextField style={{'display': 'inline-block', 'padding-left': '3%'}} onChange={(e) => this.handleCharacterChange(e)} value={this.state.character} placeholder={"Character Name"}></TextField>
                         <ListItemText primary={"Total: " + numberWithCommas(total) + " ISK"} style={{'text-align': 'right', display: 'inline-block'}}></ListItemText>
                     </ListItem>
                     <ListItem>

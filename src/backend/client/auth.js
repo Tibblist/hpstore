@@ -2,11 +2,6 @@ import { Route, Redirect } from 'react-router-dom';
 import React from 'react';
 import Cookies from 'js-cookie';
 
-
-var _authed = false;
-var _name = "";
-var _isAdmin = true;
-
 export const Groups = Object.freeze({
     MEMBER: 1,
     BUILDER: 2,
