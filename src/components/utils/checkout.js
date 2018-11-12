@@ -6,7 +6,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
 import {Link} from 'react-router-dom';
 import { TextField } from '@material-ui/core';
-import Grid from '@material-ui/core/Grid';
+import CloseIcon from '@material-ui/icons/Close';
 
 
 const styles = theme => ({
@@ -37,6 +37,7 @@ const styles = theme => ({
         'width': '20px',
         'display': 'inline-block',
         'text-align': 'center',
+        'margin-bottom': 3
     },
     itemImg: {
         'display': 'block',
@@ -52,6 +53,10 @@ const styles = theme => ({
     price: {
         //'padding-left': '5px',
         'text-align': 'center',
+    },
+    closeButton: {
+        'float': 'right',
+        zIndex: 3
     }
   });
 
@@ -113,6 +118,7 @@ class CheckoutMenu extends React.Component {
                 <Paper className={classes.openCart}>
                     {this.props.cart.map((item, id) => {
                         return <Paper key={item.id}>
+                            <Button className={classes.closeButton} onClick={() => this.handleChange(item.id, {target: {value: "0"}})}><CloseIcon/></Button>
                             <img alt="" src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} className={classes.itemImg}></img>
                             <p className={classes.price}>{abbreviateNumber(item.price)}</p>
                             <p className={"  " + classes.itemName}>{item.name} 
