@@ -87,6 +87,7 @@ class CheckoutItems extends React.Component {
             }
             //console.log(res)
             localStorage.removeItem("Cart");
+            console.log("Removing cart from localstorage");
             if (res.body != null && res.body.status === 5) {
                 console.alert("Invalid item pricing, please reload the store and try again")
                 return;

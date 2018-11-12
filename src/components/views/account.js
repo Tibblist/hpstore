@@ -7,6 +7,7 @@ import AccountReports from './account-reports';
 import AccountSettings from './account-settings';
 import AccountPrice from './account-price';
 import AccountOrder from './account-order';
+import AccountSales from './account-sales';
 import TableCell from '@material-ui/core/TableCell';
 import {Route} from 'react-router-dom';
 import { AuthService } from '../../backend/client/auth';
@@ -74,6 +75,7 @@ class AccountHome extends React.Component {
             <Route path="/account/users" component={AccountUsers}/>
             <Route path="/account/reports" component={AccountReports}/>
             <Route path="/account/price" component={AccountPrice}/>
+            <Route path="/account/sales" component={AccountSales}/>
             <Route path="/account/settings" component={AccountSettings}/>
             <Route path="/account/order/:id" render={(routeProps) => (
                 <AccountOrder {...routeProps} data={this.state.data}/>
