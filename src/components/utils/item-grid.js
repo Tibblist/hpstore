@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CartIcon from '@material-ui/icons/AddShoppingCart';
 
+
 const numberWithCommas = (x) => {
     if (x === null) {
         return null;
@@ -18,11 +19,13 @@ const styles = theme => ({
         'margin-left': '10%',
         'margin-right': '5%',
         'margin-top': 20,
+        'display': 'inline-block',
     },
     container: {
-        
+        'display': 'inline-block',
     },
     gridItem: {
+        'display': 'inline-block',
         'margin-top': 10,
     },
     itemName: {

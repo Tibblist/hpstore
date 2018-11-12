@@ -145,6 +145,21 @@ app.get('/api/getMargins', async (req,res) => {
   }
 });
 
+app.get('/api/getCategories', async (req,res) => {
+  const margins = require('./margins');
+  margins.splice(0, 1);
+  var catArray = [];
+  for (var i = 0; i < margins.length; i++) {
+    var category = {
+      id: margins[i].id,
+      name: margins[i].name,
+    }
+    catArray.push(category);
+  }
+  res.json(catArray);
+  delete require.cache[require.resolve('./margins')]
+});
+
 app.post('/api/postMargins', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {

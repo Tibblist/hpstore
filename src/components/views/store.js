@@ -3,8 +3,9 @@ import StoreHeader from './store-header';
 import ItemGrid from '../utils/item-grid';
 import { AuthService, AuthRoute } from '../../backend/client/auth';
 import {Route} from 'react-router-dom';
-import { Paper } from '@material-ui/core';
 import CheckoutItems from './checkout';
+import StoreSideBar from '../utils/store-sidebar'
+
 const request = require('superagent');
 
 export default class Store extends React.Component {
@@ -34,7 +35,7 @@ export default class Store extends React.Component {
   }
 
   fetchData = () => {
-    console.log("Fetching data");
+    //console.log("Fetching data");
     request
         .get("/api/getItems")
         .set('Authorization', AuthService.getToken())
@@ -151,6 +152,7 @@ class ShowItems extends React.Component {
     return (
       <div>
           <StoreHeader suggestions={this.props.suggestions} cart={this.props.cart} changeFunction={this.props.changeFunction} changeQuantity={this.props.changeQuantity}></StoreHeader>
+          <StoreSideBar/>
           <ItemGrid addFunction={this.props.addFunction} items={this.props.items}></ItemGrid>
       </div>
     );
