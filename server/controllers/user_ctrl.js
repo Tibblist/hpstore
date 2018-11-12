@@ -52,6 +52,18 @@ exports.checkIfUserExists = function(id) {
     });
 }
 
+exports.getAllUsers = async function() {
+    var users = await User.find().populate({path: 'primaryCharacter'});
+    console.log(users);
+    return users;
+}
+
+exports.updateUserGroup = async function(id, group) {
+    var user = await User.findById(id);
+    user.group = group;
+    user.save();
+}
+
 exports.getUserWithToken = async function(token) {
     var user = await User.findOne({'token': token}).populate('primaryCharacter');
     return user;

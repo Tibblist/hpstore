@@ -286,6 +286,7 @@ exports.recalcPricing = function() {
             id: itemArray[i].id,
             name: itemArray[i].name,
             category: itemArray[i].category,
+            group: itemGroupMap.get(itemArray[i].id),
             price: 0
         }
         var newPrice = 0;

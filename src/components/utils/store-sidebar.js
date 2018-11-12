@@ -9,7 +9,8 @@ const request = require('superagent');
 const styles = theme => ({
     root: {
         'float': 'left',
-        'position': 'absolute'
+        'position': 'absolute',
+        'width': '20%'
     },
     list: {
         display: 'inline-block',
@@ -61,6 +62,10 @@ class StoreSideBar extends React.Component {
         })
     }
 
+    handleClick = (group) => {
+        this.props.filterArray(group);
+    }
+
     render () {
         const { classes } = this.props;
         return (
@@ -69,7 +74,7 @@ class StoreSideBar extends React.Component {
                     <List className={classes.list}>
                         {this.state.categoryArray.map((category, id) => {
                             return (
-                                <ListItem button>
+                                <ListItem button onClick={() => this.handleClick(category.id)}>
                                     <Divider />
                                     <ListItemText>{category.name}</ListItemText>
                                 </ListItem>

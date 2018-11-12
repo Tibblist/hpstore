@@ -51,52 +51,54 @@ function listItems() {
 }
 
 const builderListItems = (
-    <div>
-      <ListItem button>
+  <div>
+    <ListItem button>
       <Link to="/account/dashboard" style={{ textDecoration: 'none' }}>
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>
         <ListItemText primary="Dashboard" />
-        </Link>
-      </ListItem>
-      <Link to="/account/orders" style={{ textDecoration: 'none' }}>
+      </Link>
+    </ListItem>
+    <Link to="/account/orders" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
           <ShoppingCartIcon />
         </ListItemIcon>
         <ListItemText primary="Orders" />
       </ListItem>
-      </Link>
+    </Link>
+    <Link to="/account/users" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
         <ListItemText primary="Customers" />
       </ListItem>
-      <ListItem button>
-        <ListItemIcon>
-          <BarChartIcon />
-        </ListItemIcon>
-        <ListItemText primary="Reports" />
-      </ListItem>
-      <Link to="/account/price" style={{ textDecoration: 'none' }}>
+    </Link>
+    <ListItem button>
+      <ListItemIcon>
+        <BarChartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Reports" />
+    </ListItem>
+    <Link to="/account/price" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
           <MoneyIcon />
         </ListItemIcon>
         <ListItemText primary="Price" />
       </ListItem>
-      </Link>
-      <Link to="/account/settings" style={{ textDecoration: 'none' }}>
+    </Link>
+    <Link to="/account/settings" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
           <SettingsIcon />
         </ListItemIcon>
         <ListItemText primary="Settings" />
       </ListItem>
-      </Link>
-    </div>
+    </Link>
+  </div>
 );
 
 const userListItems = (

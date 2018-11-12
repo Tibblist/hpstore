@@ -119,6 +119,18 @@ app.post('/api/postOrder', async (req, res) => {
   }
 });
 
+app.post('/api/postUsers', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsAdmin(user)) {
+    for (var i = 0; i < req.body.length; i++) {
+      user_ctrl.updateUserGroup(req.body[i].id, req.body[i].group);
+    }
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
 app.get('/callback', (req, res) => {
   var code = req.query.code;
   var redirect = req.query.state
@@ -139,6 +151,26 @@ app.get('/api/getMargins', async (req,res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
     res.json(margins);
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
+app.get('/api/getUsers', async (req,res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsAdmin(user)) {
+    var users = await user_ctrl.getAllUsers();
+    var tempUserArray = [];
+    for (var i = 0; i < users.length; i++) {
+      var tempUser = {
+        id: users[i]._id,
+        name: users[i].primaryCharacter.name,
+        group: users[i].group,
+      }
+      tempUserArray.push(tempUser);
+    }
+    res.json(tempUserArray);
   } else {
     res.send(403);
     res.end();

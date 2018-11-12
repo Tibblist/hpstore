@@ -16,7 +16,7 @@ const numberWithCommas = (x) => {
 
 const styles = theme => ({
     root: {
-        'margin-left': '10%',
+        'margin-left': '20%',
         'margin-right': '5%',
         'margin-top': 20,
         'display': 'inline-block',

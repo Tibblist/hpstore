@@ -17,6 +17,7 @@ export default class Store extends React.Component {
       cart: [],
       searchArray: [],
       isSearching: false,
+      group: 0
     }
     this.fetchData = this.fetchData.bind(this);
     //console.log("Constructor ran");
@@ -102,6 +103,27 @@ export default class Store extends React.Component {
       }
     }
 
+    filterArrayByGroup = (group) => {
+      if (group === this.state.group) {
+        this.setState({
+          isSearching: false,
+          group: 0
+        });
+        return;
+      }
+      var newItemArray = this.state.itemArray.filter(function (value, index, arr) {
+        if (value.group === parseInt(group, 10)) {
+          return true;
+        } return false;
+      });
+
+      this.setState({
+        searchArray: newItemArray,
+        isSearching: true,
+        group: group
+      });
+    }
+
     changeQuantity = (id, e) => {
       var newCart = this.state.cart;
       for (var i = 0; i < newCart.length; i++) {
@@ -135,7 +157,7 @@ export default class Store extends React.Component {
               <Route
                 path='/store'
                 exact
-                render={(props) => <ShowItems {...props} changeQuantity={this.changeQuantity} suggestions={this.state.suggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={array}/>}
+                render={(props) => <ShowItems {...props} changeQuantity={this.changeQuantity} suggestions={this.state.suggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={array} filterArrayGroup={this.filterArrayByGroup}/>}
               />
               <AuthRoute
               path='/store/checkout'
@@ -152,7 +174,7 @@ class ShowItems extends React.Component {
     return (
       <div>
           <StoreHeader suggestions={this.props.suggestions} cart={this.props.cart} changeFunction={this.props.changeFunction} changeQuantity={this.props.changeQuantity}></StoreHeader>
-          <StoreSideBar/>
+          <StoreSideBar filterArray={this.props.filterArrayGroup}/>
           <ItemGrid addFunction={this.props.addFunction} items={this.props.items}></ItemGrid>
       </div>
     );
