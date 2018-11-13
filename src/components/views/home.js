@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import {Link} from 'react-router-dom';
+import { List, ListItemText } from '@material-ui/core';
 
 const styles = theme => ({
     root: {
@@ -45,6 +46,9 @@ const styles = theme => ({
     },
     header: {
         'text-align': 'center',
+        'padding-bottom': 20,
+    },
+    list: {
 
     }
 });
@@ -64,6 +68,15 @@ class Home extends React.Component {
                     </Typography>
                     <Typography variant="h6" align="center" color="textSecondary" paragraph>
                         Here you will find the best prices on almost any item in EVE, as well as an amazingly simple shopping process that will allow you to buy exactly what you want and easily track your orders from start to finish.
+                    </Typography>
+                    <Typography variant="h6" align="center" color="textSecondary" paragraph>
+                        Why use us?
+                        <List className={classes.list}>
+                            <ListItemText>Reliability - Our order management system is one of a kind and will allow you to track your order every step of the way.</ListItemText>
+                            <ListItemText>Pricing - While our pricing may not be the best on every single item, we are confident that the overall price of complex orders will be lower, and easier to keep track of, than any other builders.</ListItemText>
+                            <ListItemText>Deals - Have you ever used an EVE Online store that actually offered promotional deals and discounts on a regular basis? We didn't think so.</ListItemText>
+                            <ListItemText>Experience - Our builders know this game and have been both PVPing and building ships for years. They are well equipped to fulfill and anticipate your every need.</ListItemText>
+                        </List>
                     </Typography>
                     <div className={classes.container}>
                         <Card className={classes.card}>
@@ -89,7 +102,7 @@ class Home extends React.Component {
                         <Card className={classes.card}>
                             <CardMedia
                                 className={classes.cardMedia}
-                                image="https://image.eveonline.com/Render/11567_256.png"
+                                image="https://i.imgur.com/mmPeq0i.png"
                                 title="Buy all capitals and beyond"
                             />
                             <CardContent className={classes.cardContent}>
@@ -109,7 +122,7 @@ class Home extends React.Component {
                         <Card className={classes.card}>
                             <CardMedia
                                 className={classes.cardMedia}
-                                image="https://image.eveonline.com/Render/11567_256.png"
+                                image="https://image.eveonline.com/Render/22852_256.png"
                                 title="Buy all capitals and beyond"
                             />
                             <CardContent className={classes.cardContent}>
@@ -127,7 +140,7 @@ class Home extends React.Component {
                             </CardContent>
                         </Card>
                     </div>
-
+                    <Typography variant="h5" align="center" color="textPrimary" paragraph>Want to get rid of excess ore and/or raw mats? We buyback most materials, come inquire about how we can help you get cold hard cash faster on our discord <a target="_blank" href="https://discord.gg/Q2z6WFD">Click Here!</a></Typography>
                 </Paper>
             </div>
         );
