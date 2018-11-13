@@ -44,7 +44,6 @@ const styles = theme => ({
     prices: {
         'width': '40%',
         'float': 'left',
-
     }
 
 });

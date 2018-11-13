@@ -90,6 +90,14 @@ const builderListItems = (
         <ListItemText primary="Price" />
       </ListItem>
     </Link>
+    <Link to="/account/sales" style={{ textDecoration: 'none' }}>
+      <ListItem button>
+        <ListItemIcon>
+          <MoneyIcon />
+        </ListItemIcon>
+        <ListItemText primary="Sales" />
+      </ListItem>
+    </Link>
     <Link to="/account/settings" style={{ textDecoration: 'none' }}>
       <ListItem button>
         <ListItemIcon>
