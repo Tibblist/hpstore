@@ -24,6 +24,13 @@ const styles = theme => ({
     },
     listContainer: {
         height: '100%',
+    },
+    active: {
+        //'background-color': 'blue'
+        'font-weight': 'bold'
+    },
+    inactive: {
+
     }
 });
 
@@ -31,7 +38,8 @@ class StoreSideBar extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
-            categoryArray: [] 
+            categoryArray: [],
+            activeCategory: 0
         };
     }
 
@@ -64,6 +72,15 @@ class StoreSideBar extends React.Component {
 
     handleClick = (group) => {
         this.props.filterArray(group);
+        if (this.state.activeCategory === group) {
+            this.setState({
+                activeCategory: 0
+            });
+            return;
+        }
+        this.setState({
+            activeCategory: group
+        });
     }
 
     render () {
@@ -73,12 +90,25 @@ class StoreSideBar extends React.Component {
                 <Paper className={classes.container}>
                     <List className={classes.list}>
                         {this.state.categoryArray.map((category, id) => {
-                            return (
-                                <ListItem button onClick={() => this.handleClick(category.id)}>
-                                    <Divider />
-                                    <ListItemText>{category.name}</ListItemText>
-                                </ListItem>
-                            )
+                            if (this.state.activeCategory === category.id) {
+                                return (
+                                    <div>
+                                        <Divider/>
+                                        <ListItem button onClick={() => this.handleClick(category.id)} className={classes.active}>
+                                            <ListItemText><em className={classes.active}>{category.name}</em></ListItemText>
+                                        </ListItem>
+                                    </div>
+                                )
+                            } else {
+                                return (
+                                    <div>
+                                        <Divider/>
+                                        <ListItem button onClick={() => this.handleClick(category.id)} className={classes.inactive}>
+                                            <ListItemText>{category.name}</ListItemText>
+                                        </ListItem>
+                                    </div>
+                                )
+                            }
                         })}
                     </List>
                 </Paper>

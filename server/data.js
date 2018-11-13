@@ -243,6 +243,7 @@ function filterItem(id) {
 function filterArray() {
     for (var i = 0; i < itemArray.length; i++) {
         itemArray = itemArray.filter(function (value, index, arr) {
+
             if (filterItem(value.category)) {
                 return false;
             } else if (value.published == 0) {
@@ -254,6 +255,9 @@ function filterArray() {
             }
             for (var i = 0; i < nameExceptions.length; i++) {
                 if (value.name.includes(nameExceptions[i])) {
+                    if (value.id == 12753) {
+                        return true;
+                    }
                     return false;
                 }
             }
