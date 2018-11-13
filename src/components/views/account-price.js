@@ -4,7 +4,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { AuthService } from '../../backend/client/auth';
-import { Typography } from '@material-ui/core';
+import { Typography, List, ListItem, ListItemText } from '@material-ui/core';
 import InputAdornment from '@material-ui/core/InputAdornment';
 const request = require('superagent');
 
@@ -44,16 +44,30 @@ const styles = theme => ({
     prices: {
         'width': '40%',
         'float': 'left',
+    },
+    pricelist: {
+        'width': '40%',
+        'float': 'left',
     }
 
 });
+
+const numberWithCommas = (x) => {
+    if (x === null) {
+        return null;
+    }
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 class AccountPrice extends React.Component {
     constructor(props) {
         super(props);
         this.state = { 
             matArray: [],
-            categoryArray: [] 
+            categoryArray: [],
+            priceList: [],
+            itemName: '',
+            price: 0
         };
         this.fetchData = this.fetchData.bind(this);
     }
@@ -109,6 +123,18 @@ class AccountPrice extends React.Component {
                 this.state.categoryArray[i].margin = event.target.value;
             }
         }
+    }
+
+    handleItemChange = (event) => {
+        this.setState({
+            itemName: event.target.value
+        })
+    }
+
+    handlePriceChange = (event) => {
+        this.setState({
+            price: event.target.value
+        })
     }
 
     submitChanges = () => {
@@ -169,6 +195,21 @@ class AccountPrice extends React.Component {
                                 />
                             </Paper>
                         })}
+                    </div>
+                    <div className={classes.pricelist}>
+                        <Typography>Item Custom Pricelist</Typography>
+                        <List>
+                            {this.state.priceList.map((item, id) => {
+                                return (
+                                    <ListItem key={id}>
+                                        <ListItemText>{item.name}</ListItemText>
+                                        <ListItemText>{numberWithCommas(item.price)} ISK</ListItemText>
+                                    </ListItem>
+                                )
+                            })}
+                        </List>
+                        <TextField label="Item Name" onChange={this.handleItemChange} value={this.state.itemName}></TextField>
+                        <TextField label="Item Price" onChange={this.handlePriceChange} value={this.state.price}></TextField>
                     </div>
                 </div>
                 <Button variant="contained" className={classes.submitButton}b onClick={this.submitChanges}>

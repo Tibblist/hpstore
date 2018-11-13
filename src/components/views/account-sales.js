@@ -14,8 +14,15 @@ const styles = theme => ({
         'float': 'left',
     },
     discounts: {
-        'width': '20%',
+        'width': 'auto',
         'float': 'right',
+    },
+    button: {
+        'display': 'block',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
+        'margin-top': '20px',
+        'margin-bottom': '20px'
     }
 });
 
@@ -30,6 +37,10 @@ class AccountSales extends React.Component {
             expirationDate: '',
             type: '',
             amountOff: '',
+            maxSold: 0,
+            code: '',
+            maxUse: 0,
+            percentOff: ''
 
         };
     }
@@ -51,6 +62,19 @@ class AccountSales extends React.Component {
         })
     }
 
+    handleCloseD = (code) => {
+        var discounts = this.state.discountArray;
+        for (var i = 0; i < discounts.length; i++) {
+            if (discounts[i].code === code) {
+                discounts.splice(i, 1);
+            }
+        }
+
+        this.setState({
+            discountArray: discounts
+        })
+    }
+
     handleNameChange = (event) => {
         this.setState({
             name: event.target.value
@@ -60,6 +84,12 @@ class AccountSales extends React.Component {
     handleDateChange = (event) => {
         this.setState({
             expirationDate: event.target.value
+        })
+    }
+
+    handlePercentChangeD = (event) => {
+        this.setState({
+            percentOff: event.target.value
         })
     }
 
@@ -75,20 +105,63 @@ class AccountSales extends React.Component {
         })
     }
 
+    handleMaxChange = (event) => {
+        this.setState({
+            maxSold: event.target.value
+        })
+    }
+
+    handleCodeChange = (event) => {
+        this.setState({
+            code: event.target.value
+        })
+    }
+
+    handleUseChange = (event) => {
+        this.setState({
+            maxUse: event.target.value
+        })
+    }
+
+    createDiscount = () => {
+        var newDiscount = {
+            code: this.state.code,
+            maxUse: this.state.maxUse,
+            percentOff: this.state.percentOff,
+            used: 0,
+        }
+
+        var discounts = this.state.discountArray;
+        discounts.push(newDiscount);
+
+        this.setState({
+            code: '',
+            maxUse: 0,
+            percentOff: ''
+        })
+    }
+
     createSale = () => {
         var newSale = {
             name: this.state.name,
             expirationDate: this.state.expirationDate,
             percentOff: this.state.amountOff,
             itemName: this.state.itemName,
-            description: this.state.amountOff + "% off of " + this.state.itemName + " until " + this.state.expirationDate,
+            description: this.state.amountOff + "% off of " + this.state.itemName + " until " + this.state.expirationDate + " or a max of " + this.state.maxSold + " sold",
+            maxSold: this.state.maxSold
         }
 
         var sales = this.state.salesArray;
         sales.push(newSale);
 
         this.setState({
-            salesArray: sales
+            salesArray: sales,
+            name: '',
+            itemName: '',
+            expirationDate: '',
+            type: '',
+            amountOff: '',
+            maxSold: 0
         })
     }
 
@@ -110,15 +183,33 @@ class AccountSales extends React.Component {
                             </ListItem>
                         )
                     })}
+                    </List>
                     <TextField label="Sale Name"onChange={this.handleNameChange} value={this.state.name} style={{'padding-right': '20px', 'margin-left': '20px'}}></TextField>
                     <TextField type="date" label="Expiration Date" onChange={this.handleDateChange} value={this.state.expirationDate} InputLabelProps={{shrink: true,}} style={{'margin-right': '20px',}}></TextField>
                     <TextField label="Percent Off" value={this.state.amountOff} onChange={this.handlePercentChange} InputProps={{endAdornment: <InputAdornment position="end">%</InputAdornment>,}} style={{'margin-right': '20px',}}></TextField>
                     <TextField label="Item Name" value={this.state.itemName} onChange={this.handleItemChange} style={{'margin-right': '20px',}}></TextField>
-                    <Button onClick={this.createSale} variant="contained">Add</Button>
-                    </List>
+                    <Button onClick={this.createSale} variant="contained" className={classes.button}>Add</Button>
                 </Paper>
                 <Paper className={classes.discounts}>
                     <Typography variant="h5" align="center" color="textPrimary" gutterBottom className={classes.header}>Discount Codes</Typography>
+                    <List>
+                        {this.state.discountArray.map((discount, id) => {
+                            return (
+                                <ListItem key={id}>
+                                    <ListItemText>{discount.code}</ListItemText>
+                                    <ListItemText>{discount.percentOff + "%"}</ListItemText>
+                                    <ListItemText>{discount.used + "/" + discount.maxUse}</ListItemText>
+                                    <Button onClick={() => this.handleCloseD(discount.code)}>
+                                        <CloseIcon/>
+                                    </Button>
+                                </ListItem>
+                            )
+                        })}
+                    </List>
+                    <TextField label="Discount Code" onChange={this.handleCodeChange} value={this.state.code} style={{'padding-right': '20px', 'margin-left': '20px'}}></TextField>
+                    <TextField label="Percent Off" value={this.state.percentOff} onChange={this.handlePercentChangeD} InputProps={{endAdornment: <InputAdornment position="end">%</InputAdornment>,}} style={{'margin-right': '20px',}}></TextField>
+                    <TextField label="Max Uses" onChange={this.handleUseChange} value={this.state.maxUse} style={{'margin-right': '20px',}}></TextField>
+                    <Button onClick={this.createDiscount} variant="contained" className={classes.button}>Add</Button>
                 </Paper>
             </div>
         );

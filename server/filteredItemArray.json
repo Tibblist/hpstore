@@ -85583,6 +85583,185 @@
         ]
     },
     {
+        "id": 12753,
+        "bpid": 12754,
+        "quantity": 1,
+        "name": "Impel",
+        "category": 6,
+        "published": 1,
+        "meta": 2,
+        "mats": [
+            {
+                "id": 36,
+                "name": "Mexallon",
+                "quantity": 5719.879999999999
+            },
+            {
+                "id": 37,
+                "name": "Isogen",
+                "quantity": 605.0400000000001
+            },
+            {
+                "id": 38,
+                "name": "Nocxium",
+                "quantity": 206
+            },
+            {
+                "id": 3814,
+                "name": "Reports",
+                "category": 17,
+                "quantity": 50
+            },
+            {
+                "id": 11399,
+                "name": "Morphite",
+                "category": 4,
+                "quantity": 105
+            },
+            {
+                "id": 4051,
+                "name": "Nitrogen Fuel Block",
+                "quantity": 1184.04375
+            },
+            {
+                "id": 16637,
+                "name": "Tungsten",
+                "quantity": 2111.5
+            },
+            {
+                "id": 16644,
+                "name": "Platinum",
+                "quantity": 2866.625
+            },
+            {
+                "id": 16634,
+                "name": "Atmospheric Gases",
+                "quantity": 1546
+            },
+            {
+                "id": 16635,
+                "name": "Evaporite Deposits",
+                "quantity": 2305.9431818181815
+            },
+            {
+                "id": 4312,
+                "name": "Oxygen Fuel Block",
+                "quantity": 193.28522727272724
+            },
+            {
+                "id": 16636,
+                "name": "Silicates",
+                "quantity": 814.9431818181818
+            },
+            {
+                "id": 16643,
+                "name": "Cadmium",
+                "quantity": 351.8181818181818
+            },
+            {
+                "id": 16647,
+                "name": "Caesium",
+                "quantity": 291.0681818181818
+            },
+            {
+                "id": 4246,
+                "name": "Hydrogen Fuel Block",
+                "quantity": 64.20965909090908
+            },
+            {
+                "id": 16642,
+                "name": "Vanadium",
+                "quantity": 324.8181818181818
+            },
+            {
+                "id": 16648,
+                "name": "Hafnium",
+                "quantity": 324.8181818181818
+            },
+            {
+                "id": 16641,
+                "name": "Chromium",
+                "quantity": 583.625
+            },
+            {
+                "id": 16652,
+                "name": "Promethium",
+                "quantity": 835
+            },
+            {
+                "id": 16650,
+                "name": "Dysprosium",
+                "quantity": 96.75
+            },
+            {
+                "id": 16649,
+                "name": "Technetium",
+                "quantity": 189.5
+            },
+            {
+                "id": 4247,
+                "name": "Helium Fuel Block",
+                "quantity": 662.4375
+            },
+            {
+                "id": 16646,
+                "name": "Mercury",
+                "quantity": 875
+            },
+            {
+                "id": 16651,
+                "name": "Neodymium",
+                "quantity": 157
+            },
+            {
+                "id": 16633,
+                "name": "Hydrocarbons",
+                "quantity": 54.99999999999999
+            },
+            {
+                "id": 34,
+                "name": "Tritanium",
+                "quantity": 80639.4
+            },
+            {
+                "id": 35,
+                "name": "Pyerite",
+                "quantity": 18177.6
+            },
+            {
+                "id": 39,
+                "name": "Zydrine",
+                "quantity": 88
+            },
+            {
+                "id": 40,
+                "name": "Megacyte",
+                "quantity": 20
+            },
+            {
+                "id": 20415,
+                "name": "Datacore - Molecular Engineering",
+                "quantity": 8
+            },
+            {
+                "id": 20421,
+                "name": "Datacore - Amarrian Starship Engineering",
+                "quantity": 8
+            },
+            {
+                "id": 16653,
+                "name": "Thulium",
+                "quantity": 22.5
+            },
+            {
+                "id": 3812,
+                "name": "Data Sheets",
+                "category": 17,
+                "quantity": 100
+            }
+        ]
+    },
+    {
         "id": 29248,
         "bpid": 29249,
         "quantity": 1,
