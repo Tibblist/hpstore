@@ -270,6 +270,8 @@ exports.recalcPricing = function() {
     //console.log("Recalcing price");
     const mats = require('./mats');
     const margins = require('./margins');
+    const pricelist = require('./pricelist');
+    const ooolist = require('./ooolist');
     itemPriceArray = [];
     var matsMap = new Map();
     var marginMap = new Map();
@@ -291,7 +293,8 @@ exports.recalcPricing = function() {
             name: itemArray[i].name,
             category: itemArray[i].category,
             group: itemGroupMap.get(itemArray[i].id),
-            price: 0
+            price: 0,
+            disabled: false
         }
         var newPrice = 0;
         for (var j = 0; j < itemArray[i].mats.length; j++) {
@@ -323,12 +326,28 @@ exports.recalcPricing = function() {
             }
         }
 
+        for (var j = 0; j < ooolist.length; j++) {
+            if (ooolist[j] === newItem.id) {
+                newItem.disabled = true;
+                break;
+            }
+        }
+
         newItem.price = newPrice;
+
+        for (var j = 0; j < pricelist.length; j++) {
+            if (pricelist[j].id === newItem.id) {
+                newItem.price = pricelist[j].price;
+                break;
+            }
+        }
+
         itemPriceArray.push(newItem);
     }
     delete require.cache[require.resolve('./mats')]
     delete require.cache[require.resolve('./margins')]
-    //console.log(itemPriceArray);
+    delete require.cache[require.resolve('./pricelist')]
+    delete require.cache[require.resolve('./ooolist')]
 }
 
 exports.validatePricing = function (items, code) {
@@ -506,6 +525,7 @@ const nameExceptions = [
     "Loki",
     "Freki",
     "Mimir",
+    "Hecate",
     "Modal Enduring Triple Neutron Blaster Cannon",
     "Limited Jump Drive Economizer",
     "Prototype Jump Drive Economizer",

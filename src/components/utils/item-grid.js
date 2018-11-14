@@ -100,10 +100,9 @@ class ItemGrid extends React.Component {
                             <Typography className={classes.itemName}>{item.name}</Typography>
                             <Typography className={classes.itemPrice}>Price: {numberWithCommas(item.price)} ISK</Typography>
                             <div className={classes.addButtonDiv}>
-                            <Button variant="contained" className={classes.addButton} onClick={() => this.handleCart(item.id)}>
-                                Add to cart
-                                <CartIcon/>
-                            </Button>
+                            {item.disabled
+                            ? <Button disabled variant="contained" className={classes.addButton}> Temp Out of Order</Button>
+                            : <Button variant="contained" className={classes.addButton} onClick={() => this.handleCart(item.id)}> Add to cart <CartIcon/></Button>}
                             </div>
                             </Paper>
                         }, this)}

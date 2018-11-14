@@ -122,6 +122,6 @@ function compareStrings(a, b) {
     b = b.toLowerCase();
   
     return (a < b) ? -1 : (a > b) ? 1 : 0;
-  }
+}
 
 export default withStyles(styles)(StoreSideBar);

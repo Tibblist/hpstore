@@ -103,6 +103,8 @@ app.post('/api/claimOrder', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
     order_ctrl.claimOrder(req.body.id, user, res);
+    res.send("OK")
+    res.end()
   } else {
     res.send(403);
     res.end();
@@ -113,6 +115,8 @@ app.post('/api/postOrder', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsValid(user)) {
     order_ctrl.createOrder(res, req.body, user);
+    res.send("OK");
+    res.end();
   } else {
     res.send(403);
     res.end();
@@ -125,6 +129,8 @@ app.post('/api/postUsers', async (req, res) => {
     for (var i = 0; i < req.body.length; i++) {
       user_ctrl.updateUserGroup(req.body[i].id, req.body[i].group);
     }
+    res.send("OK");
+    res.end();
   } else {
     res.send(403);
     res.end();
@@ -192,11 +198,65 @@ app.get('/api/getCategories', async (req,res) => {
   delete require.cache[require.resolve('./margins')]
 });
 
+app.get('/api/getPricelist', async (req,res) => {
+  const pricelist = require('./pricelist');
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    res.json(pricelist);
+  } else {
+    res.send(403);
+    res.end();
+  }
+  delete require.cache[require.resolve('./pricelist')]
+});
+
+app.get('/api/getoooList', async (req,res) => {
+  const pricelist = require('./oooList');
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    res.json(pricelist);
+  } else {
+    res.send(403);
+    res.end();
+  }
+  delete require.cache[require.resolve('./oooList')]
+});
+
 app.post('/api/postMargins', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
     fs.writeFile('margins.json', JSON.stringify(req.body, null, 1), 'utf8', function(){
       console.log("Saved margins to disk");
+      dataJS.recalcPricing();
+    });
+    res.send("OK");
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
+app.post('/api/postPricelist', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    fs.writeFile('pricelist.json', JSON.stringify(req.body, null, 1), 'utf8', function(){
+      console.log("Saved pricelist to disk");
+      dataJS.recalcPricing();
+    });
+    res.send("OK");
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
+app.post('/api/postoooList', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    fs.writeFile('ooolist.json', JSON.stringify(req.body, null, 1), 'utf8', function(){
+      console.log("Saved ooolist to disk");
       dataJS.recalcPricing();
     });
     res.send("OK");

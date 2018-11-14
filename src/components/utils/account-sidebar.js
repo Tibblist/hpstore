@@ -23,6 +23,7 @@ const styles = theme => ({
         display: 'inline-block',
         zIndex: 1,
         'float': 'left',
+        'width': '10%'
     },
     listContainer: {
         height: '100%',
