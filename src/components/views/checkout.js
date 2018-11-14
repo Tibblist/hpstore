@@ -92,6 +92,7 @@ class CheckoutItems extends React.Component {
                 console.alert("Invalid item pricing, please reload the store and try again")
                 return;
             }
+            this.clearCart();
             this.setState({
                 confirmNumber: res.text,
                 orderSent: true
@@ -131,6 +132,10 @@ class CheckoutItems extends React.Component {
         this.setState({
             character: event.target.value
         })
+    }
+
+    clearCart = () => {
+        this.props.clearCart();
     }
   
     render() {

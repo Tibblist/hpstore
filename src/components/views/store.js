@@ -35,6 +35,12 @@ export default class Store extends React.Component {
     }
   }
 
+  clearCart = () => {
+    this.setState({
+      cart: []
+    })
+  }
+
   fetchData = () => {
     //console.log("Fetching data");
     request
@@ -165,6 +171,7 @@ export default class Store extends React.Component {
               path='/store/checkout'
               component={CheckoutItems}
               cart={this.state.cart}
+              clearCart={this.clearCart}
               />
             </div>
         );

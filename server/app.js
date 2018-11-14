@@ -115,8 +115,6 @@ app.post('/api/postOrder', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsValid(user)) {
     order_ctrl.createOrder(res, req.body, user);
-    res.send("OK");
-    res.end();
   } else {
     res.send(403);
     res.end();
