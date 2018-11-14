@@ -184,9 +184,7 @@ app.get('/api/getUsers', async (req,res) => {
 app.get('/api/getCategories', async (req,res) => {
   const margins = require('./margins');
   for (var i = 0; i < margins.length; i++) {
-    console.log(margins[i].id);
-    if (margins[i].id === 1) {
-      console.log("Splicing margin")
+    if (parseInt(margins[i].id, 10) === 1) {
       margins.splice(i, 1);
     }
   }
@@ -215,7 +213,7 @@ app.get('/api/getPricelist', async (req,res) => {
 });
 
 app.get('/api/getoooList', async (req,res) => {
-  const pricelist = require('./oooList');
+  const pricelist = require('./ooolist');
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
     res.json(pricelist);
@@ -223,7 +221,7 @@ app.get('/api/getoooList', async (req,res) => {
     res.send(403);
     res.end();
   }
-  delete require.cache[require.resolve('./oooList')]
+  delete require.cache[require.resolve('./ooolist')]
 });
 
 app.post('/api/postMargins', async (req, res) => {
