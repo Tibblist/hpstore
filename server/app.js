@@ -183,7 +183,11 @@ app.get('/api/getUsers', async (req,res) => {
 
 app.get('/api/getCategories', async (req,res) => {
   const margins = require('./margins');
-  margins.splice(0, 1);
+  for (var i = 0; i < margins.length; i++) {
+    if (margins[i].id === 1) {
+      margins.splice(i, 1);
+    }
+  }
   var catArray = [];
   for (var i = 0; i < margins.length; i++) {
     var category = {

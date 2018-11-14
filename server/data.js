@@ -275,7 +275,12 @@ exports.recalcPricing = function() {
     itemPriceArray = [];
     var matsMap = new Map();
     var marginMap = new Map();
-    var universalMargin = parseInt(margins[0].margin)/100;
+    var universalMargin = 0;
+    for (var i = 0; i < margins.length; i++) {
+        if (margins[i].id === 1) {
+            universalMargin = parseInt(margins[i].margin)/100;        
+        }
+    }
     for (var i = 0; i < mats.length; i++) {
         //console.log(parseInt(mats[i].id, 10) + ", " + parseInt(mats[i].price, 10));
         matsMap.set(parseInt(mats[i].id, 10), parseInt(mats[i].price, 10));
