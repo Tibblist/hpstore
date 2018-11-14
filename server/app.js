@@ -184,7 +184,9 @@ app.get('/api/getUsers', async (req,res) => {
 app.get('/api/getCategories', async (req,res) => {
   const margins = require('./margins');
   for (var i = 0; i < margins.length; i++) {
+    console.log(margins[i].id);
     if (margins[i].id === 1) {
+      console.log("Splicing margin")
       margins.splice(i, 1);
     }
   }

@@ -277,7 +277,7 @@ exports.recalcPricing = function() {
     var marginMap = new Map();
     var universalMargin = 0;
     for (var i = 0; i < margins.length; i++) {
-        if (margins[i].id === 1) {
+        if (parseInt(margins[i].id, 10) === 1) {
             universalMargin = parseInt(margins[i].margin)/100;        
         }
     }
