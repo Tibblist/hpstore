@@ -21,8 +21,6 @@ exports.initialCodeProcessing = function(response, authCode) {
     if (err) {
         console.log(err);
     }
-    console.log(res.body);
-    console.log(res.body.access_token);
     verifyToken(response, res.body).then(function() {
         resolve();
     }).catch(function(err) {
@@ -60,18 +58,15 @@ function checkIfUser(response, body) {
                 response.cookie('token', user.token, {expire: (43200 * 60 * 1000) + Date.now()});
                 response.cookie('name', user.primaryCharacter.name, {expire: (43200 * 60 * 1000) + Date.now()});
                 response.cookie('group', user.group, {expire: (43200 * 60 * 1000) + Date.now()})
-                //response.send('');
                 resolve();
             }).catch(function(err) {
                 reject(err);
             });;
         } else {
-            console.log(ret);
             response.cookie('token', ret[0].token, {expire: (43200 * 60 * 1000) + Date.now()});
             response.cookie('name', ret[2], {expire: (43200 * 60 * 1000) + Date.now()});
             response.cookie('group', ret[3], {expire: (43200 * 60 * 1000) + Date.now()})
 
-            //response.send('');
             resolve();
         }
     });
