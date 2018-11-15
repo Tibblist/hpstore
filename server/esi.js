@@ -73,9 +73,6 @@ function checkIfUser(response, body) {
     });
 }
 
-
-//Strictly ESI info calls below
-
 function getCharInfo(charID) {
     return new Promise(function (resolve, reject) {
         request
