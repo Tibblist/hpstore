@@ -60,7 +60,6 @@ app.get('/api/getOrder', async (req,res) => {
       return;
     }
     var builder = '';
-    console.log(order);
     if (order.builder == undefined) {
       builder = "Unclaimed";
     } else {
