@@ -347,6 +347,8 @@ exports.recalcPricing = function() {
             }
         }
 
+        if (newItem.price > 2000000) newItem.price = Math.round(newItem.price/1000000) * 1000000
+
         itemPriceArray.push(newItem);
     }
     delete require.cache[require.resolve('./mats')]
