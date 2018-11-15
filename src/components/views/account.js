@@ -19,6 +19,7 @@ const Status = Object.freeze({
     BUILD:  <TableCell style={{backgroundColor: "green"}}><b style={{color: "black"}}>In Build</b></TableCell>,
     DELAY:  <TableCell style={{backgroundColor: "yellow"}}><b style={{color: "black"}}>Build Delayed</b></TableCell>,
     REJECT: <TableCell style={{backgroundColor: "red"}}><b style={{color: "black"}}>Rejected</b></TableCell>,
+    DELIVERED: <TableCell style={{backgroundColor: "green"}}><b style={{color: "black"}}>Delivered</b></TableCell>,
 });
 class AccountHome extends React.Component {
     constructor(props) {
@@ -96,6 +97,8 @@ function showStatus(status) {
             return Status.DELAY
         case 4:
             return Status.REJECT
+        case 5:
+            return Status.DELIVERED
         default:
             return "ERROR NO STATUS"
     }

@@ -6,16 +6,21 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 
 const styles = theme => ({
     root: {
-        'margin-right': '10%',
-        'margin-left': '20%',
+        'margin-left': '10%',
+        display: 'flex',
+        'justify-content': 'space-around',
     },
     sales: {
         'width': 'auto',
-        'float': 'left',
+        //'float': 'left',
     },
     discounts: {
         'width': 'auto',
-        'float': 'right',
+        //'float': 'right',
+    },
+    container: {
+        display: 'flex',
+        'justify-content': 'space-around',
     },
     button: {
         'display': 'block',
@@ -184,10 +189,12 @@ class AccountSales extends React.Component {
                         )
                     })}
                     </List>
+                    <div className={classes.container}>
                     <TextField label="Sale Name"onChange={this.handleNameChange} value={this.state.name} style={{'padding-right': '20px', 'margin-left': '20px'}}></TextField>
-                    <TextField type="date" label="Expiration Date" onChange={this.handleDateChange} value={this.state.expirationDate} InputLabelProps={{shrink: true,}} style={{'margin-right': '20px',}}></TextField>
-                    <TextField label="Percent Off" value={this.state.amountOff} onChange={this.handlePercentChange} InputProps={{endAdornment: <InputAdornment position="end">%</InputAdornment>,}} style={{'margin-right': '20px',}}></TextField>
-                    <TextField label="Item Name" value={this.state.itemName} onChange={this.handleItemChange} style={{'margin-right': '20px',}}></TextField>
+                        <TextField type="date" label="Expiration Date" onChange={this.handleDateChange} value={this.state.expirationDate} InputLabelProps={{shrink: true,}} style={{'margin-right': '20px',}}></TextField>
+                        <TextField label="Percent Off" value={this.state.amountOff} onChange={this.handlePercentChange} InputProps={{endAdornment: <InputAdornment position="end">%</InputAdornment>,}} style={{'margin-right': '20px',}}></TextField>
+                        <TextField label="Item Name" value={this.state.itemName} onChange={this.handleItemChange} style={{'margin-right': '20px',}}></TextField>
+                    </div>
                     <Button onClick={this.createSale} variant="contained" className={classes.button}>Add</Button>
                 </Paper>
                 <Paper className={classes.discounts}>
@@ -206,9 +213,11 @@ class AccountSales extends React.Component {
                             )
                         })}
                     </List>
-                    <TextField label="Discount Code" onChange={this.handleCodeChange} value={this.state.code} style={{'padding-right': '20px', 'margin-left': '20px'}}></TextField>
-                    <TextField label="Percent Off" value={this.state.percentOff} onChange={this.handlePercentChangeD} InputProps={{endAdornment: <InputAdornment position="end">%</InputAdornment>,}} style={{'margin-right': '20px',}}></TextField>
-                    <TextField label="Max Uses" onChange={this.handleUseChange} value={this.state.maxUse} style={{'margin-right': '20px',}}></TextField>
+                    <div className={classes.container}>
+                        <TextField label="Discount Code" onChange={this.handleCodeChange} value={this.state.code} style={{'padding-right': '20px', 'margin-left': '20px'}}></TextField>
+                        <TextField label="Percent Off" value={this.state.percentOff} onChange={this.handlePercentChangeD} InputProps={{endAdornment: <InputAdornment position="end">%</InputAdornment>,}} style={{'margin-right': '20px',}}></TextField>
+                        <TextField label="Max Uses" onChange={this.handleUseChange} value={this.state.maxUse} style={{'margin-right': '20px',}}></TextField>
+                    </div>
                     <Button onClick={this.createDiscount} variant="contained" className={classes.button}>Add</Button>
                 </Paper>
             </div>

@@ -232,6 +232,7 @@ class AccountReports extends React.Component {
                     <MenuItem className={classes.menuItem} value={2}>In Build</MenuItem>
                     <MenuItem className={classes.menuItem} value={3}>Build Delayed</MenuItem>
                     <MenuItem className={classes.menuItem} value={4}>Rejected</MenuItem>
+                    <MenuItem className={classes.menuItem} value={5}>Delivered</MenuItem>
                     </Select>
                 </FormControl>
                 <Button className={classes.button} variant="contained" onClick={this.postOrder}>Save</Button>

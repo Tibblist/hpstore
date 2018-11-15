@@ -27,7 +27,7 @@ class Navigation extends React.Component {
                         <LoginButton></LoginButton>
                         {accountTab()}
                         <li className="menu_button"><Link to="/store">Browse</Link></li>
-                        <li className="menu_button"><Link to="/">Contact Us</Link></li>
+                        <li className="menu_button"><Link to="/contact-us">Contact Us</Link></li>
                         <div className="username">Welcome {getName()}</div>
                 </ul>
             </div>
