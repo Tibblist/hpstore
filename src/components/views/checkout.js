@@ -45,6 +45,9 @@ const styles = theme => ({
     },
     label: {
         'padding-left': '3%',
+    },
+    deposit: {
+        'text-align': 'center'
     }
 });
 
@@ -54,13 +57,18 @@ const numberWithCommas = (x) => {
 
 class CheckoutItems extends React.Component {
     constructor(props) {
+        var total = 0;
+        for (var i = 0; i < props.cart.length; i++) {
+            total += props.cart[i].quantity * props.cart[i].price
+        }
         super(props);
         this.state = { 
             orderSent: false,
             confirmNumber: 0,
             discountCode: '',
             location: '1DQ1-A - 1-st Thetastar of Dickbutt',
-            character: ''
+            character: '',
+            total: total
         };
     }
 
@@ -139,24 +147,25 @@ class CheckoutItems extends React.Component {
     }
   
     render() {
+        const {classes} = this.props;
         if (this.state.orderSent) {
             return (
                 <Paper>
-                    <Typography variant="h5" gutterBottom>
+                    <Typography variant="h5" className={classes.deposit} gutterBottom>
                         Thank you for your order.
                     </Typography>
-                    <Typography variant="subtitle1">
+                    <Typography variant="h5" className={classes.deposit}>
                         Your transaction ID is <b>#{this.state.confirmNumber}</b> Make sure to send your deposit to the corp Hole Punchers in game with your transaction ID as the reason text. It is important you do this right for your order to be processed in a timely manner. 
+                    </Typography>
+                    <Typography variant="h5" className={classes.deposit}>
+                        Be sure to pay your deposit of <b>{numberWithCommas(Math.floor(this.state.total * .25))}</b> ISK to corp "Hole Punchers Builders" in game
+                    </Typography>
+                    <Typography variant="h5" className={classes.deposit}>
                         You can find the status of your order <Link to='/account/orders'>Here.</Link>
                     </Typography>
                 </Paper>
             )
         } else {
-            const {classes} = this.props;
-            var total = 0;
-            for (var i = 0; i < this.props.cart.length; i++) {
-                total += this.props.cart[i].quantity * this.props.cart[i].price
-            }
             return (
             <Paper className={classes.container}>
                 <List className={classes.list}>
@@ -191,7 +200,7 @@ class CheckoutItems extends React.Component {
                             </Select>
                         </FormControl>
                         <TextField style={{'display': 'inline-block', 'padding-left': '3%'}} onChange={(e) => this.handleCharacterChange(e)} value={this.state.character} placeholder={"Character Name"}></TextField>
-                        <ListItemText primary={"Total: " + numberWithCommas(total) + " ISK"} style={{'text-align': 'right', display: 'inline-block'}}></ListItemText>
+                        <ListItemText primary={"Total: " + numberWithCommas(this.state.total) + " ISK"} style={{'text-align': 'right', display: 'inline-block'}}></ListItemText>
                     </ListItem>
                     <ListItem>
                     <ListItemText primary={"This transaction will require a 25% deposit after you order before it will be put into build."} style={{'text-align': 'center', }}></ListItemText>

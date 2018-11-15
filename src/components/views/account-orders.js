@@ -256,7 +256,7 @@ class AccountOrders extends React.Component {
             return (
             <div className={classes.root}>
                 <MUIDataTable
-                    title={"Users Orders"}
+                    title={AuthService.getName() + "'s Orders"}
                     data={this.props.data}
                     columns={userColumns}
                     options={options}

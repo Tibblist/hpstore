@@ -59,7 +59,7 @@ function getName() {  //Exists to check if they have logged in or not and displa
 
 function accountTab() {
     if (AuthService.isAuthed() === true) {
-        return <li className="menu_button"><Link to="/account">Account</Link></li>
+        return <li className="menu_button"><Link to="/account/orders">Account</Link></li>
     } else {
         return ''
     }
