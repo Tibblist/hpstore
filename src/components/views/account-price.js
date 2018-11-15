@@ -86,7 +86,8 @@ class AccountPrice extends React.Component {
             price: 0,
             items: [],
             oooid: 0,
-            ooolist: []
+            ooolist: [],
+            itemArray: []
         };
         this.fetchData = this.fetchData.bind(this);
     }
