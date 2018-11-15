@@ -15,7 +15,6 @@ export class AuthService {
       }
 
       static isAuthed() {
-        console.log(Cookies.get('token'));
 
         if (Cookies.get('token') != undefined) {
             return true;
@@ -39,7 +38,6 @@ export class AuthService {
       }
 
       static isBuilder() {
-          console.log(Cookies.get('group'));
         return parseInt(Cookies.get('group'), 10) > 1;
       }
 }
