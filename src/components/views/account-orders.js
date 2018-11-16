@@ -53,15 +53,15 @@ const userColumns = [
     {
      name: "Price",
      options: {
-      filter: true,
-      sort: true,
+      filter: false,
+      sort: false,
      }
     },
     {
      name: "Items",
      options: {
-      filter: true,
-      sort: true,
+      filter: false,
+      sort: false,
      }
     },
     {
@@ -103,7 +103,7 @@ const userColumns = [
      name: "Status",
      options: {
       filter: false,
-      sort: false,
+      sort: true,
      }
     },
 ];
@@ -133,15 +133,15 @@ const builderColumns = [
     {
      name: "Price",
      options: {
-      filter: true,
-      sort: true,
+      filter: false,
+      sort: false,
      }
     },
     {
      name: "Items",
      options: {
-      filter: true,
-      sort: true,
+      filter: false,
+      sort: false,
      }
     },
     {
