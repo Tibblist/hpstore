@@ -300,7 +300,8 @@ exports.recalcPricing = function() {
             category: itemArray[i].category,
             group: itemGroupMap.get(itemArray[i].id),
             price: 0,
-            disabled: false
+            disabled: false,
+            custom: false
         }
         var newPrice = 0;
         for (var j = 0; j < itemArray[i].mats.length; j++) {
@@ -344,6 +345,7 @@ exports.recalcPricing = function() {
         for (var j = 0; j < pricelist.length; j++) {
             if (pricelist[j].id === newItem.id) {
                 newItem.price = pricelist[j].price;
+                newItem.custom = true;
                 break;
             }
         }
@@ -358,31 +360,81 @@ exports.recalcPricing = function() {
     delete require.cache[require.resolve('./ooolist')]
 }
 
-exports.getMarketerPricing = function() {
+exports.getMarketerPricing = async function() {
     var idArray = [];
     var counter = 0;
+    var reqCount = 0;
+    var costArray = [];
     //console.log(itemPriceArray);
     for (var i = 0; i < itemPriceArray.length; i++) {
         var group = itemPriceArray[i].group;
-        //console.log(group)
         if (group !== 883 && group !== 547 && group !== 485 && group !== 1538 && group !== 30 && group !== 659 && group !== 941 && group !== 513) {
             idArray.push(itemPriceArray[i].id);
             counter++;
             if (counter > 199) {
-                request
+                reqCount++;
+                if (reqCount > 6) {
+                    break;
+                }
+                console.log(i);
+                await request
                 .get('https://api.evemarketer.com/ec/marketstat/json')
                 .query({'typeid': idArray.toString()})
                 .end((err, res) => {
-                    for (var i = 0; i < res.body.length; i++) {
-                        console.log("Price of " + itemIDMap.get(res.body[i].sell.forQuery.types[0]) + " is " + res.body[i].sell.fivePercent);
-                    }
+                    //console.log(res.body.length);
+                    costArray = costArray.concat(res.body);
+                    /*(for (var k = 0; k < res.body.length; k++) {
+                        //console.log("Price of " + itemIDMap.get(res.body[i].sell.forQuery.types[0]) + " is " + res.body[i].sell.fivePercent);
+                        var id = 0;
+                        id = res.body[k].sell.forQuery.types[0];
+                        //console.log(id);
+                        for (var j = 0; j < itemPriceArray.length; j++) {
+                            if (parseInt(itemPriceArray[j].id, 10) === parseInt(id, 10)) {
+                                //console.log(id);
+                                if (!itemPriceArray[j].custom) {
+                                    //console.log("Price of " + itemIDMap.get(res.body[k].sell.forQuery.types[0]) + " is " + res.body[k].sell.fivePercent + " changed from " + itemPriceArray[j].price);
+                                    itemPriceArray[j].price = res.body[k].sell.fivePercent;
+                                }
+                            }
+                        }
+                    }*/
                     console.log(res.headers);
                     //console.log(err);
                 });
-                break;
+                counter = 0;
+                idArray = [];
             }
         }
     }
+    await request
+        .get('https://api.evemarketer.com/ec/marketstat/json')
+        .query({ 'typeid': idArray.toString() })
+        .end((err, res) => {
+            console.log(res.body.length);
+            costArray = costArray.concat(res.body);
+            fs.writeFile('marketData.json', JSON.stringify(costArray, null, 1), 'utf8', function(){
+                console.log("Market data written to file");
+            });
+            /*for (var k = 0; k < res.body.length; k++) {
+                //console.log("Price of " + itemIDMap.get(res.body[i].sell.forQuery.types[0]) + " is " + res.body[i].sell.fivePercent);
+                var id = 0;
+                id = res.body[k].sell.forQuery.types[0];
+                //console.log(id);
+                for (var j = 0; j < itemPriceArray.length; j++) {
+                    if (parseInt(itemPriceArray[j].id, 10) === parseInt(id, 10)) {
+                        //console.log(id);
+                        if (!itemPriceArray[j].custom) {
+                            //console.log("Price of " + itemIDMap.get(res.body[k].sell.forQuery.types[0]) + " is " + res.body[k].sell.fivePercent + " changed from " + itemPriceArray[j].price);
+                            itemPriceArray[j].price = res.body[k].sell.fivePercent;
+                        }
+                    }
+                }
+            }
+            console.log(res.headers);
+            //console.log(err);*/
+    });
+
+    console.log(itemPriceArray.length);
     //console.log(idArray);
     //console.log(idArray.toString());
 }

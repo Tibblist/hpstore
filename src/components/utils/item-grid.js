@@ -8,8 +8,8 @@ import CartIcon from '@material-ui/icons/AddShoppingCart';
 
 
 const numberWithCommas = (x) => {
-    if (x === null) {
-        return null;
+    if (x === null || x === undefined) {
+        return "No Price Data";
     }
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
