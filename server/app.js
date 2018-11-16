@@ -14,7 +14,7 @@ const app = express();
 app.use(helmet());
 app.use(compression());
 app.use(morgan("common"));
-app.use(express.static('../../../build/'));
+app.use(express.static('./build/'));
 app.use(express.json());
 
 const dbRoute = "mongodb://Tibblist:034469poop@ds237713.mlab.com:37713/hpstore";
@@ -320,10 +320,10 @@ app.post('/api/postSettings', async (req, res) => {
 
 // Handles any requests that don't match the ones above
 app.get('*', (req,res) =>{
-    res.sendFile('index.html', { root: __dirname });
+    res.sendFile('build/index.html', { root: __dirname });
 });
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 80;
 app.listen(port);
 
 console.log('App is listening on port ' + port);

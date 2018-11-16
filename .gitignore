@@ -22,3 +22,4 @@ yarn-error.log*
 server/margins.json
 server/ooolist.json
 server/pricelist.json
+server/marketData.json
