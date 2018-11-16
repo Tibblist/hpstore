@@ -28,7 +28,8 @@ exports.init = function() {
     mapPublished();
     mapMeta();
     createMarginMap();
-    createItemArray();
+    //createItemArray();
+    itemArray = require('./filteredItemArray.json');
 }
 
 function mapItemsToGroup() {
@@ -357,7 +358,7 @@ exports.recalcPricing = function() {
             }
         }
 
-        if (newItem.price > 2000000) newItem.price = Math.round(newItem.price/1000000) * 1000000
+        if (newItem.price > 10000000) newItem.price = Math.round(newItem.price/1000000) * 1000000
 
         itemPriceArray.push(newItem);
     }
