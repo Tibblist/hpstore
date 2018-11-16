@@ -20,3 +20,5 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 server/margins.json
+server/ooolist.json
+server/pricelist.json
