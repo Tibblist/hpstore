@@ -26,10 +26,10 @@ mongoose.connect(
 
 let db = mongoose.connection;
 
-db.once("open", () => {
+db.once("open", async () => {
   dataJS.init();
+  await dataJS.getMarketerPricing();
   dataJS.recalcPricing();
-  dataJS.getMarketerPricing();
   console.log("connected to the database")
 });
 

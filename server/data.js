@@ -273,6 +273,7 @@ exports.recalcPricing = function() {
     const margins = require('./margins');
     const pricelist = require('./pricelist');
     const ooolist = require('./ooolist');
+    const marketPrices = require('./marketData');
     itemPriceArray = [];
     var matsMap = new Map();
     var marginMap = new Map();
@@ -342,6 +343,12 @@ exports.recalcPricing = function() {
 
         newItem.price = newPrice;
 
+        for (var j = 0; j < marketPrices.length; j++) {
+            if (marketPrices[j].sell.forQuery.types[0] === newItem.id) {
+                newItem.price = marketPrices[j].sell.fivePercent;
+            }
+        }
+
         for (var j = 0; j < pricelist.length; j++) {
             if (pricelist[j].id === newItem.id) {
                 newItem.price = pricelist[j].price;
@@ -354,89 +361,50 @@ exports.recalcPricing = function() {
 
         itemPriceArray.push(newItem);
     }
-    delete require.cache[require.resolve('./mats')]
-    delete require.cache[require.resolve('./margins')]
-    delete require.cache[require.resolve('./pricelist')]
-    delete require.cache[require.resolve('./ooolist')]
+    delete require.cache[require.resolve('./mats')];
+    delete require.cache[require.resolve('./margins')];
+    delete require.cache[require.resolve('./pricelist')];
+    delete require.cache[require.resolve('./ooolist')];
+    delete require.cache[require.resolve('./marketData')];
 }
+
+const writeFile = (path, data, opts = 'utf8') =>
+    new Promise((res, rej) => {
+        fs.writeFile(path, data, opts, (err) => {
+            if (err) rej(err)
+            else res()
+        })
+})
 
 exports.getMarketerPricing = async function() {
     var idArray = [];
     var counter = 0;
-    var reqCount = 0;
     var costArray = [];
-    //console.log(itemPriceArray);
-    for (var i = 0; i < itemPriceArray.length; i++) {
-        var group = itemPriceArray[i].group;
+    for (var i = 0; i < itemArray.length; i++) {
+        var group = itemGroupMap.get(itemArray[i].id);
         if (group !== 883 && group !== 547 && group !== 485 && group !== 1538 && group !== 30 && group !== 659 && group !== 941 && group !== 513) {
-            idArray.push(itemPriceArray[i].id);
+            idArray.push(itemArray[i].id);
             counter++;
             if (counter > 199) {
-                reqCount++;
-                if (reqCount > 6) {
-                    break;
-                }
                 console.log(i);
-                await request
-                .get('https://api.evemarketer.com/ec/marketstat/json')
-                .query({'typeid': idArray.toString()})
-                .end((err, res) => {
-                    //console.log(res.body.length);
-                    costArray = costArray.concat(res.body);
-                    /*(for (var k = 0; k < res.body.length; k++) {
-                        //console.log("Price of " + itemIDMap.get(res.body[i].sell.forQuery.types[0]) + " is " + res.body[i].sell.fivePercent);
-                        var id = 0;
-                        id = res.body[k].sell.forQuery.types[0];
-                        //console.log(id);
-                        for (var j = 0; j < itemPriceArray.length; j++) {
-                            if (parseInt(itemPriceArray[j].id, 10) === parseInt(id, 10)) {
-                                //console.log(id);
-                                if (!itemPriceArray[j].custom) {
-                                    //console.log("Price of " + itemIDMap.get(res.body[k].sell.forQuery.types[0]) + " is " + res.body[k].sell.fivePercent + " changed from " + itemPriceArray[j].price);
-                                    itemPriceArray[j].price = res.body[k].sell.fivePercent;
-                                }
-                            }
-                        }
-                    }*/
-                    console.log(res.headers);
-                    //console.log(err);
-                });
+                try {
+                    var res = await request.get('https://api.evemarketer.com/ec/marketstat/json').query({'typeid': idArray.toString()});
+                } catch (e) {
+                    console.log(e);
+                }
+                costArray = costArray.concat(res.body);
                 counter = 0;
                 idArray = [];
             }
         }
     }
-    await request
-        .get('https://api.evemarketer.com/ec/marketstat/json')
-        .query({ 'typeid': idArray.toString() })
-        .end((err, res) => {
-            console.log(res.body.length);
-            costArray = costArray.concat(res.body);
-            fs.writeFile('marketData.json', JSON.stringify(costArray, null, 1), 'utf8', function(){
-                console.log("Market data written to file");
-            });
-            /*for (var k = 0; k < res.body.length; k++) {
-                //console.log("Price of " + itemIDMap.get(res.body[i].sell.forQuery.types[0]) + " is " + res.body[i].sell.fivePercent);
-                var id = 0;
-                id = res.body[k].sell.forQuery.types[0];
-                //console.log(id);
-                for (var j = 0; j < itemPriceArray.length; j++) {
-                    if (parseInt(itemPriceArray[j].id, 10) === parseInt(id, 10)) {
-                        //console.log(id);
-                        if (!itemPriceArray[j].custom) {
-                            //console.log("Price of " + itemIDMap.get(res.body[k].sell.forQuery.types[0]) + " is " + res.body[k].sell.fivePercent + " changed from " + itemPriceArray[j].price);
-                            itemPriceArray[j].price = res.body[k].sell.fivePercent;
-                        }
-                    }
-                }
-            }
-            console.log(res.headers);
-            //console.log(err);*/
-    });
-
-    console.log(itemPriceArray.length);
-    //console.log(idArray);
-    //console.log(idArray.toString());
+    try {
+        var res = await request.get('https://api.evemarketer.com/ec/marketstat/json').query({ 'typeid': idArray.toString() })
+    } catch(e) {
+        console.log(e);
+    }
+    costArray = costArray.concat(res.body);
+    await writeFile('marketData.json', JSON.stringify(costArray));
 }
 
 exports.validatePricing = function (items, code) {
