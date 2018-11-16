@@ -29,6 +29,7 @@ let db = mongoose.connection;
 db.once("open", () => {
   dataJS.init();
   dataJS.recalcPricing();
+  dataJS.getMarketerPricing();
   console.log("connected to the database")
 });
 

@@ -5,6 +5,7 @@ const itemInfo = require('./invTypes');
 const itemGroups = require('./invGroups');
 const itemMeta = require('./invMeta');
 var fs = require('fs');
+const request = require('superagent');
 var itemIDMap = new Map();
 var itemGroupMap = new Map();
 var groupCategoryMap = new Map();
@@ -357,6 +358,35 @@ exports.recalcPricing = function() {
     delete require.cache[require.resolve('./ooolist')]
 }
 
+exports.getMarketerPricing = function() {
+    var idArray = [];
+    var counter = 0;
+    //console.log(itemPriceArray);
+    for (var i = 0; i < itemPriceArray.length; i++) {
+        var group = itemPriceArray[i].group;
+        //console.log(group)
+        if (group !== 883 && group !== 547 && group !== 485 && group !== 1538 && group !== 30 && group !== 659 && group !== 941 && group !== 513) {
+            idArray.push(itemPriceArray[i].id);
+            counter++;
+            if (counter > 199) {
+                request
+                .get('https://api.evemarketer.com/ec/marketstat/json')
+                .query({'typeid': idArray.toString()})
+                .end((err, res) => {
+                    for (var i = 0; i < res.body.length; i++) {
+                        console.log("Price of " + itemIDMap.get(res.body[i].sell.forQuery.types[0]) + " is " + res.body[i].sell.fivePercent);
+                    }
+                    console.log(res.headers);
+                    //console.log(err);
+                });
+                break;
+            }
+        }
+    }
+    //console.log(idArray);
+    //console.log(idArray.toString());
+}
+
 exports.validatePricing = function (items, code) {
     var modifier = 1; //CHANGE TO CHECK EXPECTED MODIFIER BASED ON CODE
     for (var i = 0; i < items.length; i++) {
@@ -395,7 +425,6 @@ function breakDownArray() {
                     for (var g = 0; g < itemArray[i].mats.length; g++) {
                         if (item.mats[k].id == itemArray[i].mats[g].id) {
                             newMatsArray.push({id: itemArray[i].mats[g].id, name: itemArray[i].mats[g].name, quantity: itemArray[i].mats[g].quantity + ((item.mats[k].quantity * itemArray[i].mats[j].quantity)/ item.quantity)})
-
                             found = true;
                         }
                     }
