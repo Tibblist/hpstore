@@ -33,6 +33,7 @@ class AccountHome extends React.Component {
 
     componentDidMount() {
         this.fetchData();
+        document.title = "Account";
     }
 
     fetchData = () => {

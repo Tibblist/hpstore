@@ -26,6 +26,7 @@ export default class Store extends React.Component {
   componentDidMount() {
     this.fetchData();
     var cart = localStorage.getItem("Cart");
+    document.title = "Store";
     if (cart !== null) {
       //console.log(cart);
       cart = JSON.parse(cart);

@@ -59,6 +59,10 @@ const styles = theme => ({
 });
 class Home extends React.Component {
 
+    componentDidMount() {
+        document.title = "Hole Punchers Webstore";
+    }
+
     render() {
         const { classes } = this.props;
         return (
