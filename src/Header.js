@@ -1,9 +1,63 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import './css/header.css';
 import { AuthService } from './backend/client/auth';
+import { Paper, Button } from '@material-ui/core';
+import { withStyles } from '@material-ui/core/styles';
 
-export default class Header extends React.Component {
+const styles = theme => ({
+    container: {
+        'height': 128,
+        'margin-bottom': 10
+    },
+    leftnav: {
+        'display': 'inline-block',
+    },
+    rightnav: {
+        'float': 'right',
+
+    },
+    button: {
+        'display': 'inline-block',
+        'vertical-align': 'top'
+    }
+});
+
+
+class Header extends React.Component {
+    render() {
+        const { classes } = this.props;
+        return (
+            <Paper className={classes.container} elevation={10} square="true">
+                <div className={classes.leftnav}>
+                    <Link to="/" className={classes.button}>
+                        <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png" alt="Hole Puncher's Logo"></img>
+                    </Link>
+                    <Button size="large" component={Link} to="/">
+                        Home
+                    </Button>
+                    <Button size="large" component={Link} to="/store">
+                        Browse
+                    </Button>
+                    <Button size="large" component={Link} to="/contact-us">
+                        Contact Us
+                    </Button>
+                </div>
+                <div className={classes.rightnav}>
+                    {AuthService.isAuthed()
+                        ? <Button size="large" component={Link} to="/account/orders">Account</Button>
+                        : ''}
+                    {AuthService.isAuthed()
+                        ? <Button size="large" onClick={AuthService.logout} component={Link} to="/">Logout</Button>
+                        : <Button size="large" component={Link} to="/login">Login</Button>}
+                </div>
+            </Paper>
+        )
+    }
+}
+
+export default withStyles(styles)(Header);
+
+/*export default class Header extends React.Component {
     render() {
         return (
         <header className="menu">
@@ -63,4 +117,4 @@ function accountTab() {
     } else {
         return ''
     }
-}
+}*/

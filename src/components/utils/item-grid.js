@@ -68,6 +68,11 @@ class ItemGrid extends React.Component {
             return true;
         }
         if (this.props.items.length === nextProps.items.length) {
+            if (this.props.items.length > 0) {
+                if (this.props.items[0].id !== nextProps.items[0].id) {
+                    return true;
+                }
+            }
             return false;
         }
         return true;

@@ -110,6 +110,7 @@ export default class Store extends React.Component {
     }
 
     filterArrayByGroup = (group) => {
+      console.log(group);
       if (group === this.state.group) {
         this.setState({
           isSearching: false,
@@ -119,7 +120,6 @@ export default class Store extends React.Component {
       }
       var newItemArray = this.state.itemArray.filter(function (value, index, arr) {
         if (value.group === parseInt(group, 10)) {
-          console.log(value.name);
           return true;
         }
         return false;

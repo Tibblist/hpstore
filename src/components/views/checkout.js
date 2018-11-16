@@ -155,10 +155,10 @@ class CheckoutItems extends React.Component {
                         Thank you for your order.
                     </Typography>
                     <Typography variant="h5" className={classes.deposit}>
-                        Your transaction ID is <b>#{this.state.confirmNumber}</b> Make sure to send your deposit to the corp Hole Punchers in game with your transaction ID as the reason text. It is important you do this right for your order to be processed in a timely manner. 
+                        Your transaction ID is <b>#{this.state.confirmNumber}</b>
                     </Typography>
                     <Typography variant="h5" className={classes.deposit}>
-                        Be sure to pay your deposit of <b>{numberWithCommas(Math.floor(this.state.total * .25))}</b> ISK to corp "Hole Punchers Builders" in game
+                        Be sure to pay your deposit of <b>{numberWithCommas(Math.floor(this.state.total * .25))}</b> ISK to corp "Hole Punchers Builders" in game with your Transaction ID as the reason text.  It is important you do this right for your order to be processed in a timely manner. 
                     </Typography>
                     <Typography variant="h5" className={classes.deposit}>
                         You can find the status of your order <Link to='/account/orders'>Here.</Link>
@@ -190,13 +190,12 @@ class CheckoutItems extends React.Component {
                                 }}
                                 className={classes.menu}
                             >
-                            <MenuItem className={classes.menuItem} value={"1DQ1-A - 1-st Thetastar of Dickbutt"}>
-                            <em>1DQ1-A - 1-st Thetastar of Dickbutt</em>
+                            <MenuItem className={classes.menuItem} value={"J5A-IX - The Player of Games"}>
+                                <em>J5A-IX - The Player of Games</em>
                             </MenuItem>
-                            <MenuItem className={classes.menuItem} value={"J5A-IX - The Player of Games"}>J5A-IX - The Player of Games</MenuItem>
-                            <MenuItem className={classes.menuItem} value={"D-W7F0 - #% Gaarastar %#"}>D-W7F0 - #% Gaarastar %#</MenuItem>
-                            <MenuItem className={classes.menuItem} value={"F-NXLQ - Babylon 5-Bil"}>F-NXLQ - Babylon 5-Bil</MenuItem>
-                            <MenuItem className={classes.menuItem} value={"B17O-R - Onii-chan League Headquarters"}>B17O-R - Onii-chan League Headquarters</MenuItem>
+                            <MenuItem className={classes.menuItem} value={"1DQ1-A - 1-st Thetastar of Dickbutt"}>
+                                1DQ1-A - 1-st Thetastar of Dickbutt
+                            </MenuItem>
                             </Select>
                         </FormControl>
                         <TextField style={{'display': 'inline-block', 'padding-left': '3%'}} onChange={(e) => this.handleCharacterChange(e)} value={this.state.character} placeholder={"Character Name"}></TextField>

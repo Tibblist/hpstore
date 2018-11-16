@@ -203,6 +203,10 @@ class AccountOrders extends React.Component {
         };
     }
 
+    componentDidMount() {
+        this.props.fetchOrders();
+    }
+
     handleClaimID = (event) => {
         this.setState({
             claimID: event.target.value
@@ -215,7 +219,6 @@ class AccountOrders extends React.Component {
     }
 
     submitClaim = () => {
-        //console.log("Sending " + this.state.claimID);
         request
         .post("/api/claimOrder")
         .set('Authorization', AuthService.getToken())
@@ -226,6 +229,9 @@ class AccountOrders extends React.Component {
                 console.log(err);
             }
             this.props.updateOrders();
+        })
+        this.setState({
+            claimID: ''
         })
     }
 

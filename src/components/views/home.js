@@ -50,6 +50,11 @@ const styles = theme => ({
     },
     list: {
 
+    },
+    img: {
+        'display': 'block',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
     }
 });
 class Home extends React.Component {
@@ -58,8 +63,7 @@ class Home extends React.Component {
         const { classes } = this.props;
         return (
             <div className={classes.root}>
-                <Paper className={classes.header}>
-                    <img src="https://imageserver.eveonline.com/Corporation/98523546_256.png" alt="Hello"></img>
+                    <img className={classes.img} src="https://imageserver.eveonline.com/Corporation/98523546_256.png" alt="Hello"></img>
                     <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
                         Hole Puncher's Store
                     </Typography>
@@ -142,7 +146,6 @@ class Home extends React.Component {
                     </div>
                     <Typography variant="h5" align="center" color="textPrimary" paragraph>Want to get rid of excess ore and/or raw mats? We buyback most materials, come inquire about how we can help you get cold hard cash faster on our discord <a target="_blank" href="https://discord.gg/Q2z6WFD">Click Here!</a></Typography>
                     <Typography variant="h5" align="center" color="textPrimary" paragraph>Are you a builder that wants to move product faster and more efficiently? <a target="_blank" href="https://discord.gg/Q2z6WFD">Click Here!</a> and let us know you are a builder</Typography>
-                </Paper>
             </div>
         );
     }

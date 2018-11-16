@@ -71,7 +71,7 @@ class AccountHome extends React.Component {
             )}/>
             <Route path="/account/orders" 
             render={(routeProps) => (
-                <AccountOrders {...routeProps} data={this.state.data} isBuilder={this.state.isBuilder} updateOrders={this.fetchData}/>
+                <AccountOrders {...routeProps} fetchOrders={this.fetchData} data={this.state.data} isBuilder={this.state.isBuilder} updateOrders={this.fetchData}/>
             )}/>
             <Route path="/account/users" component={AccountUsers}/>
             <Route path="/account/reports" component={AccountReports}/>

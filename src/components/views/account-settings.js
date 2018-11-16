@@ -54,6 +54,10 @@ class AccountSettings extends React.Component {
     character: ''
   };
 
+  componentDidMount() {
+    this.fetchData();
+  }
+
   handleChange = panel => (event, expanded) => {
     this.setState({
       expanded: expanded ? panel : false,
@@ -85,6 +89,22 @@ class AccountSettings extends React.Component {
         })
   }
 
+  fetchData = () => {
+    request
+    .get("/api/getSettings")
+    .set('Authorization', AuthService.getToken())
+    .end((err, res) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+        this.setState({
+            character: res.body.character,
+            location: res.body.location
+        });
+    })
+}
+
   render() {
     const { classes } = this.props;
     const { expanded } = this.state;
@@ -98,7 +118,7 @@ class AccountSettings extends React.Component {
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
             <div className={classes.expContent}>
-                <TextField placeholder="Name" onChange={this.handleCharacterChange}>
+                <TextField placeholder="Name" value={this.state.character} onChange={this.handleCharacterChange}>
                 </TextField>
             </div>
           </ExpansionPanelDetails>

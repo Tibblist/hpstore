@@ -13,7 +13,6 @@ exports.createNewUser = function(charID, charName, charCorpID, charAllianceID) {
     newUser.primaryCharacter = newCharacter;
     newUser.characters.push(newCharacter);
     newUser._id = new mongoose.Types.ObjectId();
-    console.log("Primary Character of newUser is: " + newUser.primaryCharacter.name);
     newUser.token = uuidv4();
     newCharacter.owner = newUser;
     newUser.save(function(err) {
@@ -54,7 +53,6 @@ exports.checkIfUserExists = function(id) {
 
 exports.getAllUsers = async function() {
     var users = await User.find().populate({path: 'primaryCharacter'});
-    console.log(users);
     return users;
 }
 
