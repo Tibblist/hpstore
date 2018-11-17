@@ -24,3 +24,4 @@ server/ooolist.json
 server/pricelist.json
 server/marketData.json
 server/config.js
+server/config.json

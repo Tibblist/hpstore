@@ -3,7 +3,6 @@ const user_ctrl = require('./controllers/user_ctrl');
 const INFO = require('./config');
 const CLIENT_ID = INFO.CLIENTID;
 const CLIENT_SECRET = INFO.TOKEN;
-console.log(INFO);
 const buffData = CLIENT_ID + ":" + CLIENT_SECRET;
 let buff = new Buffer(buffData);  
 const base_64 = buff.toString('base64');
