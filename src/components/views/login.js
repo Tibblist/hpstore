@@ -41,7 +41,7 @@ class Login extends React.Component {
         <div>
           <p className={classes.text}>You must log in to view the page at: {from.pathname}</p>
           UPDATE:
-          <a href={SERVER_URL +"%2Fcallback&client_id=" + CLIENT_ID +"&scope=publicData&state=" + from.pathname}>
+          <a href={SERVER_URL +"&client_id=" + CLIENT_ID +"&scope=publicData&state=" + from.pathname}>
             <img className={classes.img} alt="Log in" src="https://web.ccpgamescdn.com/eveonlineassets/developers/eve-sso-login-black-large.png"></img>
           </a>
         </div>
