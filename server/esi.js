@@ -1,8 +1,9 @@
 const request = require('superagent');
 const user_ctrl = require('./controllers/user_ctrl');
-
-const CLIENT_ID = "533028e8d7a44eb1bc1d9d60aa69c556";
-const CLIENT_SECRET = "wOd52RU5Tp9MvPROSPCkuHn89Gd3PUFZ4rm3pdsK";
+const INFO = require('./config');
+const CLIENT_ID = INFO.CLIENTID;
+const CLIENT_SECRET = INFO.TOKEN;
+console.log(INFO);
 const buffData = CLIENT_ID + ":" + CLIENT_SECRET;
 let buff = new Buffer(buffData);  
 const base_64 = buff.toString('base64');
