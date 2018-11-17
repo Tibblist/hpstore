@@ -19,7 +19,10 @@ class App extends React.Component {
             }
         };
     }
-
+    
+    componentWillUnmount() {
+        localStorage.removeItem("Cart");
+    }
 
     render() {
         return (

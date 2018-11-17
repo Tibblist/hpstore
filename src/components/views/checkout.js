@@ -12,6 +12,12 @@ import { AuthService } from '../../backend/client/auth';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Slide from '@material-ui/core/Slide';
 
 const request = require('superagent');
 
@@ -55,12 +61,12 @@ const numberWithCommas = (x) => {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
+function Transition(props) {
+    return <Slide direction="up" {...props} />;
+}
+
 class CheckoutItems extends React.Component {
     constructor(props) {
-        var total = 0;
-        for (var i = 0; i < props.cart.length; i++) {
-            total += props.cart[i].quantity * props.cart[i].price
-        }
         super(props);
         this.state = { 
             orderSent: false,
@@ -68,13 +74,18 @@ class CheckoutItems extends React.Component {
             discountCode: '',
             location: '1DQ1-A - 1-st Thetastar of Dickbutt',
             character: '',
-            total: total
+            total: 0,
+            open: false
         };
     }
 
     componentWillMount() {
         this.fetchData();
     }
+
+    handleClose = () => {
+        this.setState({ open: false });
+    };
 
     postOrder = () => {
         var obj = {
@@ -97,13 +108,21 @@ class CheckoutItems extends React.Component {
             localStorage.removeItem("Cart");
             console.log("Removing cart from localstorage");
             if (res.body != null && res.body.status === 5) {
-                console.alert("Invalid item pricing, please reload the store and try again")
+                this.setState({
+                    open: true
+                })
+                this.props.updatePrices();
                 return;
+            }
+            var total = 0;
+            for (var i = 0; i < this.props.cart.length; i++) {
+                total += this.props.cart[i].quantity * this.props.cart[i].price
             }
             this.clearCart();
             this.setState({
                 confirmNumber: res.text,
-                orderSent: true
+                orderSent: true,
+                total: total
             })
         })
     }
@@ -148,6 +167,10 @@ class CheckoutItems extends React.Component {
   
     render() {
         const {classes} = this.props;
+        var total = 0;
+        for (var i = 0; i < this.props.cart.length; i++) {
+            total += this.props.cart[i].quantity * this.props.cart[i].price
+        }
         if (this.state.orderSent) {
             return (
                 <Paper>
@@ -199,7 +222,7 @@ class CheckoutItems extends React.Component {
                             </Select>
                         </FormControl>
                         <TextField style={{'display': 'inline-block', 'padding-left': '3%'}} onChange={(e) => this.handleCharacterChange(e)} value={this.state.character} placeholder={"Character Name"}></TextField>
-                        <ListItemText primary={"Total: " + numberWithCommas(this.state.total) + " ISK"} style={{'text-align': 'right', display: 'inline-block'}}></ListItemText>
+                        <ListItemText primary={"Total: " + numberWithCommas(total) + " ISK"} style={{'text-align': 'right', display: 'inline-block'}}></ListItemText>
                     </ListItem>
                     <ListItem>
                     <ListItemText primary={"This transaction will require a 25% deposit after you order before it will be put into build."} style={{'text-align': 'center', }}></ListItemText>
@@ -213,6 +236,28 @@ class CheckoutItems extends React.Component {
                         : <Button variant="contained" onClick={this.postOrder} className={classes.submitButton}>Submit</Button>}
                     </ListItem>
                 </List>
+                <Dialog
+                    open={this.state.open}
+                    TransitionComponent={Transition}
+                    keepMounted
+                    onClose={this.handleClose}
+                    aria-labelledby="alert-dialog-slide-title"
+                    aria-describedby="alert-dialog-slide-description"
+                >
+                    <DialogTitle id="alert-dialog-slide-title">
+                        {"Cart prices outdated!"}
+                    </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-slide-description">
+                            Unfortunately item prices have updated slightly since you created your cart. Don't worry we will update the prices for you and you can choose whether or not to continue.
+                    </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                            OK
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </Paper>
       )}
     }

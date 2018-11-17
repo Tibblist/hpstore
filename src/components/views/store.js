@@ -133,6 +133,23 @@ export default class Store extends React.Component {
       });
     }
 
+    updatePrices = () => {
+      this.fetchData();
+      var cart = this.state.cart;
+      for (var i = 0; i < cart.length; i++) {
+        var item = cart[i];
+        for (var j = 0; j < this.state.itemArray.length; j++) {
+          if (item.id === this.state.itemArray[j].id) {
+            cart[i].price = this.state.itemArray[j].price;
+          }
+        }
+      }
+      console.log(cart);
+      this.setState({
+        cart: cart
+      })
+    }
+
     changeQuantity = (id, e) => {
       var newCart = this.state.cart;
       for (var i = 0; i < newCart.length; i++) {
@@ -173,6 +190,7 @@ export default class Store extends React.Component {
               component={CheckoutItems}
               cart={this.state.cart}
               clearCart={this.clearCart}
+              updatePrices={this.updatePrices}
               />
             </div>
         );
