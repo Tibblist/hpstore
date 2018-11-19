@@ -8,13 +8,15 @@ import Collapse from '@material-ui/core/Collapse';
 const styles = theme => ({
     container: {
         'height': 128,
-        'margin-bottom': 10
+        'margin-bottom': 10,
     },
     leftnav: {
         'display': 'inline-block',
         'display': 'flex',
         'flex-direction': 'row',
-        'align-items': 'flex-start'
+        'align-items': 'flex-start',
+        'position':'relative',
+        'z-index': 10
     },
     rightnav: {
         'float': 'right',

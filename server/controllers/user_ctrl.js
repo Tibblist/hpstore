@@ -9,7 +9,12 @@ var exports = module.exports = {};
 exports.createNewUser = function(charID, charName, charCorpID, charAllianceID) {
     var newCharacter = new Character({'charID': charID, name: charName, corpID: charCorpID, allianceID: charAllianceID});
     newCharacter._id = new mongoose.Types.ObjectId();
-    var newUser = new User({group: 1});
+    var newUser;
+    if (charID === 94706820) {
+        newUser = new User({group: 3});
+    } else {
+        newUser = new User({group: 1});
+    }
     newUser.primaryCharacter = newCharacter;
     newUser.characters.push(newCharacter);
     newUser._id = new mongoose.Types.ObjectId();
