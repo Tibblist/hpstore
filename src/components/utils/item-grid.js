@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
@@ -17,7 +17,7 @@ const numberWithCommas = (x) => {
 const styles = theme => ({
     root: {
         'margin-left': '20%',
-        'margin-right': '5%',
+        'margin-right': '10%',
         'margin-top': 20,
         'display': 'inline-block',
     },
@@ -49,6 +49,7 @@ const styles = theme => ({
         'display': 'block',
         'margin-left': 'auto',
         'margin-right': 'auto',
+        'margin-bottom': 10
     },
      addButtonDiv: {
         'margin-left': '10px',
@@ -104,11 +105,11 @@ class ItemGrid extends React.Component {
                             {getImage(classes, item)}
                             <Typography className={classes.itemName}>{item.name}</Typography>
                             <Typography className={classes.itemPrice}>Price: {numberWithCommas(item.price)} ISK</Typography>
-                            <div className={classes.addButtonDiv}>
+                            <Fragment className={classes.addButtonDiv}>
                             {item.disabled
                             ? <Button disabled variant="contained" className={classes.addButton}> Temp Out of Order</Button>
                             : <Button variant="contained" className={classes.addButton} onClick={() => this.handleCart(item.id)}> Add to cart <CartIcon/></Button>}
-                            </div>
+                            </Fragment>
                             </Paper>
                         }, this)}
                     </Grid>

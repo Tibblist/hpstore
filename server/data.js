@@ -17,6 +17,7 @@ var itemArray = [];
 var materialArray = [];
 var itemPriceArray = [];
 var groupArray = [];
+var unfilteredArray = [];
 
 var exports = module.exports = {};
 
@@ -28,6 +29,7 @@ exports.init = function() {
     mapPublished();
     mapMeta();
     createMarginMap();
+    createUnfilteredArray();
     //createItemArray();
     itemArray = require('./filteredItemArray.json');
 }
@@ -45,8 +47,8 @@ function mapGroupToCatagory() {
 }
 
 function mapItemIDs() {
-    for (var i = 0; i < parsedJSON.length; i++) {
-        itemIDMap.set(parseInt(parsedJSON[i].ID, 10), parsedJSON[i].NAME);
+    for (var i = 0; i < itemInfo.length; i++) {
+        itemIDMap.set(parseInt(itemInfo[i].typeID, 10), itemInfo[i].typeName);
     }
 }
 
@@ -104,6 +106,28 @@ function createCategoryArray() {
         }
         groupArray.push(groupID);
     }
+}
+
+function createUnfilteredArray() {
+    for (var i = 0; i < itemInfo.length; i++) {
+        if (parseInt(itemInfo[i].published, 10) !== 1) {
+            continue;
+        }
+        var item = {
+            id: parseInt(itemInfo[i].typeID, 10),
+            name: itemInfo[i].typeName,
+            price: 0
+        }
+        if (isValidItem(groupCategoryMap.get(itemGroupMap.get(parseInt(item.id, 10))))) {
+            continue;
+        };
+        if (item.name === '') {
+            continue;
+        }
+        //console.log(item);
+        unfilteredArray.push(item);
+    }
+    console.log(unfilteredArray.length);
 }
 
 function createItemArray() {
@@ -168,6 +192,7 @@ function createItemArray() {
             productsArray.push(newItem.id);    
         }
     }
+
     console.log("Beginning heavy processing");
     
     breakDownArray();
@@ -302,8 +327,7 @@ exports.recalcPricing = function() {
             category: itemArray[i].category,
             group: itemGroupMap.get(itemArray[i].id),
             price: 0,
-            disabled: false,
-            custom: false
+            disabled: false
         }
         var newPrice = 0;
         for (var j = 0; j < itemArray[i].mats.length; j++) {
@@ -372,6 +396,7 @@ exports.recalcPricing = function() {
 const writeFile = (path, data, opts = 'utf8') =>
     new Promise((res, rej) => {
         fs.writeFile(path, data, opts, (err) => {
+            console.log("Wrote to file!");
             if (err) rej(err)
             else res()
         })
@@ -381,30 +406,28 @@ exports.getMarketerPricing = async function() {
     var idArray = [];
     var counter = 0;
     var costArray = [];
-    for (var i = 0; i < itemArray.length; i++) {
-        var group = itemGroupMap.get(itemArray[i].id);
+    var requestArray = [];
+    for (var i = 0; i < unfilteredArray.length; i++) {
+        var group = itemGroupMap.get(unfilteredArray[i].id);
         if (group !== 883 && group !== 547 && group !== 485 && group !== 1538 && group !== 30 && group !== 659 && group !== 941 && group !== 513) {
-            idArray.push(itemArray[i].id);
+            idArray.push(unfilteredArray[i].id);
             counter++;
             if (counter > 199) {
-                console.log(i);
-                try {
-                    var res = await request.get('https://api.evemarketer.com/ec/marketstat/json').query({'typeid': idArray.toString()});
-                } catch (e) {
-                    console.log(e);
-                }
-                costArray = costArray.concat(res.body);
+                //console.log(idArray);
+                requestArray.push(request.get('https://api.evemarketer.com/ec/marketstat/json').query({'typeid': idArray.toString()}));
                 counter = 0;
                 idArray = [];
             }
         }
     }
-    try {
-        var res = await request.get('https://api.evemarketer.com/ec/marketstat/json').query({ 'typeid': idArray.toString() })
-    } catch(e) {
-        console.log(e);
+    requestArray.push(request.get('https://api.evemarketer.com/ec/marketstat/json').query({ 'typeid': idArray.toString() }))
+    var results = await Promise.all(requestArray).catch(function(e) {
+        //console.log(e);
+    });
+    for (var i = 0; i < results.length; i++) {
+        costArray= costArray.concat(results[i].body);
     }
-    costArray = costArray.concat(res.body);
+    console.log(results[results.length - 1].header);
     await writeFile('marketData.json', JSON.stringify(costArray));
 }
 

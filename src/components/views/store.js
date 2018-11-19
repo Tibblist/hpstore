@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import StoreHeader from './store-header';
 import ItemGrid from '../utils/item-grid';
 import { AuthService, AuthRoute } from '../../backend/client/auth';
 import {Route} from 'react-router-dom';
 import CheckoutItems from './checkout';
 import StoreSideBar from '../utils/store-sidebar'
+import { Typography, Paper, Button, Divider } from '@material-ui/core';
+import {Link} from 'react-router-dom';
 
 const request = require('superagent');
 
@@ -15,6 +17,10 @@ export default class Store extends React.Component {
       suggestions: [],
       itemArray: [],
       cart: [],
+      hullArray: [],
+      modArray: [],
+      hullSuggestions: [],
+      modSuggestions: [],
       searchArray: [],
       isSearching: false,
       group: 0
@@ -55,14 +61,31 @@ export default class Store extends React.Component {
                 }); 
                 return;
             }
+            var hullArray = res.body.filter(function (value, index, arr) {
+              return value.category === 6;
+            });
+            var modArray = res.body.filter(function (value, index, arr) {
+              return value.category === 7;
+            });
             var newSuggestions = [];
             for (var i = 0; i < res.body.length; i++) {
               newSuggestions.push({label: res.body[i].name});
             }
-            //console.log(newSuggestions);
+            var hullSuggestions = [];
+            for (var i = 0; i < hullArray.length; i++) {
+              hullSuggestions.push({label: hullArray[i].name});
+            }
+            var modSuggestions = [];
+            for (var i = 0; i < modArray.length; i++) {
+              modSuggestions.push({label: modArray[i].name});
+            }
             this.setState({
                 itemArray: res.body,
-                suggestions: newSuggestions
+                suggestions: newSuggestions,
+                hullArray: hullArray,
+                modArray: modArray,
+                hullSuggestions: hullSuggestions,
+                modSuggestions: modSuggestions
             });
         })
     }
@@ -90,11 +113,16 @@ export default class Store extends React.Component {
       localStorage.setItem("Cart", JSON.stringify(this.state.cart));
     }
 
-    filterArray = (string) => {
+    filterArray = (string, category) => {
       //console.log("Filtering for: " + string);
       var inputLength = string.length;
       var newItemArray = this.state.itemArray.filter(function (value, index, arr) {
-        return value.name.slice(0, inputLength).toLowerCase() === string.toLowerCase();
+        for (var i = 0; i < category.length; i++) {
+          if (value.category === category[i]) {
+            return value.name.slice(0, inputLength).toLowerCase() === string.toLowerCase();
+          }
+        }
+        return false;
       });
 
       if (string === null || string === "") {
@@ -144,7 +172,6 @@ export default class Store extends React.Component {
           }
         }
       }
-      console.log(cart);
       this.setState({
         cart: cart
       })
@@ -165,14 +192,13 @@ export default class Store extends React.Component {
           newCart[i].quantity = parseInt(e.target.value, 10);
         }
       }
-      //console.log(newCart)
       this.setState({
         cart: newCart,
       });
     }
 
     render() {
-      var array = [];
+        var array = [];
         if (this.state.isSearching) {
           array = this.state.searchArray;
         } else {
@@ -183,7 +209,24 @@ export default class Store extends React.Component {
               <Route
                 path='/store'
                 exact
-                render={(props) => <ShowItems {...props} changeQuantity={this.changeQuantity} suggestions={this.state.suggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={array} filterArrayGroup={this.filterArrayByGroup}/>}
+                render={(props) => <StoreHome {...props}></StoreHome>}
+              />
+              <Route
+                path='/store/hulls'
+                render={(props) => <ShowHulls {...props} changeQuantity={this.changeQuantity} suggestions={this.state.hullSuggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={this.state.isSearching ? array : this.state.hullArray} filterArrayGroup={this.filterArrayByGroup}/>}
+              />
+              <Route
+                path='/store/mods'
+                render={(props) => <ShowMods {...props} changeQuantity={this.changeQuantity} suggestions={this.state.modSuggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={this.state.isSearching ? array : this.state.modArray} filterArrayGroup={this.filterArrayByGroup}/>}
+              />
+              <Route
+                path='/store/fittings'
+                exact
+                render={(props) => <ShowHulls {...props} changeQuantity={this.changeQuantity} suggestions={this.state.suggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={array} filterArrayGroup={this.filterArrayByGroup}/>}
+              />
+              <Route
+              path="/store/fittings/parser"
+              render={(props) => <div/>}
               />
               <AuthRoute
               path='/store/checkout'
@@ -197,15 +240,47 @@ export default class Store extends React.Component {
     }
 }
 
-class ShowItems extends React.Component {
+class ShowHulls extends React.Component {
   render() {
     return (
-      <div>
-          <StoreHeader suggestions={this.props.suggestions} cart={this.props.cart} changeFunction={this.props.changeFunction} changeQuantity={this.props.changeQuantity}></StoreHeader>
+      <Fragment>
+          <StoreHeader suggestions={this.props.suggestions} cart={this.props.cart} category={[6]} changeFunction={this.props.changeFunction} changeQuantity={this.props.changeQuantity}></StoreHeader>
           <StoreSideBar filterArray={this.props.filterArrayGroup}/>
           <ItemGrid addFunction={this.props.addFunction} items={this.props.items}></ItemGrid>
-      </div>
+      </Fragment>
     );
+  }
+}
+
+class ShowMods extends React.Component {
+
+  render() {
+    return (
+      <Fragment>
+        <StoreHeader suggestions={this.props.suggestions} cart={this.props.cart} category={[7, 87]} changeFunction={this.props.changeFunction} changeQuantity={this.props.changeQuantity}></StoreHeader>
+        <ItemGrid addFunction={this.props.addFunction} items={this.props.items}></ItemGrid>
+      </Fragment>
+    )
+  }
+}
+
+class StoreHome extends React.Component {
+
+  render () {
+    return (
+      <Fragment>
+        <Typography variant="h4" align="center">What are you looking for?</Typography>
+        <Paper style={{'display': 'flex', 'flex-direction': 'column', 'margin-top': 10, 'margin-right': '25%', 'margin-left': '25%'}}>
+          <Button component={Link} to="/store/hulls">Hulls</Button>
+          <Divider/>
+          <Button component={Link} to="/store/mods">Mods/Fighters</Button>
+          <Divider/>
+          <Button component={Link} to="/store/fittings">Doctrine Fittings</Button>
+          <Divider/>
+          <Button component={Link} to="/store/fittings/parser">Custom Fittings</Button>
+        </Paper>
+      </Fragment>
+    )
   }
 }
 

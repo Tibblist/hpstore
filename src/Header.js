@@ -1,8 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import { AuthService } from './backend/client/auth';
-import { Paper, Button } from '@material-ui/core';
+import { Paper, Button, Divider, Typography} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
+import Collapse from '@material-ui/core/Collapse';
 
 const styles = theme => ({
     container: {
@@ -11,10 +12,13 @@ const styles = theme => ({
     },
     leftnav: {
         'display': 'inline-block',
+        'display': 'flex',
+        'flex-direction': 'row',
+        'align-items': 'flex-start'
     },
     rightnav: {
         'float': 'right',
-
+        'display': 'inline-block',
     },
     button: {
         'display': 'inline-block',
@@ -24,10 +28,44 @@ const styles = theme => ({
 
 
 class Header extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            open: false,
+            width: 0
+        }
+    }
+
+    refCallback = element => {
+        if (element) {
+          var size = element.getBoundingClientRect()
+          var width = size.width;
+          if (width != this.state.width) {
+            this.setState({
+                width: width
+            })
+          }
+        }
+      };
+
+    handleOpen = () => {
+        this.setState({
+            open: !this.state.open
+        })
+    }
+
     render() {
         const { classes } = this.props;
         return (
             <Paper className={classes.container} elevation={10} square="true">
+            <div className={classes.rightnav}>
+                    {AuthService.isAuthed()
+                        ? <Button size="large" component={Link} to="/account/orders">Account</Button>
+                        : ''}
+                    {AuthService.isAuthed()
+                        ? <Button size="large" onClick={AuthService.logout} component={Link} to="/">Logout</Button>
+                        : <Button size="large" component={Link} to="/login">Login</Button>}
+                </div>
                 <div className={classes.leftnav}>
                     <Link to="/" className={classes.button}>
                         <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png" alt="Hole Puncher's Logo"></img>
@@ -35,20 +73,29 @@ class Header extends React.Component {
                     <Button size="large" component={Link} to="/">
                         Home
                     </Button>
-                    <Button size="large" component={Link} to="/store">
-                        Browse
-                    </Button>
+                    <div className={classes.button}>
+                        <div ref={this.refCallback}>
+                            <Button size="large" onClick={this.handleOpen}>
+                                <Typography align="center">Browse</Typography>
+                            </Button>
+                        </div>
+                        <Collapse in={this.state.open}>
+                            <Paper style={{'display': 'flex', 'flex-direction': 'column', 'vertical-align': 'top', 'width': this.state.width}}>
+                                <Button onClick={this.handleOpen} component={Link} to="/store/hulls">Hulls</Button>
+                                <Divider/>
+                                <Button onClick={this.handleOpen} component={Link} to="/store/mods">Mods and Fighters</Button>
+                                <Divider/>
+                                <Button onClick={this.handleOpen} disabled component={Link} to="/store/sales">Sales</Button>
+                                <Divider/>
+                                <Button onClick={this.handleOpen} disabled component={Link} to="/store/fittings">Doctrine Fittings</Button>
+                                <Divider/>
+                                <Button onClick={this.handleOpen} disabled component={Link} to="/store/fittings/parser">Custom Fittings</Button>
+                            </Paper>
+                        </Collapse>
+                    </div>
                     <Button size="large" component={Link} to="/contact-us">
                         Contact Us
                     </Button>
-                </div>
-                <div className={classes.rightnav}>
-                    {AuthService.isAuthed()
-                        ? <Button size="large" component={Link} to="/account/orders">Account</Button>
-                        : ''}
-                    {AuthService.isAuthed()
-                        ? <Button size="large" onClick={AuthService.logout} component={Link} to="/">Logout</Button>
-                        : <Button size="large" component={Link} to="/login">Login</Button>}
                 </div>
             </Paper>
         )
