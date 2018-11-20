@@ -11,15 +11,16 @@ import AccountSales from './account-sales';
 import TableCell from '@material-ui/core/TableCell';
 import {Route, Link} from 'react-router-dom';
 import { AuthService } from '../../backend/client/auth';
+import { Button } from '@material-ui/core';
 
 const request = require('superagent');
 
 const Status = Object.freeze({
-    PAY:    <TableCell style={{backgroundColor: "yellow"}}><b style={{color: "black"}}>Confirming Payment</b></TableCell>,
-    BUILD:  <TableCell style={{backgroundColor: "green"}}><b style={{color: "black"}}>In Build</b></TableCell>,
-    DELAY:  <TableCell style={{backgroundColor: "yellow"}}><b style={{color: "black"}}>Build Delayed</b></TableCell>,
-    REJECT: <TableCell style={{backgroundColor: "red"}}><b style={{color: "black"}}>Rejected</b></TableCell>,
-    DELIVERED: <TableCell style={{backgroundColor: "green"}}><b style={{color: "black"}}>Delivered</b></TableCell>,
+    PAY:    <p style={{backgroundColor: "yellow"}}><b style={{color: "black"}}>Confirming Payment</b></p>,
+    BUILD:  <p style={{backgroundColor: "green"}}><b style={{color: "black"}}>In Build</b></p>,
+    DELAY:  <p style={{backgroundColor: "yellow"}}><b style={{color: "black"}}>Build Delayed</b></p>,
+    REJECT: <p style={{backgroundColor: "red"}}><b style={{color: "black"}}>Rejected</b></p>,
+    DELIVERED: <p style={{backgroundColor: "green"}}><b style={{color: "black"}}>Delivered</b></p>,
 });
 class AccountHome extends React.Component {
     constructor(props) {
@@ -52,6 +53,13 @@ class AccountHome extends React.Component {
                 if (res.body.isBuilder) {
                     res.body.data[i][10] = showStatus(parseInt(res.body.data[i][10], 10));
                     res.body.data[i][4] = createLink(res.body.data[i][0])
+                    var builder = res.body.data[i][1];
+                    var id = res.body.data[i][0];
+                    if (builder === "Unclaimed") {
+                        res.body.data[i][1] = <Button variant="outlined" value={id} onClick={this.submitClaim}>Claim!</Button>
+                    } else if (builder === AuthService.getName()) {
+                        res.body.data[i][1] = <p style={{'text-align': 'center'}}>You <Link to={"/account/order/" + res.body.data[i][0]}><Button variant="outlined">Edit Order</Button></Link> <Button variant="outlined" value={id} onClick={this.unClaim}>Unclaim!</Button></p>
+                    }
                 } else {
                     res.body.data[i][9] = showStatus(parseInt(res.body.data[i][9], 10));
                     res.body.data[i][3] = createLink(res.body.data[i][0]);
@@ -63,6 +71,38 @@ class AccountHome extends React.Component {
                 data: data
             })
         });
+    }
+
+    submitClaim = (event) => {
+        var id = event.target.value;
+        console.log("Submitting claim for order id: " + id);
+        request
+        .post("/api/claimOrder")
+        .set('Authorization', AuthService.getToken())
+        .send({id: id})
+        .retry(2)
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+            }
+            this.fetchData();
+        })
+    }
+
+    unClaim = (event) => {
+        var id = event.target.value;
+        console.log("Submitting unclaim for order id: " + id);
+        request
+        .post("/api/unClaimOrder")
+        .set('Authorization', AuthService.getToken())
+        .send({id: id})
+        .retry(2)
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+            }
+            this.fetchData();
+        })
     }
 
     render() {

@@ -120,8 +120,8 @@ const builderColumns = [
     {
      name: "Builder",
      options: {
-      filter: true,
-      sort: true,
+      filter: false,
+      sort: false,
      }
     },
     {
@@ -249,14 +249,6 @@ class AccountOrders extends React.Component {
                         columns={builderColumns}
                         options={options}
                     />
-                    <Paper className={classes.fields}>
-                            <div className={classes.item}>
-                                <TextField onChange={(e) => this.handleClaimID(e)}/><Button className={classes.button} variant="contained" onClick={this.submitClaim}>Claim Order</Button>
-                            </div>
-                            <div className={classes.item}>
-                                <TextField onChange={(e) => this.handleEditID(e)}/><Link to={"/account/order/" + this.state.editID}><Button className={classes.button} variant="contained">Edit Order</Button></Link>
-                            </div>
-                    </Paper>
                 </div>
             );
         } else {
