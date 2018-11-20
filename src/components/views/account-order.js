@@ -83,7 +83,8 @@ class AccountReports extends React.Component {
             quantity: '',
             id: 0,
             done: false,
-            notFound: false
+            notFound: false,
+            forbidden: false
         };
     }
 
@@ -109,6 +110,13 @@ class AccountReports extends React.Component {
                 this.setState({
                     notFound: true
                 })
+                return;
+            }
+            if (res.body.status === 403) {
+                this.setState({
+                    forbidden: true
+                })
+                return;
             }
             //console.log(res.body)
             var newOrder = res.body;
@@ -244,6 +252,7 @@ class AccountReports extends React.Component {
         this.setState({
             order: newOrder
         })
+        this.recalcTotalPrice();
     }
 
     handleQuantityChange = (event) => {
@@ -329,6 +338,25 @@ class AccountReports extends React.Component {
             )
         }
 
+        if(!this.props.isBuilder) {
+            return (
+                <Paper className={classes.container}>
+                    <Typography className={classes.label}>Viewing order #{this.state.order.id}</Typography>
+                    <List className={classes.text}>
+                        {this.state.order.items.map((item, id) => {
+                            return (
+                                <ListItem key={id}>
+                                    <ListItemText>{item.name}</ListItemText>
+                                    <ListItemText>{numberWithCommas(item.price)} ISK</ListItemText>
+                                    <ListItemText>x{item.quantity}</ListItemText>
+                                </ListItem>
+                            )
+                        })}
+                    </List>
+                </Paper>
+            )
+        }
+
         return (
             <Paper className={classes.container}>
                 <Typography className={classes.label}>Editing order #{this.state.order.id}</Typography>
@@ -339,7 +367,7 @@ class AccountReports extends React.Component {
                                 <ListItemText>{item.name}</ListItemText>
                                 <ListItemText>{numberWithCommas(item.price)} ISK</ListItemText>
                                 <ListItemText>x{item.quantity}</ListItemText>
-                                <Button onClick={() => this.clearItem(item.id)}>
+                                <Button onClick={() => this.handleClearItem(item.id)}>
                                     <CloseIcon/>
                                 </Button>
                             </ListItem>

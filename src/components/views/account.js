@@ -9,7 +9,7 @@ import AccountPrice from './account-price';
 import AccountOrder from './account-order';
 import AccountSales from './account-sales';
 import TableCell from '@material-ui/core/TableCell';
-import {Route} from 'react-router-dom';
+import {Route, Link} from 'react-router-dom';
 import { AuthService } from '../../backend/client/auth';
 
 const request = require('superagent');
@@ -51,8 +51,10 @@ class AccountHome extends React.Component {
             for (var i = 0; i < res.body.data.length; i++) {
                 if (res.body.isBuilder) {
                     res.body.data[i][10] = showStatus(parseInt(res.body.data[i][10], 10));
+                    res.body.data[i][4] = createLink(res.body.data[i][0])
                 } else {
                     res.body.data[i][9] = showStatus(parseInt(res.body.data[i][9], 10));
+                    res.body.data[i][3] = createLink(res.body.data[i][0]);
                 }
             }
             var data = res.body.data.reverse();
@@ -81,7 +83,7 @@ class AccountHome extends React.Component {
             <Route path="/account/sales" component={AccountSales}/>
             <Route path="/account/settings" component={AccountSettings}/>
             <Route path="/account/order/:id" render={(routeProps) => (
-                <AccountOrder {...routeProps} data={this.state.data}/>
+                <AccountOrder {...routeProps} data={this.state.data} isBuilder={this.state.isBuilder}/>
             )}/>
             </div>
         );
@@ -104,6 +106,10 @@ function showStatus(status) {
         default:
             return "ERROR NO STATUS"
     }
+}
+
+function createLink(id) {
+    return <Link to={"/account/order/" + id}>View Items</Link>
 }
 
 export default AccountHome;
