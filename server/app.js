@@ -285,7 +285,7 @@ app.get('/api/getMatPrices', async (req,res) => {
 app.get('/api/getSettings', async (req,res) => {
   const mats = require('./mats');
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
-  if (user_ctrl.userIsBuilder(user)) {
+  if (user_ctrl.userIsValid(user)) {
     res.json({character: user.defaultCharacter, location: user.defaultShipping});
   } else {
     res.send(403);

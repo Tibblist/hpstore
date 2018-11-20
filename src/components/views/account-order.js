@@ -338,6 +338,14 @@ class AccountReports extends React.Component {
             )
         }
 
+        if (this.state.forbidden) {
+            return (
+                <Paper className={classes.container}>
+                    <Typography variant='h3' align="center">You are unable to view order #{this.props.match.params.id}</Typography>
+                </Paper>
+            )
+        }
+
         if(!this.props.isBuilder) {
             return (
                 <Paper className={classes.container}>
