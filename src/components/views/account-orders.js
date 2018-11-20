@@ -15,6 +15,7 @@ const styles = theme => ({
         'margin-right': '5%',
         'margin-top': '5px',
         overflowX: 'auto',
+        'z-index': 1
       },
       table: {
         minWidth: 700,
@@ -103,7 +104,7 @@ const userColumns = [
      name: "Status",
      options: {
       filter: false,
-      sort: true,
+      sort: false,
      }
     },
 ];

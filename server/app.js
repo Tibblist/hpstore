@@ -8,6 +8,8 @@ const esi = require('./esi');
 const dataJS = require('./data');
 const user_ctrl = require('./controllers/user_ctrl');
 const order_ctrl = require('./controllers/order_ctrl')
+const INFO = require('./config');
+
 
 const app = express();
 // Serve the static files from the React app
@@ -17,7 +19,7 @@ app.use(morgan("common"));
 app.use(express.static('./build/'));
 app.use(express.json());
 
-const dbRoute = "mongodb://Tibblist:034469poop@ds237713.mlab.com:37713/hpstore";
+const dbRoute = INFO.DB;
 
 mongoose.connect(
   dbRoute,
@@ -52,14 +54,14 @@ app.get('/api/getOrders', async (req,res) => {
 
 app.get('/api/getOrder', async (req,res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
-  if (user_ctrl.userIsBuilder(user)) {
+  var order = await order_ctrl.findOrderByTID(req.query.id);
+  if (order === null) {
+    res.send({status: 404});
+    res.end();
+    return;
+  }
+  if (user_ctrl.userIsBuilder(user) || user.token === order.buyer.token) {
     //console.log(req.query);
-    var order = await order_ctrl.findOrderByTID(req.query.id);
-    if (order === null) {
-      res.send({status: "Not Found"});
-      res.end();
-      return;
-    }
     var builder = '';
     if (order.builder == undefined) {
       builder = "Unclaimed";

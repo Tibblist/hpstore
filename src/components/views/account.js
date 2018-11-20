@@ -55,9 +55,10 @@ class AccountHome extends React.Component {
                     res.body.data[i][9] = showStatus(parseInt(res.body.data[i][9], 10));
                 }
             }
+            var data = res.body.data.reverse();
             this.setState({
                 isBuilder: res.body.isBuilder,
-                data: res.body.data
+                data: data
             })
         });
     }

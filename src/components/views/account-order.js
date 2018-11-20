@@ -19,12 +19,17 @@ const styles = theme => ({
     container: {
         'margin-left': '20%',
         'margin-right': '20%',
-        'margin-top': '10px'
+        'margin-top': '10px',
+        'display': 'flex',
+        'flex-direction': 'column',
     },
     text: {
-        'width': '25%',
-        'margin-left': '40%',
-        'margin-right': '37.5%',
+        'width': '50%',
+        'display': 'flex',
+        'flex-direction': 'column',
+        'margin-right': 'auto',
+        'margin-left': 'auto',
+        'align-content': 'center',
         'margin-top': '5px',
     },
     label: {
@@ -77,7 +82,8 @@ class AccountReports extends React.Component {
             itemArray: [],
             quantity: '',
             id: 0,
-            done: false
+            done: false,
+            notFound: false
         };
     }
 
@@ -98,6 +104,11 @@ class AccountReports extends React.Component {
         .end((err, res) => {
             if (res.body === undefined) {
                 return;
+            }
+            if (res.body.status === 404) {
+                this.setState({
+                    notFound: true
+                })
             }
             //console.log(res.body)
             var newOrder = res.body;
@@ -310,13 +321,20 @@ class AccountReports extends React.Component {
             )
         }
 
+        if (this.state.notFound) {
+            return (
+                <Paper className={classes.container}>
+                    <Typography variant='h3' align="center">Order ID:{this.props.match.params.id} was not found!</Typography>
+                </Paper>
+            )
+        }
+
         return (
             <Paper className={classes.container}>
                 <Typography className={classes.label}>Editing order #{this.state.order.id}</Typography>
                 <List className={classes.text}>
                     {this.state.order.items.map((item, id) => {
                         return (
-                            
                             <ListItem key={id}>
                                 <ListItemText>{item.name}</ListItemText>
                                 <ListItemText>{numberWithCommas(item.price)} ISK</ListItemText>

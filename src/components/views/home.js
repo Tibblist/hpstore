@@ -20,7 +20,7 @@ const styles = theme => ({
     },
     card: {
         //'display': 'inline-block',
-        'width': '15%',
+        'flex': '1 1 0',
     },
     cardMedia: {
         height: 256,

@@ -383,7 +383,7 @@ exports.recalcPricing = function() {
         }
 
         if (newItem.price > 10000000) newItem.price = Math.round(newItem.price/1000000) * 1000000
-
+        newItem.price = Math.round(newItem.price);
         itemPriceArray.push(newItem);
     }
     delete require.cache[require.resolve('./mats')];
@@ -422,7 +422,7 @@ exports.getMarketerPricing = async function() {
     }
     requestArray.push(request.get('https://api.evemarketer.com/ec/marketstat/json').query({ 'typeid': idArray.toString() }))
     var results = await Promise.all(requestArray).catch(function(e) {
-        //console.log(e);
+        console.log(e);
     });
     for (var i = 0; i < results.length; i++) {
         costArray= costArray.concat(results[i].body);
