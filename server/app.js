@@ -119,6 +119,18 @@ app.get('/api/getDiscounts', async (req,res) => {
   }
 });
 
+app.post('/api/postDiscounts', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    discount_ctrl.updateDiscounts(req.body);
+    res.send("OK");
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
 app.post('/api/postOrderUpdate', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {

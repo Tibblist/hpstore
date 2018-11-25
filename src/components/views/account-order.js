@@ -11,7 +11,6 @@ import { Typography, ListItemText, List, ListItem, Input, InputLabel, InputAdorn
 import CloseIcon from '@material-ui/icons/Close';
 import {
     Redirect,
-    Link
   } from 'react-router-dom';
 const request = require('superagent');
 
