@@ -3,6 +3,9 @@ import { withStyles } from '@material-ui/core/styles';
 import { Paper, Typography, List, ListItem, ListItemText, Button, TextField } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import { AuthService } from '../../backend/client/auth';
+const request = require('superagent');
+
 
 const styles = theme => ({
     root: {
@@ -51,7 +54,47 @@ class AccountSales extends React.Component {
     }
 
     componentDidMount() {
-        //this.fetchData();
+        this.fetchData();
+    }
+
+    fetchData = () => {
+        request
+        .get("/api/getDiscounts")
+        .set('Authorization', AuthService.getToken())
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+                this.setState({
+                    discountArray: [{percentOff: '0', code: 'Error getting discounts', maxUse: 0}]
+                });
+                return;
+            }
+
+            if (res.status === 403) {
+                this.setState({
+                    discountArray: [{percentOff: '0', code: 'You do not have clearance to access this info', maxUse: 0}]
+                });
+                return;
+            }
+
+            this.setState({
+                discountArray: res.body
+            });
+        })
+    }
+
+    submitDiscounts = () => {
+        request
+        .post("/api/postDiscounts")
+        .set('Authorization', AuthService.getToken())
+        .send(this.state.discountArray)
+        .retry(2)
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+            }
+
+        })
     }
 
     handleClose = (name) => {
@@ -138,6 +181,7 @@ class AccountSales extends React.Component {
 
         var discounts = this.state.discountArray;
         discounts.push(newDiscount);
+        this.submitDiscounts();
 
         this.setState({
             code: '',

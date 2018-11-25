@@ -1,4 +1,5 @@
-const Order = require('./../models/order')
+const Order = require('./../models/order');
+const discount_ctrl = require('./discount_ctrl');
 const dataJS = require('./../data');
 const mongoose = require('mongoose');
 
@@ -20,6 +21,7 @@ function getRandomNumber(x) {
 
 exports.createOrder = async function(res, obj, user) {
     var order = new Order({discountCode: obj.discountCode});
+    var discount = await discount_ctrl.verifyDiscount(obj.discountCode);
     order._id = new mongoose.Types.ObjectId();
     order.buyer = user;
     order.location = obj.location;
@@ -30,9 +32,12 @@ exports.createOrder = async function(res, obj, user) {
         id = getRandomNumber(8);
         testOrder = await Order.findOne({transID: id})
     }
-
+    var isValid = discount_ctrl.useDiscount(discount.code);
+    if (isValid === false) {
+        discount = null;
+    }
     order.transID = id;
-    if (!dataJS.validatePricing(obj.items)) {
+    if (!dataJS.validatePricing(obj.items, discount)) {
         console.log("Failed to validate pricing for: " + user.primaryCharacter.name);
         res.send({status: 5});
         res.end();

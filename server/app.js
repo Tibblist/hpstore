@@ -91,6 +91,34 @@ app.get('/api/getOrder', async (req,res) => {
   }
 });
 
+app.get('/api/verifyDiscount', async (req,res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsValid(user)) {
+    var discount = await discount_ctrl.verifyDiscount(req.query.code);
+    var valid = true;
+    if (discount === null || discount === undefined) {
+      valid = false;
+    }
+    res.json({valid: valid, discount: discount});
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
+app.get('/api/getDiscounts', async (req,res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    var discounts = discount_ctrl.getDiscounts();
+    res.json(discounts);
+    res.end();
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
+
 app.post('/api/postOrderUpdate', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {

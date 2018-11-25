@@ -1,4 +1,3 @@
-const parsedJSON = require('./eveids.json');
 const matsArray = require('./matsNeeded');
 const conversions = require('./converter');
 const itemInfo = require('./invTypes');
@@ -81,7 +80,7 @@ function createMarginMap() {
     
 }
 
-function initialMarginCreation() {
+/*function initialMarginCreation() {
     var groups = [];
     for (var i = 0; i < itemGroups.length; i++) {
         if (!groupArray.includes(parseInt(itemGroups[i].groupID, 10))) {
@@ -106,7 +105,7 @@ function createCategoryArray() {
         }
         groupArray.push(groupID);
     }
-}
+}*/
 
 function createUnfilteredArray() {
     for (var i = 0; i < itemInfo.length; i++) {
@@ -431,8 +430,9 @@ exports.getMarketerPricing = async function() {
     await writeFile('marketData.json', JSON.stringify(costArray));
 }
 
-exports.validatePricing = function (items, code) {
-    var modifier = 1; //CHANGE TO CHECK EXPECTED MODIFIER BASED ON CODE
+exports.validatePricing = function (items, discount) {
+    var modifier = 1;
+    if (discount !== null) modifier = discount.percentOff/100;
     for (var i = 0; i < items.length; i++) {
         if (findItemPrice(items[i].id) * modifier != items[i].price) {
             return false;

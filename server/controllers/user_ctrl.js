@@ -73,13 +73,22 @@ exports.getUserWithToken = async function(token) {
 }
 
 exports.userIsAdmin = function(user) {
-    return (user.group == 3)
+    if (user === null) {
+        return false;
+    }
+    return (user.group === 3)
 }
 
 exports.userIsBuilder = function(user) {
+    if (user === null) {
+        return false;
+    }
     return (user.group > 1)
 }
 
 exports.userIsValid = function(user) {
+    if (user === null) {
+        return false;
+    }
     return (user.group > 0)
 }
