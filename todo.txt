@@ -1,0 +1,12 @@
+Fixes:
+ESLint errors in files
+
+Maintenance:
+User auth as express middleware
+Extract routes to separate file/files
+Deal with 403 forbidden and other errors in client on request return
+
+New features:
+Sales page frontend/backend
+Fit parsers frontend/backend
+Create universal snackbar to display messages to user
