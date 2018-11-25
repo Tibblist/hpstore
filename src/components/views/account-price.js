@@ -186,19 +186,29 @@ class AccountPrice extends React.Component {
     }
 
     handleMatChange = (id, event) => {
+        var matArray = this.state.matArray;
         for (var i = 0; i < this.state.matArray.length; i++) {
-            if (this.state.matArray[i].id == id) {
-                this.state.matArray[i].price = event.target.value;
+            if (this.state.matArray[i].id === id) {
+                matArray[i].price = event.target.value;
             }
         }
+
+        this.setState({
+            matArray: matArray
+        })
     }
 
     handleMarginChange = (id, event) => {
+        var categoryArray = this.state.categoryArray;
         for (var i = 0; i < this.state.categoryArray.length; i++) {
-            if (this.state.categoryArray[i].id == id) {
-                this.state.categoryArray[i].margin = event.target.value;
+            if (this.state.categoryArray[i].id === id) {
+                categoryArray[i].margin = event.target.value;
             }
         }
+
+        this.setState({
+            categoryArray: categoryArray
+        })
     }
 
     handleItemChange = (event) => {
@@ -240,15 +250,18 @@ class AccountPrice extends React.Component {
             name: this.findName(this.state.id),
             price: this.state.price
         }
+        var priceList = this.state.priceList;
         for (let i = 0; i < this.state.priceList.length; i++) {
             if (this.state.priceList[i].id === newItem.id) {
-                this.state.priceList[i].price = this.state.price;
+                priceList[i].price = this.state.price;
+                this.setState({
+                    priceList: priceList
+                })
                 this.clearState();
                 return;
             }
         }
         
-        var priceList = this.state.priceList;
         priceList.push(newItem);
 
         this.setState({

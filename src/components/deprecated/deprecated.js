@@ -305,3 +305,21 @@ function testSendOrder() {
 <MenuItem className={classes.menuItem} value={"D-W7F0 - #% Gaarastar %#"}>D-W7F0 - #% Gaarastar %#</MenuItem>
 <MenuItem className={classes.menuItem} value={"F-NXLQ - Babylon 5-Bil"}>F-NXLQ - Babylon 5-Bil</MenuItem>
 <MenuItem className={classes.menuItem} value={"B17O-R - Onii-chan League Headquarters"}>B17O-R - Onii-chan League Headquarters</MenuItem>*/
+
+/*
+Loading screen template
+constructor() {
+    this.state = { isLoading: true }
+}
+
+componentDidMount() {
+    this.setState({isLoading: false})
+}
+
+render() {
+    return(
+        this.state.isLoading ? *showLoadingScreen* : *yourPage()*
+    )
+}
+
+*/

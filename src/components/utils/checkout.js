@@ -28,18 +28,27 @@ const styles = theme => ({
         //zIndex: 1,
     },
     itemName: {
-        'display': 'block',
+        'display': 'inline-block',
         'text-align': 'center',
         'margin-left': 'auto',
         'margin-right': 'auto',
     },
     itemQuantity: {
-        'width': '20px',
-        'display': 'inline-block',
-        'text-align': 'center',
-        'margin-bottom': 3
+        //'width': '20px',
+        'display': 'flex',
+        'flex-direction': 'row',
+        'justify-content': 'center',
+        'margin-bottom': 3,
+
     },
-    itemImg: {
+    tField: {
+        'width': 30
+    },
+    x: {
+        'vertical-align': 'text-bottom',
+        'padding-right': 5
+    },
+    itemImg: { 
         'display': 'block',
         'margin-left': 'auto',
         'margin-right': 'auto',
@@ -92,8 +101,8 @@ class CheckoutMenu extends React.Component {
     handleChange = (id, e) => {
         this.props.changeQuantity(id, e);
         for (var i = 0; i < this.props.cart.length; i++) {
-            if (this.props.cart.id == id) {
-                if (e.target.value == "") {
+            if (this.props.cart.id === id) {
+                if (e.target.value === "") {
                     this.props.cart.quantity = 0;
                     break;
                 }
@@ -121,9 +130,8 @@ class CheckoutMenu extends React.Component {
                             <Button className={classes.closeButton} onClick={() => this.handleChange(item.id, {target: {value: "0"}})}><CloseIcon/></Button>
                             <img alt="" src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} className={classes.itemImg}></img>
                             <p className={classes.price}>{abbreviateNumber(item.price)}</p>
-                            <p className={"  " + classes.itemName}>{item.name} 
-                            {"  x   "}<TextField onChange={(e) => this.handleChange(item.id, e)} value={item.quantity} className={classes.itemQuantity}></TextField>
-                            </p>
+                            <p className={"  " + classes.itemName}>{item.name}</p>
+                            <div className={classes.itemQuantity}><p className={classes.x} name={"quantity"}><b>X</b></p><TextField name="quantity" onChange={(e) => this.handleChange(item.id, e)} value={item.quantity} className={classes.tField}></TextField></div>
                         </Paper>
                     })}
                     <p>Total: {numberWithCommas(total)} ISK</p>

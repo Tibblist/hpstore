@@ -20,9 +20,9 @@ class ContactUs extends React.Component {
             <div className={classes.root}>
                 <Paper className={classes.paper}>
                     <Typography>
-                        You can reach out to us on our discord, <a target="_blank" href="https://discord.gg/Q2z6WFD">Click Here!</a>
+                        You can reach out to us on our discord, <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/Q2z6WFD">Click Here!</a>
                     </Typography>
-                    <iframe src="https://discordapp.com/widget?id=510378397147332608&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
+                    <iframe src="https://discordapp.com/widget?id=510378397147332608&theme=dark" title="Our Discord Server" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
                 </Paper>
             </div>
         );

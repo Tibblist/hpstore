@@ -1,5 +1,4 @@
 const Order = require('./../models/order')
-const User = require('./../models/user')
 const dataJS = require('./../data');
 const mongoose = require('mongoose');
 
@@ -88,7 +87,7 @@ exports.findOrderByTID = async function (tid) {
 exports.updateOrder = async function (newOrder) {
     Order.findOne({transID: newOrder.id}, function (err, order) {
         if (order === null || err) {
-            console.log("Error updating order #" + tid);
+            console.log("Error updating order #" + newOrder.id);
             console.log(err);
             return null;
         }

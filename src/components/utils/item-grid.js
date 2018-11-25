@@ -1,11 +1,11 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import CartIcon from '@material-ui/icons/AddShoppingCart';
-
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const numberWithCommas = (x) => {
     if (x === null || x === undefined) {
@@ -55,10 +55,38 @@ const styles = theme => ({
         'margin-left': '10px',
         'margin-right': '10px',
         'margin-bottom': '10px'
+     },
+     loading: {
+        'margin-left': '20%',
+        'margin-right': '10%',
+        'margin-top': 20,
+        'padding': 50,
+         display: 'flex',
+         'flex-direction': 'column',
+         'justify-content': 'center',
+     },
+     circle: {
+        display: 'block',
+        'margin-right': 'auto',
+        'margin-left': 'auto'
      }
   });
 
 class ItemGrid extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isLoading: true
+        }
+    }
+
+    componentDidMount() {
+        this.setState({isLoading: false})
+    }
+
+    componentDidUpdate() {
+        this.setState({isLoading: false})
+    }
 
     handleCart = (id) => {
         this.props.addFunction(id);
@@ -94,7 +122,14 @@ class ItemGrid extends React.Component {
             }
         }
         itemArray = newArray;
-        console.log(itemArray);
+        if (this.state.isLoading || itemArray.length === 0) {
+            return (
+                <div className={classes.loading}>
+                        <CircularProgress className={classes.circle}/>
+                        <Typography align="center">Loading..</Typography>
+                </div>
+            )
+        }
         return (
             <div className={classes.root}>
             <Grid container spacing={8} className={classes.container}>
@@ -105,11 +140,11 @@ class ItemGrid extends React.Component {
                             {getImage(classes, item)}
                             <Typography className={classes.itemName}>{item.name}</Typography>
                             <Typography className={classes.itemPrice}>Price: {numberWithCommas(item.price)} ISK</Typography>
-                            <Fragment className={classes.addButtonDiv}>
+                            <div className={classes.addButtonDiv}>
                             {item.disabled
                             ? <Button disabled variant="contained" className={classes.addButton}> Temp Out of Order</Button>
                             : <Button variant="contained" className={classes.addButton} onClick={() => this.handleCart(item.id)}> Add to cart <CartIcon/></Button>}
-                            </Fragment>
+                            </div>
                             </Paper>
                         }, this)}
                     </Grid>

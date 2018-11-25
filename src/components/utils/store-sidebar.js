@@ -92,7 +92,7 @@ class StoreSideBar extends React.Component {
                         {this.state.categoryArray.map((category, id) => {
                             if (this.state.activeCategory === category.id) {
                                 return (
-                                    <div>
+                                    <div key={id}>
                                         <Divider/>
                                         <ListItem button onClick={() => this.handleClick(category.id)} className={classes.active}>
                                             <ListItemText><em className={classes.active}>{category.name}</em></ListItemText>
@@ -101,7 +101,7 @@ class StoreSideBar extends React.Component {
                                 )
                             } else {
                                 return (
-                                    <div>
+                                    <div key={id}>
                                         <Divider/>
                                         <ListItem button onClick={() => this.handleClick(category.id)} className={classes.inactive}>
                                             <ListItemText>{category.name}</ListItemText>

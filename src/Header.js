@@ -11,7 +11,7 @@ const styles = theme => ({
         'margin-bottom': 10,
     },
     leftnav: {
-        'display': 'inline-block',
+        //'display': 'inline-block',
         'display': 'flex',
         'flex-direction': 'row',
         'align-items': 'flex-start',
@@ -42,7 +42,7 @@ class Header extends React.Component {
         if (element) {
           var size = element.getBoundingClientRect()
           var width = size.width;
-          if (width != this.state.width) {
+          if (width !== this.state.width) {
             this.setState({
                 width: width
             })

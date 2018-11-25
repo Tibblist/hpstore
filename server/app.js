@@ -1,3 +1,4 @@
+/* eslint-disable no-redeclare */
 const express = require('express');
 const mongoose = require("mongoose");
 var morgan = require("morgan");  
@@ -7,7 +8,8 @@ var fs = require('fs');
 const esi = require('./esi');
 const dataJS = require('./data');
 const user_ctrl = require('./controllers/user_ctrl');
-const order_ctrl = require('./controllers/order_ctrl')
+const order_ctrl = require('./controllers/order_ctrl');
+const discount_ctrl = require('./controllers/discount_ctrl');
 const INFO = require('./config');
 
 
@@ -63,7 +65,7 @@ app.get('/api/getOrder', async (req,res) => {
   if (user_ctrl.userIsBuilder(user) || user.token === order.buyer.token) {
     //console.log(req.query);
     var builder = '';
-    if (order.builder == undefined) {
+    if (order.builder === undefined) {
       builder = "Unclaimed";
     } else {
       builder = order.builder.primaryCharacter.name;
@@ -199,10 +201,10 @@ app.get('/api/getCategories', async (req,res) => {
     }
   }
   var catArray = [];
-  for (var i = 0; i < margins.length; i++) {
+  for (var j = 0; j < margins.length; j++) {
     var category = {
-      id: margins[i].id,
-      name: margins[i].name,
+      id: margins[j].id,
+      name: margins[j].name,
     }
     catArray.push(category);
   }
@@ -291,7 +293,6 @@ app.get('/api/getMatPrices', async (req,res) => {
 });
 
 app.get('/api/getSettings', async (req,res) => {
-  const mats = require('./mats');
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsValid(user)) {
     res.json({character: user.defaultCharacter, location: user.defaultShipping});
@@ -348,7 +349,7 @@ function parseOrdersToArray(orders, user) {
     for (var i = 0; i < orders.length; i++) {
       var subArray = [];
       subArray.push(orders[i].transID);
-      if (orders[i].builder == undefined) {
+      if (orders[i].builder === undefined) {
         subArray.push("Unclaimed");
       } else {
         subArray.push(orders[i].builder.primaryCharacter.name);
@@ -360,7 +361,7 @@ function parseOrdersToArray(orders, user) {
       subArray.push(numberWithCommas(orders[i].price));
       var itemString = '';
       for (var j = 0; j < orders[i].items.length; j++) {
-        if (j == 0) {
+        if (j === 0) {
           itemString += orders[i].items[j].name + " x" + orders[i].items[j].quantity
         } else {
           itemString += "\n" + orders[i].items[j].name + " x" + orders[i].items[j].quantity
@@ -390,18 +391,21 @@ function parseOrdersToArray(orders, user) {
       ret.data.push(subArray);
     }
   } else {
+    // eslint-disable-next-line no-redeclare
     for (var i = 0; i < orders.length; i++) {
+      // eslint-disable-next-line no-redeclare
       var subArray = [];
       subArray.push(orders[i].transID);
-      if (orders[i].builder == undefined) {
+      if (orders[i].builder === undefined) {
         subArray.push("Unclaimed");
       } else {
         subArray.push(orders[i].builder.primaryCharacter.name);
       }
       subArray.push(numberWithCommas(orders[i].price));
       var itemString = '';
+      // eslint-disable-next-line no-redeclare
       for (var j = 0; j < orders[i].items.length; j++) {
-        if (j == 0) {
+        if (j === 0) {
           itemString += orders[i].items[j].name + " x" + orders[i].items[j].quantity
         } else {
           itemString += "\n" + orders[i].items[j].name + " x" + orders[i].items[j].quantity
