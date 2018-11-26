@@ -149,7 +149,7 @@ function showStatus(status) {
 }
 
 function createLink(id) {
-    return <Link to={"/account/order/" + id}>View Items</Link>
+    return <Link to={{pathname: "/account/order/" + id, state: {viewOnly: true}}}>View Items</Link>
 }
 
 export default AccountHome;

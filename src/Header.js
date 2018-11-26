@@ -4,6 +4,7 @@ import { AuthService } from './backend/client/auth';
 import { Paper, Button, Divider, Typography} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import Collapse from '@material-ui/core/Collapse';
+import OutsideAlerter from './components/utils/outside-alerter';
 
 const styles = theme => ({
     container: {
@@ -56,6 +57,12 @@ class Header extends React.Component {
         })
     }
 
+    handleClose = () => {
+        this.setState({
+            open: false
+        })
+    }
+
     render() {
         const { classes } = this.props;
         return (
@@ -75,26 +82,28 @@ class Header extends React.Component {
                     <Button size="large" component={Link} to="/">
                         Home
                     </Button>
-                    <div className={classes.button}>
-                        <div ref={this.refCallback}>
-                            <Button size="large" onClick={this.handleOpen}>
-                                <Typography align="center">Browse</Typography>
-                            </Button>
+                    <OutsideAlerter onClick={this.handleClose}>
+                        <div className={classes.button}>
+                            <div ref={this.refCallback}>
+                                <Button size="large" onClick={this.handleOpen}>
+                                    <Typography align="center">Browse</Typography>
+                                </Button>
+                            </div>
+                            <Collapse in={this.state.open}>
+                                <Paper style={{'display': 'flex', 'flex-direction': 'column', 'vertical-align': 'top', 'width': this.state.width}}>
+                                    <Button onClick={this.handleOpen} component={Link} to="/store/hulls">Hulls</Button>
+                                    <Divider/>
+                                    <Button onClick={this.handleOpen} component={Link} to="/store/mods">Mods and Fighters</Button>
+                                    <Divider/>
+                                    <Button onClick={this.handleOpen} disabled component={Link} to="/store/sales">Sales</Button>
+                                    <Divider/>
+                                    <Button onClick={this.handleOpen} disabled component={Link} to="/store/fittings">Doctrine Fittings</Button>
+                                    <Divider/>
+                                    <Button onClick={this.handleOpen} disabled component={Link} to="/store/fittings/parser">Custom Fittings</Button>
+                                </Paper>
+                            </Collapse>
                         </div>
-                        <Collapse in={this.state.open}>
-                            <Paper style={{'display': 'flex', 'flex-direction': 'column', 'vertical-align': 'top', 'width': this.state.width}}>
-                                <Button onClick={this.handleOpen} component={Link} to="/store/hulls">Hulls</Button>
-                                <Divider/>
-                                <Button onClick={this.handleOpen} component={Link} to="/store/mods">Mods and Fighters</Button>
-                                <Divider/>
-                                <Button onClick={this.handleOpen} disabled component={Link} to="/store/sales">Sales</Button>
-                                <Divider/>
-                                <Button onClick={this.handleOpen} disabled component={Link} to="/store/fittings">Doctrine Fittings</Button>
-                                <Divider/>
-                                <Button onClick={this.handleOpen} disabled component={Link} to="/store/fittings/parser">Custom Fittings</Button>
-                            </Paper>
-                        </Collapse>
-                    </div>
+                    </OutsideAlerter>
                     <Button size="large" component={Link} to="/contact-us">
                         Contact Us
                     </Button>

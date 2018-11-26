@@ -75,7 +75,8 @@ class CheckoutItems extends React.Component {
             location: '1DQ1-A - 1-st Thetastar of Dickbutt',
             character: '',
             total: 0,
-            open: false
+            open: false,
+            percentOff: 0
         };
     }
 
@@ -164,12 +165,29 @@ class CheckoutItems extends React.Component {
     clearCart = () => {
         this.props.clearCart();
     }
+
+    verifyDiscount = () => {
+        request
+        .get("/api/verifyDiscount")
+        .set('Authorization', AuthService.getToken())
+        .query({code: this.state.discountCode})
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+            this.setState({
+                valid: res.body.valid,
+                percentOff: res.body.percentOff
+            });
+        })
+    }
   
     render() {
         const {classes} = this.props;
         var total = 0;
         for (var i = 0; i < this.props.cart.length; i++) {
-            total += this.props.cart[i].quantity * this.props.cart[i].price
+            total += (this.props.cart[i].quantity * this.props.cart[i].price) + ((this.props.cart[i].quantity * this.props.cart[i].price) * (this.state.percentOff/100))
         }
         if (this.state.orderSent) {
             return (
@@ -201,7 +219,7 @@ class CheckoutItems extends React.Component {
                     })}
                     <ListItem>
                         <TextField style={{'display': 'inline-block', 'padding-right': '1%'}} onChange={(e) => this.handleCodeChange(e)} placeholder={"Discount Code"}></TextField>
-                        <Button variant="contained" onClick={console.log} style={{'background-color': 'green', 'color': 'white'}}>Verify</Button>
+                        <Button variant="contained" onClick={this.verifyDiscount} style={{'background-color': 'green', 'color': 'white'}}>Verify</Button>
                         <Typography className={classes.label}>Delivery Location:</Typography>
                         <FormControl className={classes.formControl}>
                             <Select

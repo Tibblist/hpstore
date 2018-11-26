@@ -77,8 +77,14 @@ class AccountSales extends React.Component {
                 return;
             }
 
+            var discountArray = res.body;
+            console.log(discountArray);
+            if (Object.keys(discountArray).length === 0) {
+                discountArray = [];
+            }
+
             this.setState({
-                discountArray: res.body
+                discountArray: discountArray
             });
         })
     }
@@ -120,7 +126,8 @@ class AccountSales extends React.Component {
 
         this.setState({
             discountArray: discounts
-        })
+        },
+        this.submitDiscounts);
     }
 
     handleNameChange = (event) => {
@@ -167,7 +174,7 @@ class AccountSales extends React.Component {
 
     handleUseChange = (event) => {
         this.setState({
-            maxUse: event.target.value
+            maxUse: parseInt(event.target.value, 10)
         })
     }
 
@@ -176,11 +183,12 @@ class AccountSales extends React.Component {
             code: this.state.code,
             maxUse: this.state.maxUse,
             percentOff: this.state.percentOff,
-            used: 0,
+            uses: 0,
         }
 
         var discounts = this.state.discountArray;
         discounts.push(newDiscount);
+        console.log(newDiscount);
         this.submitDiscounts();
 
         this.setState({
@@ -249,7 +257,7 @@ class AccountSales extends React.Component {
                                 <ListItem key={id}>
                                     <ListItemText>{discount.code}</ListItemText>
                                     <ListItemText>{discount.percentOff + "%"}</ListItemText>
-                                    <ListItemText>{discount.used + "/" + discount.maxUse}</ListItemText>
+                                    <ListItemText>{discount.uses + "/" + discount.maxUse}</ListItemText>
                                     <Button onClick={() => this.handleCloseD(discount.code)}>
                                         <CloseIcon/>
                                     </Button>

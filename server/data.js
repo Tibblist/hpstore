@@ -427,7 +427,7 @@ exports.getMarketerPricing = async function() {
         costArray= costArray.concat(results[i].body);
     }
     console.log(results[results.length - 1].header);
-    await writeFile('marketData.json', JSON.stringify(costArray));
+    if (costArray.length > 0) await writeFile('marketData.json', JSON.stringify(costArray));
 }
 
 exports.validatePricing = function (items, discount) {

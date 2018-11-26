@@ -81,6 +81,8 @@ class ItemGrid extends React.Component {
     }
 
     componentDidMount() {
+        console.log("Mounted");
+        console.log(this.props.items);
         this.setState({isLoading: false})
     }
 
@@ -93,7 +95,7 @@ class ItemGrid extends React.Component {
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        if (this.props.items == undefined) {
+        if (this.props.items === undefined) {
             return true;
         }
         if (this.props.items.length === nextProps.items.length) {

@@ -345,7 +345,7 @@ class AccountReports extends React.Component {
             )
         }
 
-        if(!this.props.isBuilder) {
+        if(this.props.location.state && this.props.location.state.viewOnly) {
             return (
                 <Paper className={classes.container}>
                     <Typography className={classes.label}>Viewing order #{this.state.order.id}</Typography>

@@ -32,7 +32,7 @@ let db = mongoose.connection;
 
 db.once("open", async () => {
   dataJS.init();
-  await dataJS.getMarketerPricing();
+  //await dataJS.getMarketerPricing();
   dataJS.recalcPricing();
   console.log("connected to the database")
 });
@@ -98,8 +98,10 @@ app.get('/api/verifyDiscount', async (req,res) => {
     var valid = true;
     if (discount === null || discount === undefined) {
       valid = false;
+      res.json({valid: valid, percentOff: 0});
+    } else {
+      res.json({valid: valid, percentOff: discount.percentOff});
     }
-    res.json({valid: valid, discount: discount});
     res.end();
   } else {
     res.send(403);
@@ -110,7 +112,7 @@ app.get('/api/verifyDiscount', async (req,res) => {
 app.get('/api/getDiscounts', async (req,res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
-    var discounts = discount_ctrl.getDiscounts();
+    var discounts = await discount_ctrl.getDiscounts();
     res.json(discounts);
     res.end();
   } else {
@@ -122,7 +124,7 @@ app.get('/api/getDiscounts', async (req,res) => {
 app.post('/api/postDiscounts', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
-    discount_ctrl.updateDiscounts(req.body);
+    discount_ctrl.updateDiscounts(req.body, user);
     res.send("OK");
     res.end();
   } else {
