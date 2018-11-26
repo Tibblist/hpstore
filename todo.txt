@@ -13,3 +13,4 @@ Sales page frontend/backend
 Fit parsers frontend/backend
 Create universal snackbar to display messages to user
 Make sales/discounts already created editable in backend
+Add Google Analytics tracking
