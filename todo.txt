@@ -1,5 +1,6 @@
 Fixes:
 ESLint errors in files
+Sanitize input with https://www.npmjs.com/package/validator
 
 Maintenance:
 User auth as express middleware
