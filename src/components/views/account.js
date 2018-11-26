@@ -51,14 +51,14 @@ class AccountHome extends React.Component {
             }
             for (var i = 0; i < res.body.data.length; i++) {
                 if (res.body.isBuilder) {
-                    res.body.data[i][10] = showStatus(parseInt(res.body.data[i][10], 10));
-                    res.body.data[i][4] = createLink(res.body.data[i][0])
+                    res.body.data[i][11] = showStatus(parseInt(res.body.data[i][11], 10));
+                    res.body.data[i][5] = createLink(res.body.data[i][0])
                     var builder = res.body.data[i][1];
                     var id = res.body.data[i][0];
                     if (builder === "Unclaimed") {
-                        res.body.data[i][1] = <Button variant="outlined" value={id} onClick={this.submitClaim}>Claim!</Button>
+                        res.body.data[i][1] = <Button variant="outlined" value={id} onClick={this.submitClaim}>Claim</Button>
                     } else if (builder === AuthService.getName()) {
-                        res.body.data[i][1] = <p style={{'text-align': 'center'}}>You <Link to={"/account/order/" + res.body.data[i][0]}><Button variant="outlined">Edit Order</Button></Link> <Button variant="outlined" value={id} onClick={this.unClaim}>Unclaim!</Button></p>
+                        res.body.data[i][1] = <div><Link to={"/account/order/" + res.body.data[i][0]}><Button variant="outlined">Edit Order</Button></Link> <Button variant="outlined" value={id} onClick={this.unClaim}>Unclaim</Button></div>
                     }
                 } else {
                     res.body.data[i][9] = showStatus(parseInt(res.body.data[i][9], 10));

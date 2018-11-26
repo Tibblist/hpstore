@@ -96,7 +96,7 @@ app.get('/api/verifyDiscount', async (req,res) => {
   if (user_ctrl.userIsValid(user)) {
     var discount = await discount_ctrl.verifyDiscount(req.query.code);
     var valid = true;
-    if (discount === null || discount === undefined) {
+    if (discount === null || discount === undefined || discount.uses === discount.maxUse) {
       valid = false;
       res.json({valid: valid, percentOff: 0});
     } else {
@@ -371,6 +371,18 @@ app.post('/api/postSettings', async (req, res) => {
   }
 });
 
+app.delete('/api/deleteOrder', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    order_ctrl.deleteOrder(req.query.id);
+    res.sendStatus(200);
+    res.end();
+  } else {
+    res.sendStatus(403);
+    res.end();
+  }
+});
+
 // Handles any requests that don't match the ones above
 app.get('*', (req,res) =>{
     res.sendFile('build/index.html', { root: __dirname });
@@ -401,6 +413,7 @@ function parseOrdersToArray(orders, user) {
       }
       subArray.push(orders[i].buyer.primaryCharacter.name);
       subArray.push(numberWithCommas(orders[i].price));
+      subArray.push(orders[i].code ? orders[i].code : "None");
       var itemString = '';
       for (var j = 0; j < orders[i].items.length; j++) {
         if (j === 0) {

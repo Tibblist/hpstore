@@ -20,11 +20,15 @@ exports.verifyDiscount = async function(code) {
 
 exports.updateDiscounts = async function(discounts, user) {
     var discountList = await Discount.find();
+    var usedIndices = [];
+    var lastDiscount = discountList[discountList.length - 1];
     try {
         discountList.forEach(discount => {
             var discountIndex = discountDoesExist(discounts, discount.code);
+            console.log(discounts);
+            console.log(discount.code);
             if (discountIndex !== -1) {
-                console.log("Found discount");
+                console.log("Found discount at index:" + discountIndex);
                 Discount.findOne({code: discount.code.toUpperCase()}, function(err, discountObject){
                     if (err) {
                         console.log(err);
@@ -36,10 +40,9 @@ exports.updateDiscounts = async function(discounts, user) {
                         return;
                     }
                     
-                    discountObject.maxUses = discounts[discountIndex].maxUses;
+                    discountObject.maxUse = discounts[discountIndex].maxUse;
                     discountObject.percentOff = discounts[discountIndex].percentOff;
                     discountObject.save();
-                    discounts.splice(discountIndex, 1);
                 })
             } else {
                 console.log("Deleting discount: " + discount.code);
@@ -56,7 +59,9 @@ exports.updateDiscounts = async function(discounts, user) {
 
     discounts.forEach(discount => {
         console.log("Adding code: " + discount.code + " to db.")
-        createDiscount(discount, user);
+        if (discountDoesExist(discountList, discount.code) === -1) {
+            createDiscount(discount, user);
+        }
     });
 }
 
@@ -80,10 +85,11 @@ function createDiscount(obj, user) {
 
 exports.useDiscount = async function(code) {
     var discount = await Discount.findOne({code: code.toUpperCase()});
-    if (discount.uses === discount.maxUses) {
+    if (discount.uses >= discount.maxUse) {
         return false;
     } else {
         discount.uses++;
+        console.log(discount.uses);
         await discount.save();
         return true;
     }

@@ -139,6 +139,13 @@ const builderColumns = [
      }
     },
     {
+     name: "Discount Code",
+     options: {
+      filter: false,
+      sort: false,
+     }
+    },
+    {
      name: "Items",
      options: {
       filter: false,

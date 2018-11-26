@@ -76,7 +76,10 @@ class CheckoutItems extends React.Component {
             character: '',
             total: 0,
             open: false,
-            percentOff: 0
+            percentOff: 0,
+            sent: false,
+            title: "",
+            body: ""
         };
     }
 
@@ -89,11 +92,15 @@ class CheckoutItems extends React.Component {
     };
 
     postOrder = () => {
+        var total = 0;
+        for (var i = 0; i < this.props.cart.length; i++) {
+            total += (this.props.cart[i].quantity * this.props.cart[i].price) - ((this.props.cart[i].quantity * this.props.cart[i].price) * (this.state.percentOff/100))
+        }
         var obj = {
             items: this.props.cart,
-            discountCode: this.state.discountCode,
+            discountCode: this.state.valid ? this.state.discountCode : '',
             character: this.state.character,
-            location: this.state.location
+            location: this.state.location,
         }
         request
         .post("/api/postOrder")
@@ -105,19 +112,34 @@ class CheckoutItems extends React.Component {
                 console.log(err);
                 return;
             }
-            //console.log(res)
-            localStorage.removeItem("Cart");
-            console.log("Removing cart from localstorage");
-            if (res.body != null && res.body.status === 5) {
+
+            if (res.body != null && res.body.status === 1) {
                 this.setState({
-                    open: true
+                    open: true,
+                    title: "Discount code invalid",
+                    body: "Unfortunately the discount code you are trying to use has hit it's max uses or expired since you started this order and will no longer be usable.",
+                    percentOff: 0,
+                    sent: false,
+                    discountCode: ''
+                })
+                return;
+            }
+
+            if (res.body != null && res.body.status === 2) {
+                this.setState({
+                    open: true,
+                    title: "Cart prices outdated!",
+                    body: "Unfortunately item prices have updated slightly since you created your cart. Don't worry we will update the prices for you and you can choose whether or not to continue."
                 })
                 this.props.updatePrices();
                 return;
             }
+
+            localStorage.removeItem("Cart");
+
             var total = 0;
             for (var i = 0; i < this.props.cart.length; i++) {
-                total += this.props.cart[i].quantity * this.props.cart[i].price
+                total += (this.props.cart[i].quantity * this.props.cart[i].price) - ((this.props.cart[i].quantity * this.props.cart[i].price) * (this.state.percentOff/100))
             }
             this.clearCart();
             this.setState({
@@ -145,6 +167,11 @@ class CheckoutItems extends React.Component {
     }
 
     handleCodeChange = (event) => {
+        if (event.target.value === "") {
+            this.setState({
+                sent: false
+            });
+        }
         this.setState({
             discountCode: event.target.value
         });
@@ -178,7 +205,8 @@ class CheckoutItems extends React.Component {
             }
             this.setState({
                 valid: res.body.valid,
-                percentOff: res.body.percentOff
+                percentOff: res.body.percentOff,
+                sent: true
             });
         })
     }
@@ -186,8 +214,12 @@ class CheckoutItems extends React.Component {
     render() {
         const {classes} = this.props;
         var total = 0;
+        var subtotal = 0;
         for (var i = 0; i < this.props.cart.length; i++) {
-            total += (this.props.cart[i].quantity * this.props.cart[i].price) + ((this.props.cart[i].quantity * this.props.cart[i].price) * (this.state.percentOff/100))
+            total += (this.props.cart[i].quantity * this.props.cart[i].price) - ((this.props.cart[i].quantity * this.props.cart[i].price) * (this.state.percentOff/100))
+        }
+        for (var i = 0; i < this.props.cart.length; i++) {
+            subtotal += (this.props.cart[i].quantity * this.props.cart[i].price)
         }
         if (this.state.orderSent) {
             return (
@@ -218,8 +250,18 @@ class CheckoutItems extends React.Component {
                         </ListItem>
                     })}
                     <ListItem>
-                        <TextField style={{'display': 'inline-block', 'padding-right': '1%'}} onChange={(e) => this.handleCodeChange(e)} placeholder={"Discount Code"}></TextField>
-                        <Button variant="contained" onClick={this.verifyDiscount} style={{'background-color': 'green', 'color': 'white'}}>Verify</Button>
+                        <ListItemText align="right">Subtotal: {numberWithCommas(subtotal)}</ListItemText>
+                    </ListItem>
+                    <ListItem>
+                        <ListItemText align="right">
+                        {this.state.valid
+                        ? '-' + this.state.percentOff + '% off (-' + numberWithCommas(Math.round(subtotal * this.state.percentOff/100)) + ' ISK)'
+                        : "0% off"}
+                        </ListItemText>
+                    </ListItem>
+                    <ListItem>
+                        <TextField style={{'display': 'inline-block', 'padding-right': '1%'}} value={this.state.discountCode} onChange={(e) => this.handleCodeChange(e)} placeholder={"Discount Code"}></TextField>
+                        <Button variant="contained" onClick={this.verifyDiscount} style={ this.state.sent ? (this.state.valid ? {'background-color': 'green', 'color': 'white'} : {'background-color': 'red', 'color': 'white'}) :  {'background-color': 'blue', 'color': 'white'}}>Verify</Button>
                         <Typography className={classes.label}>Delivery Location:</Typography>
                         <FormControl className={classes.formControl}>
                             <Select
@@ -263,11 +305,11 @@ class CheckoutItems extends React.Component {
                     aria-describedby="alert-dialog-slide-description"
                 >
                     <DialogTitle id="alert-dialog-slide-title">
-                        {"Cart prices outdated!"}
+                        {this.state.title}
                     </DialogTitle>
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
-                            Unfortunately item prices have updated slightly since you created your cart. Don't worry we will update the prices for you and you can choose whether or not to continue.
+                            {this.state.body}
                     </DialogContentText>
                     </DialogContent>
                     <DialogActions>

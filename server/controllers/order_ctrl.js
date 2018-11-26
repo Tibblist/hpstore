@@ -32,20 +32,27 @@ exports.createOrder = async function(res, obj, user) {
         id = getRandomNumber(8);
         testOrder = await Order.findOne({transID: id})
     }
-    var isValid = discount_ctrl.useDiscount(discount.code);
-    if (isValid === false) {
-        discount = null;
+    if (discount !== null) {
+        var isValid = await discount_ctrl.useDiscount(discount.code);
+        console.log(isValid);
+        if (isValid === false) {
+            discount = null;
+            res.send({status: 1});
+            res.end();
+        }
+    } else {
+        discount = {percentOff: 0}
     }
     order.transID = id;
-    if (!dataJS.validatePricing(obj.items, discount)) {
+    if (!dataJS.validatePricing(obj.items)) {
         console.log("Failed to validate pricing for: " + user.primaryCharacter.name);
-        res.send({status: 5});
+        res.send({status: 2});
         res.end();
         return;
     }
     var totalPrice = 0;
     for (var i = 0; i < obj.items.length; i++) {
-        totalPrice += obj.items[i].price * obj.items[i].quantity;
+        totalPrice += (obj.items[i].price * obj.items[i].quantity) - ((obj.items[i].price * obj.items[i].quantity) * discount.percentOff/100);
         var newItem = {
             id: obj.items[i].id,
             name: obj.items[i].name,
@@ -119,5 +126,12 @@ exports.claimOrder = async function (tid, user, res) {
         await order.save();
         res.send("OK");
         res.end();
+    });
+}
+
+exports.deleteOrder = async function(tid) {
+    Order.deleteOne({transID: tid}, function(err, res) {
+        if (err) console.log(err);
+        //else console.log(res);
     });
 }

@@ -54,7 +54,14 @@ const styles = theme => ({
         'margin-top': '5px',
         display: 'flex',
         'justify-content': 'space-around',
-    }
+    },
+    bottomButton: {
+        'display': 'block',
+        'margin-left': 'auto',
+        'margin-right': 'auto',
+        'margin-top': '20px',
+        'margin-bottom': '20px'
+    },
 });
 
 const numberWithCommas = (x) => {
@@ -154,6 +161,23 @@ class AccountReports extends React.Component {
         .post("/api/postOrderUpdate")
         .set('Authorization', AuthService.getToken())
         .send(this.state.order)
+        .retry(2)
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+            }
+
+            this.setState({
+                done: true
+            })
+        })
+    }
+
+    deleteOrder = () => {
+        request
+        .delete("/api/deleteOrder")
+        .set('Authorization', AuthService.getToken())
+        .query({id: this.state.order.id})
         .retry(2)
         .end((err, res) => {
             if (err) {
@@ -484,6 +508,7 @@ class AccountReports extends React.Component {
                     </Select>
                 </FormControl>
                 <Button className={classes.button} variant="contained" onClick={this.postOrder}>Save</Button>
+                <Button className={classes.bottomButton} variant="contained" onClick={this.deleteOrder}>Delete Order</Button>
             </Paper>
         );
     }

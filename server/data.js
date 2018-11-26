@@ -430,14 +430,13 @@ exports.getMarketerPricing = async function() {
     if (costArray.length > 0) await writeFile('marketData.json', JSON.stringify(costArray));
 }
 
-exports.validatePricing = function (items, discount) {
-    var modifier = 1;
-    if (discount !== null) modifier = discount.percentOff/100;
+exports.validatePricing = function (items) {
     for (var i = 0; i < items.length; i++) {
-        if (findItemPrice(items[i].id) * modifier != items[i].price) {
+        if (findItemPrice(items[i].id) !== items[i].price) {
             return false;
         }
     }
+
     return true;
 }
 
@@ -454,7 +453,7 @@ exports.getPriceArray = function() {
 }
 
 function breakDownArray() {
-    var idToCheck = 11539;
+    //var idToCheck = 11539;
     for (var i = 0; i < itemArray.length; i++) {
         var newMatsArray = [];
         for (var j = 0; j < itemArray[i].mats.length; j++) {
