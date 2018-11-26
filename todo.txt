@@ -2,6 +2,7 @@ Fixes:
 ESLint errors in files
 Sanitize input with https://www.npmjs.com/package/validator
 Store margins/out of order list/custom prices in mongodb
+Improve performance of store through preloading and/or setting components visibility instead of re-rendering
 
 Maintenance:
 User auth as express middleware
