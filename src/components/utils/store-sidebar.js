@@ -60,7 +60,6 @@ class StoreSideBar extends React.Component {
                 return;
             }
             var categoryArray = res.body;
-            console.log(res.body)
             categoryArray.sort(function (a, b) {
                 return compareStrings(a.name, b.name);
             })

@@ -291,7 +291,7 @@ class CheckoutItems extends React.Component {
                     <ListItemText primary={"By submitting this order you agree to accept the final contract within 1 week of it being issued, otherwise your order will be forfeit. In return we agree to produce your order in a reasonable timeframe."} style={{'text-align': 'center', }}></ListItemText>
                     </ListItem>
                     <ListItem>
-                        {isDisabled(this.state.location, this.state.character, this.props.cart)
+                        {isDisabled(this.state.location, this.state.character, this.props.cart, total)
                         ? <Button disabled variant="contained" onClick={this.postOrder} className={classes.submitButton}>Submit</Button>
                         : <Button variant="contained" onClick={this.postOrder} className={classes.submitButton}>Submit</Button>}
                     </ListItem>
@@ -323,8 +323,8 @@ class CheckoutItems extends React.Component {
     }
   }
 
-function isDisabled(loc, char, cart) {
-    if (loc === '' || char === '' || cart.length === 0) {
+function isDisabled(loc, char, cart, total) {
+    if (loc === '' || char === '' || cart.length === 0 || total === 0) {
         return true;
     }
     return false;

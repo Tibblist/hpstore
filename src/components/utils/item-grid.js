@@ -81,13 +81,7 @@ class ItemGrid extends React.Component {
     }
 
     componentDidMount() {
-        console.log("Mounted");
-        console.log(this.props.items);
-        this.setState({isLoading: false})
-    }
-
-    componentDidUpdate() {
-        this.setState({isLoading: false})
+        this.setState({isLoading: false});
     }
 
     handleCart = (id) => {
@@ -96,6 +90,9 @@ class ItemGrid extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         if (this.props.items === undefined) {
+            return true;
+        }
+        if (nextState.isLoading !== this.state.isLoading) {
             return true;
         }
         if (this.props.items.length === nextProps.items.length) {
@@ -125,12 +122,15 @@ class ItemGrid extends React.Component {
         }
         itemArray = newArray;
         if (this.state.isLoading || itemArray.length === 0) {
+            console.log("IsLoading = " + this.state.isLoading + " and array length is " + itemArray.length);
             return (
                 <div className={classes.loading}>
-                        <CircularProgress className={classes.circle}/>
+                        <CircularProgress disableShrink className={classes.circle}/>
                         <Typography align="center">Loading..</Typography>
                 </div>
             )
+        } else {
+            console.log("Showing Items");
         }
         return (
             <div className={classes.root}>

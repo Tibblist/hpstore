@@ -66,7 +66,7 @@ class Header extends React.Component {
     render() {
         const { classes } = this.props;
         return (
-            <Paper className={classes.container} elevation={10} square="true">
+            <Paper className={classes.container} elevation={10} square={true}>
             <div className={classes.rightnav}>
                     {AuthService.isAuthed()
                         ? <Button size="large" component={Link} to="/account/orders">Account</Button>
@@ -90,7 +90,7 @@ class Header extends React.Component {
                                 </Button>
                             </div>
                             <Collapse in={this.state.open}>
-                                <Paper style={{'display': 'flex', 'flex-direction': 'column', 'vertical-align': 'top', 'width': this.state.width}}>
+                                <Paper style={{'display': 'flex', flexDirection: 'column', verticalAlign: 'top', 'width': this.state.width}}>
                                     <Button onClick={this.handleOpen} component={Link} to="/store/hulls">Hulls</Button>
                                     <Divider/>
                                     <Button onClick={this.handleOpen} component={Link} to="/store/mods">Mods and Fighters</Button>

@@ -139,7 +139,6 @@ export default class Store extends React.Component {
     }
 
     filterArrayByGroup = (group) => {
-      console.log(group);
       if (group === this.state.group) {
         this.setState({
           isSearching: false,

@@ -39,6 +39,39 @@ db.once("open", async () => {
 
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
 
+async function validAuth(req, res, next) {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsValid(user)) {
+    req.user = user;
+    next();
+  } else {
+    res.sendStatus(403);
+    res.end();
+  }
+}
+
+async function builderAuth(req, res, next) {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsBuilder(user)) {
+    req.user = user;
+    next();
+  } else {
+    res.sendStatus(403);
+    res.end();
+  }
+} 
+
+async function adminAuth(req, res, next) {
+  var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
+  if (user_ctrl.userIsAdmin(user)) {
+    req.user = user;
+    next();
+  } else {
+    res.sendStatus(403);
+    res.end();
+  }
+}
+
 // An api endpoint that returns all the orders for a all users
 app.get('/api/getOrders', async (req,res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
