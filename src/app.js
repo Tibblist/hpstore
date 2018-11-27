@@ -8,6 +8,9 @@ import Account from './components/views/account';
 import ContactUs from './components/views/contact-us'
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {AuthRoute} from './backend/client/auth';
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('UA-129885093-1');
 
 class App extends React.Component {
     constructor(props) {
@@ -25,6 +28,7 @@ class App extends React.Component {
     }
 
     render() {
+        ReactGA.pageview(window.location.pathname + window.location.search);
         return (
         <div>
             <CssBaseline/>

@@ -12,6 +12,7 @@
     "react": "^16.5.2",
     "react-autosuggest": "^9.4.2",
     "react-dom": "^16.5.2",
+    "react-ga": "^2.5.5",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.4",
