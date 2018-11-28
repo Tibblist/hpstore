@@ -125,9 +125,9 @@ class JumpFreight extends React.Component {
     calculateReward = () => {
         var trip = this.state.trip;
         if (trip.from === 1) {
-            return (trip.mass.replace(/,/g, '') * 950) + (trip.collateral.replace(/,/g, '') * 0.02)
-        } else if (trip.from === 2) {
             return (trip.mass.replace(/,/g, '') * 1000) + (trip.collateral.replace(/,/g, '') * 0.02)
+        } else if (trip.from === 2) {
+            return (trip.mass.replace(/,/g, '') * 950) + (trip.collateral.replace(/,/g, '') * 0.02)
         }
     }
 
