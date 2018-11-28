@@ -49,28 +49,54 @@ class JumpFreight extends React.Component {
     }
 
     handleCollateralChange = (event) => {
-        var value = event.target.value.replace(/,/g, '');
+        const value = event.target.value.replace(/,/g, '');
+        const selectionStart = event.target.selectionStart;
+        const target = event.target;
+        const startingCommas = (target.value.match(/,/g) || []).length;
         if (isNaN(value)) {
             return;
         }
         var trip = this.state.trip;
         if (value !== "") trip.collateral = numberWithCommas(parseInt(value, 10));
         else trip.collateral = "";
+        const endingCommas = (trip.collateral.match(/,/g) || []).length;
+        var cursorAdjustment = endingCommas - startingCommas;
+        if (trip.mass[selectionStart] === ',') {
+            cursorAdjustment = 0;
+        }
+        if (selectionStart + cursorAdjustment < 0) {
+            cursorAdjustment = 0;
+        }
         this.setState({
             trip: trip
+        }, () => {
+            target.setSelectionRange(selectionStart + cursorAdjustment, selectionStart + cursorAdjustment);
         });
     }
 
     handleMassChange = (event) => {
-        var value = event.target.value.replace(/,/g, '');
+        const value = event.target.value.replace(/,/g, '');
+        const selectionStart = event.target.selectionStart;
+        const target = event.target;
+        const startingCommas = (target.value.match(/,/g) || []).length;
         if (isNaN(value)) {
             return;
         }
         var trip = this.state.trip;
         if (value !== "") trip.mass = numberWithCommas(parseInt(value, 10));
         else trip.mass = "";
+        const endingCommas = (trip.mass.match(/,/g) || []).length;
+        var cursorAdjustment = endingCommas - startingCommas;
+        if (trip.mass[selectionStart] === ',') {
+            cursorAdjustment = 0;
+        }
+        if (selectionStart + cursorAdjustment < 0) {
+            cursorAdjustment = 0;
+        }
         this.setState({
             trip: trip
+        }, () => {
+            target.setSelectionRange(selectionStart + cursorAdjustment, selectionStart + cursorAdjustment);
         });
     }
 
@@ -99,9 +125,9 @@ class JumpFreight extends React.Component {
     calculateReward = () => {
         var trip = this.state.trip;
         if (trip.from === 1) {
-            return (trip.mass.replace(/,/g, '') * 900) + (trip.collateral.replace(/,/g, '') * 0.05)
+            return (trip.mass.replace(/,/g, '') * 950) + (trip.collateral.replace(/,/g, '') * 0.02)
         } else if (trip.from === 2) {
-            return (trip.mass.replace(/,/g, '') * 1000) + (trip.collateral.replace(/,/g, '') * 0.05)
+            return (trip.mass.replace(/,/g, '') * 1000) + (trip.collateral.replace(/,/g, '') * 0.02)
         }
     }
 
@@ -117,9 +143,9 @@ class JumpFreight extends React.Component {
                     <Typography variant="p" align="center" color="textSecondary" paragraph>
                         <List>
                             <ListItemText>Rates are:</ListItemText>
-                            <ListItemText>900 ISK per m3 from Jita to J5A</ListItemText>
+                            <ListItemText>950 ISK per m3 from Jita to J5A</ListItemText>
                             <ListItemText>1,000 ISK per m3 from J5A to Jita</ListItemText>
-                            <ListItemText>5% fee for collateral, max collateral is 5 Billion ISK</ListItemText>
+                            <ListItemText>2% fee for collateral, max collateral is 5 Billion ISK</ListItemText>
                         </List>
                     </Typography>
                     <div className={classes.calc}>
