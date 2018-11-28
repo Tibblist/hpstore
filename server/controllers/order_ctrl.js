@@ -118,8 +118,9 @@ exports.updateOrder = async function (newOrder) {
 exports.claimOrder = async function (tid, user, res) {
     //console.log(tid);
     Order.findOne({transID: tid}, async function (err, order) {
-        if (err) {
+        if (err || order === null) {
             console.log("Didn't find order #" + tid);
+            res.end();
             return null;
         }
         order.builder = user;

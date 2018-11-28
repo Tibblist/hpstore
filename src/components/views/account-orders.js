@@ -203,46 +203,9 @@ const options = {
 };
 
 class AccountOrders extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = { 
-            claimID: 0,
-            editID: 0
-        };
-    }
-
     componentDidMount() {
         this.props.fetchOrders();
     }
-
-    handleClaimID = (event) => {
-        this.setState({
-            claimID: event.target.value
-        });
-    }
-    handleEditID = (event) => {
-        this.setState({
-            editID: event.target.value
-        });
-    }
-
-    submitClaim = () => {
-        request
-        .post("/api/claimOrder")
-        .set('Authorization', AuthService.getToken())
-        .send({id: this.state.claimID})
-        .retry(2)
-        .end((err, res) => {
-            if (err) {
-                console.log(err);
-            }
-            this.props.updateOrders();
-        })
-        this.setState({
-            claimID: ''
-        })
-    }
-
 
     render() {
         const { classes } = this.props;

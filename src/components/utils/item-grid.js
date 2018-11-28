@@ -125,7 +125,7 @@ class ItemGrid extends React.Component {
             console.log("IsLoading = " + this.state.isLoading + " and array length is " + itemArray.length);
             return (
                 <div className={classes.loading}>
-                        <CircularProgress disableShrink className={classes.circle}/>
+                        <CircularProgress disableshrink={"true"} className={classes.circle}/>
                         <Typography align="center">Loading..</Typography>
                 </div>
             )

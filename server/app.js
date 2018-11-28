@@ -181,6 +181,8 @@ app.post('/api/postOrderUpdate', async (req, res) => {
 app.post('/api/claimOrder', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
+    console.log(req.get('Authorization'));
+    console.log(user);
     order_ctrl.claimOrder(req.body.id, user, res);
   } else {
     res.send(403);
@@ -191,6 +193,8 @@ app.post('/api/claimOrder', async (req, res) => {
 app.post('/api/unClaimOrder', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsBuilder(user)) {
+    console.log(req.get('Authorization'));
+    console.log(user);
     order_ctrl.claimOrder(req.body.id, undefined, res);
   } else {
     res.send(403);

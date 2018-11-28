@@ -18,6 +18,10 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Slide from '@material-ui/core/Slide';
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('UA-129885093-1');
+ReactGA.plugin.require('ecommerce');
 
 const request = require('superagent');
 
@@ -102,6 +106,13 @@ class CheckoutItems extends React.Component {
             character: this.state.character,
             location: this.state.location,
         }
+
+        ReactGA.event({
+            category: 'Store',
+            action: 'Submit Order',
+            label: 'Checkout'
+        });
+
         request
         .post("/api/postOrder")
         .set('Authorization', AuthService.getToken())
@@ -141,7 +152,27 @@ class CheckoutItems extends React.Component {
             for (var i = 0; i < this.props.cart.length; i++) {
                 total += (this.props.cart[i].quantity * this.props.cart[i].price) - ((this.props.cart[i].quantity * this.props.cart[i].price) * (this.state.percentOff/100))
             }
+
+            for (var j = 0; j < this.props.cart.length; j++) {
+                ReactGA.plugin.execute('ecommerce', 'addItem', {
+                    id: res.text,
+                    name: this.props.cart[j].name,
+                    sku: this.props.cart[j].id,
+                    price: this.props.cart[j].price,
+                    quantity: this.props.cart[j].quantity
+                });
+            }
+
+            ReactGA.plugin.execute('ecommerce', 'addTransaction', {
+                id: res.text,
+                revenue: total
+            });
+
+            ReactGA.plugin.execute('ecommerce', 'send');
+            ReactGA.plugin.execute('ecommerce', 'clear');
+
             this.clearCart();
+
             this.setState({
                 confirmNumber: res.text,
                 orderSent: true,

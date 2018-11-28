@@ -104,6 +104,9 @@ class Header extends React.Component {
                             </Collapse>
                         </div>
                     </OutsideAlerter>
+                    <Button size="large" component={Link} to="/freight">
+                        Freight
+                    </Button>
                     <Button size="large" component={Link} to="/contact-us">
                         Contact Us
                     </Button>

@@ -58,7 +58,7 @@ class AccountHome extends React.Component {
                     if (builder === "Unclaimed") {
                         res.body.data[i][1] = <Button variant="outlined" value={id} onClick={this.submitClaim}>Claim</Button>
                     } else if (builder === AuthService.getName()) {
-                        res.body.data[i][1] = <div><Link to={"/account/order/" + res.body.data[i][0]}><Button variant="outlined">Edit Order</Button></Link> <Button variant="outlined" value={id} onClick={this.unClaim}>Unclaim</Button></div>
+                        res.body.data[i][1] = <div><Link to={"/account/order/" + res.body.data[i][0]} style={{ textDecoration: 'none' }}><Button variant="outlined">Edit Order</Button></Link> <Button variant="outlined" value={res.body.data[i][0]} onClick={this.unClaim}>Unclaim</Button></div>
                     }
                 } else {
                     res.body.data[i][9] = showStatus(parseInt(res.body.data[i][9], 10));
@@ -74,7 +74,8 @@ class AccountHome extends React.Component {
     }
 
     submitClaim = (event) => {
-        var id = event.target.value;
+        event.preventDefault()
+        var id = event.currentTarget.value;
         console.log("Submitting claim for order id: " + id);
         request
         .post("/api/claimOrder")
@@ -90,7 +91,8 @@ class AccountHome extends React.Component {
     }
 
     unClaim = (event) => {
-        var id = event.target.value;
+        event.preventDefault()
+        var id = event.currentTarget.value;
         console.log("Submitting unclaim for order id: " + id);
         request
         .post("/api/unClaimOrder")
