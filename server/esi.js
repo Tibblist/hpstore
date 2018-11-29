@@ -65,8 +65,7 @@ function checkIfUser(response, body) {
         } else {
             response.cookie('token', ret[0].token, {expire: (43200 * 60 * 1000) + Date.now()});
             response.cookie('name', ret[2], {expire: (43200 * 60 * 1000) + Date.now()});
-            response.cookie('group', ret[3], {expire: (43200 * 60 * 1000) + Date.now()})
-
+            response.cookie('group', ret[3], {expire: (43200 * 60 * 1000) + Date.now()});
             resolve();
         }
     });

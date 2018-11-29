@@ -32,7 +32,7 @@ let db = mongoose.connection;
 
 db.once("open", async () => {
   dataJS.init();
-  //await dataJS.getMarketerPricing();
+  await dataJS.getMarketerPricing();
   dataJS.recalcPricing();
   console.log("connected to the database")
 });

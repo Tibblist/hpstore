@@ -310,6 +310,9 @@ class CheckoutItems extends React.Component {
                             <MenuItem className={classes.menuItem} value={"1DQ1-A - 1-st Thetastar of Dickbutt"}>
                                 1DQ1-A - 1-st Thetastar of Dickbutt
                             </MenuItem>
+                            <MenuItem className={classes.menuItem} value={"J5A-IX - Fuel Cartel HQ"}>
+                                J5A-IX - Fuel Cartel HQ
+                            </MenuItem>
                             </Select>
                         </FormControl>
                         <TextField style={{'display': 'inline-block', 'padding-left': '3%'}} onChange={(e) => this.handleCharacterChange(e)} value={this.state.character} placeholder={"Character Name"}></TextField>

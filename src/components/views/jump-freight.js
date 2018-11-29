@@ -138,7 +138,7 @@ class JumpFreight extends React.Component {
                 <Paper>
                     <img src="https://imageserver.eveonline.com/Corporation/98580977_256.png" alt="Corp Logo" className={classes.img}></img>
                     <Typography variant="h2" align="center">Hole Puncher's Jump Freighting Service</Typography>
-                    <Typography variant="h6" align="center" color="textSecondary" paragraph>Use our affordable and reliable services to move your goods to and from Jita. All contracts are delivered with in 48h or less, or its free!</Typography>
+                    <Typography variant="h6" align="center" color="textSecondary" paragraph>Use our affordable and reliable services to move your goods to and from Jita. All contracts are delivered with in 72h or less, or its free!</Typography>
                     <Typography variant="h6" align="center" color="textPrimary" paragraph>Courier contract to Abyssal Freighting</Typography>
                     <Typography variant="p" align="center" color="textSecondary" paragraph>
                         <List>

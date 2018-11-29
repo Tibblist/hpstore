@@ -64,6 +64,7 @@ class AccountHome extends React.Component {
                     res.body.data[i][9] = showStatus(parseInt(res.body.data[i][9], 10));
                     res.body.data[i][3] = createLink(res.body.data[i][0]);
                 }
+                res.body.data[i][0] = <b>{res.body.data[i][0]}</b>
             }
             var data = res.body.data.reverse();
             this.setState({

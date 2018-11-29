@@ -14,7 +14,13 @@ function getRandomInt(max) {
 function getRandomNumber(x) {
     var numberString = '';
     for (var i = 0; i < x; i++) {
-        numberString = numberString + getRandomInt(9).toString();
+        var int = getRandomInt(9);
+        if (i === 0) {
+            while (int === 0) {
+                int = getRandomInt(9);
+            }
+        }
+        numberString = numberString + int.toString();
     }
     return numberString;
 }

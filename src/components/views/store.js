@@ -65,7 +65,7 @@ export default class Store extends React.Component {
               return value.category === 6;
             });
             var modArray = res.body.filter(function (value, index, arr) {
-              return value.category === 7;
+              return value.category === 7 || value.category === 87;
             });
             var newSuggestions = [];
             for (var i = 0; i < res.body.length; i++) {

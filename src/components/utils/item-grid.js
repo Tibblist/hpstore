@@ -20,6 +20,7 @@ const styles = theme => ({
         'margin-right': '10%',
         'margin-top': 20,
         'display': 'inline-block',
+        'flexGrow': 1
     },
     container: {
         'display': 'inline-block',
@@ -49,12 +50,14 @@ const styles = theme => ({
         'display': 'block',
         'margin-left': 'auto',
         'margin-right': 'auto',
-        'margin-bottom': 10
+        'margin-bottom': 10,
+        'vertical-align': 'middle',
+        'font-size': 16
     },
      addButtonDiv: {
         'margin-left': '10px',
         'margin-right': '10px',
-        'margin-bottom': '10px'
+        'margin-bottom': '10px',
      },
      loading: {
         'margin-left': '20%',
@@ -69,6 +72,9 @@ const styles = theme => ({
         display: 'block',
         'margin-right': 'auto',
         'margin-left': 'auto'
+     },
+     icon: {
+         'height': 16
      }
   });
 
@@ -136,18 +142,19 @@ class ItemGrid extends React.Component {
             <div className={classes.root}>
             <Grid container spacing={8} className={classes.container}>
                 <Grid item xs={12}>
-                    <Grid container className="item-grid" justify="space-evenly" alighitems="center" spacing={0}>
+                    <Grid container className={classes.itemGrid} justify="space-evenly" alighitems="center" spacing={16}>
                         {itemArray.map(function(item, id) {
-                        return  <Paper className={classes.gridItem} key={id}>
+                        return  <Grid item padding={50}><Paper className={classes.gridItem} key={id}>
                             {getImage(classes, item)}
                             <Typography className={classes.itemName}>{item.name}</Typography>
                             <Typography className={classes.itemPrice}>Price: {numberWithCommas(item.price)} ISK</Typography>
                             <div className={classes.addButtonDiv}>
                             {item.disabled
                             ? <Button disabled variant="contained" className={classes.addButton}> Temp Out of Order</Button>
-                            : <Button variant="contained" className={classes.addButton} onClick={() => this.handleCart(item.id)}> Add to cart <CartIcon/></Button>}
+                            : <Button variant="contained" className={classes.addButton} onClick={() => this.handleCart(item.id)}> Add to cart <CartIcon className={classes.icon}/></Button>}
                             </div>
                             </Paper>
+                            </Grid>
                         }, this)}
                     </Grid>
                 </Grid>
@@ -158,7 +165,7 @@ class ItemGrid extends React.Component {
 }
 
 function getImage(classes, item) {
-    if (item.category == 6) {
+    if (item.category === 6) {
         return <div className={classes.itemImg}><img src={"https://image.eveonline.com/Render/" + item.id + "_256.png"} alt={item[1]} className={classes.itemImg}></img></div>
     } else {
         return <div className={classes.itemImg}><img src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} alt={item[1]} className={classes.itemImg}></img></div>
