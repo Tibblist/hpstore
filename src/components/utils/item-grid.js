@@ -74,7 +74,8 @@ const styles = theme => ({
         'margin-left': 'auto'
      },
      icon: {
-         'height': 16
+         'height': 16,
+         width: 16
      }
   });
 
