@@ -16,5 +16,5 @@ Sales page frontend/backend
 Fit parsers frontend/backend
 Create universal snackbar to display messages to user
 Make sales/discounts already created editable in backend
-Add Google Analytics tracking, https://developers.google.com/analytics/devguides/collection/analyticsjs/ecommerce, https://github.com/react-ga/react-ga
+Add Express-sessions + mongodb store + CSRF protection
 
