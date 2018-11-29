@@ -27,7 +27,7 @@ const styles = theme => ({
     },
     gridItem: {
         'display': 'inline-block',
-        'margin-top': 10,
+        'margin': 15,
     },
     itemName: {
         'margin-top': 10,
@@ -144,7 +144,7 @@ class ItemGrid extends React.Component {
                 <Grid item xs={12}>
                     <Grid container className={classes.itemGrid} justify="space-evenly" alighitems="center" spacing={16}>
                         {itemArray.map(function(item, id) {
-                        return  <Grid item padding={50}><Paper className={classes.gridItem} key={id}>
+                        return  <Paper className={classes.gridItem} key={item.id}>
                             {getImage(classes, item)}
                             <Typography className={classes.itemName}>{item.name}</Typography>
                             <Typography className={classes.itemPrice}>Price: {numberWithCommas(item.price)} ISK</Typography>
@@ -154,7 +154,6 @@ class ItemGrid extends React.Component {
                             : <Button variant="contained" className={classes.addButton} onClick={() => this.handleCart(item.id)}> Add to cart <CartIcon className={classes.icon}/></Button>}
                             </div>
                             </Paper>
-                            </Grid>
                         }, this)}
                     </Grid>
                 </Grid>
