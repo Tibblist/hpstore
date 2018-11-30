@@ -44,14 +44,16 @@ class SideBar extends React.Component {
 }
 
 function listItems() {
-    if (AuthService.isBuilder() === true) {
+    if (AuthService.isAdmin() === true) {
+      return adminListItems;
+    } else if (AuthService.isBuilder() === true) {
         return builderListItems;
     } else {
         return userListItems;
     }
 }
 
-const builderListItems = (
+const adminListItems = (
   <div>
     <ListItem button>
       <Link to="/account/dashboard" style={{ textDecoration: 'none' }}>
@@ -97,6 +99,35 @@ const builderListItems = (
           <MoneyIcon />
         </ListItemIcon>
         <ListItemText primary="Sales" />
+      </ListItem>
+    </Link>
+    <Link to="/account/settings" style={{ textDecoration: 'none' }}>
+      <ListItem button>
+        <ListItemIcon>
+          <SettingsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Settings" />
+      </ListItem>
+    </Link>
+  </div>
+);
+
+const builderListItems = (
+  <div>
+    <ListItem button>
+      <Link to="/account/dashboard" style={{ textDecoration: 'none' }}>
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </Link>
+    </ListItem>
+    <Link to="/account/orders" style={{ textDecoration: 'none' }}>
+      <ListItem button>
+        <ListItemIcon>
+          <ShoppingCartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Orders" />
       </ListItem>
     </Link>
     <Link to="/account/settings" style={{ textDecoration: 'none' }}>
