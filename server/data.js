@@ -413,13 +413,13 @@ exports.getMarketerPricing = async function() {
             counter++;
             if (counter > 199) {
                 //console.log(idArray);
-                requestArray.push(request.get('https://api.evemarketer.com/ec/marketstat/json').query({'typeid': idArray.toString()}));
+                requestArray.push(request.get('https://api.evemarketer.com/ec/marketstat/json').query({'usesystem': '30000142'}).query({'typeid': idArray.toString()}));
                 counter = 0;
                 idArray = [];
             }
         }
     }
-    requestArray.push(request.get('https://api.evemarketer.com/ec/marketstat/json').query({ 'typeid': idArray.toString() }))
+    requestArray.push(request.get('https://api.evemarketer.com/ec/marketstat/json').query({'usesystem': '30000142'}).query({ 'typeid': idArray.toString() }))
     var results = await Promise.all(requestArray).catch(function(e) {
         console.log(e);
     });

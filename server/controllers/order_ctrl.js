@@ -142,3 +142,15 @@ exports.deleteOrder = async function(tid) {
         //else console.log(res);
     });
 }
+
+exports.completeOrder = async function(tid) {
+    var order = await Order.findOne({transID: tid});
+    if (order !== null) {
+        order.deliveredDate = new Date();
+        order.status = 5;
+        await order.save();
+        return true;
+    } else {
+        return false;
+    }
+}

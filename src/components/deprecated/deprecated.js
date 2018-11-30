@@ -234,7 +234,7 @@ class SideMenu extends React.Component {
     }
     
     render() {
-        return (
+        /*return (
             <div className="sidenav">
                 <ul>
                     <DropDownButton
@@ -251,7 +251,7 @@ class SideMenu extends React.Component {
                     />
                 </ul>
             </div>
-        );
+        );*/
     }
 }
 

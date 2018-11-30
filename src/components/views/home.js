@@ -150,7 +150,7 @@ class Home extends React.Component {
                     </Card>
                 </div>
                 <Typography variant="h5" align="center" color="textPrimary" paragraph>Want to get rid of excess ore and/or raw mats? We buyback most materials, come inquire about how we can help you get cold hard cash faster on our discord <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/Q2z6WFD">Click Here!</a></Typography>
-                <Typography variant="h5" align="center" color="textPrimary" paragraph>Are you a builder that wants to move product faster and more efficiently? <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/Q2z6WFD">Click Here!</a> and let us know you are a builder</Typography>
+                <Typography variant="h5" align="center" color="textPrimary" paragraph style={{'margin-bottom': 50}}>Are you a builder that wants to move product faster and more efficiently? <a target="_blank" rel="noopener noreferrer" href="https://discord.gg/Q2z6WFD">Click Here!</a> and let us know you are a builder</Typography>
             </div>
         );
     }

@@ -197,7 +197,7 @@ class JumpFreight extends React.Component {
                             className={classes.field}
                             variant="outlined" 
                             value={this.state.trip.mass} 
-                            label="Mass" 
+                            label="Volume" 
                             onChange={this.handleMassChange}
                             InputProps={{
                                 endAdornment: <InputAdornment position="end">m3</InputAdornment>,

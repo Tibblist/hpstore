@@ -2,12 +2,10 @@ import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import MUIDataTable from "mui-datatables";
 import Button from '@material-ui/core/Button';
-import { TextField } from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import { AuthService } from '../../backend/client/auth';
 import Paper from '@material-ui/core/Paper';
 import {Link} from 'react-router-dom';
-
-const request = require('superagent');
 
 const styles = theme => ({
     root: {
@@ -32,7 +30,10 @@ const styles = theme => ({
 
     },
     button: {
-        'margin-left': '20px'
+        'margin-bottom': 20,
+        'margin-top': 20,
+        //'flex-basis': 'initial',
+        //width: 200
     },
 });
 
@@ -219,7 +220,12 @@ class AccountOrders extends React.Component {
                         columns={builderColumns}
                         options={options}
                     />
+                    <Paper style={{marginTop: 25, display: 'flex', alignItems: 'center', flexDirection: 'column'}} elevation={5}>
+                        <Typography align="center" variant="h4" >Need help with an order?</Typography>
+                        <Button className={classes.button} size="large" variant="outlined" component={Link} to="/contact-us">Contact Us</Button>
+                    </Paper>
                 </div>
+                
             );
         } else {
             return (
@@ -230,6 +236,10 @@ class AccountOrders extends React.Component {
                     columns={userColumns}
                     options={options}
                 />
+                <Paper style={{marginTop: 25, display: 'flex', alignItems: 'center', flexDirection: 'column'}} elevation={5}>
+                    <Typography align="center" variant="h4" >Need help with an order?</Typography>
+                    <Button className={classes.button} size="large" variant="outlined" component={Link} to="/contact-us">Contact Us</Button>
+                </Paper>
             </div>
         );
         }
