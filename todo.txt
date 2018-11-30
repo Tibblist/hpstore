@@ -11,7 +11,6 @@ User auth as express middleware
 Extract routes to separate file/files
 Deal with 403 forbidden and other errors in client on request return
 Add JEST JS testing
-Refactor all superagent requests to AuthService functions
 
 New features:
 Sales page frontend/backend
