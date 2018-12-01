@@ -42,6 +42,7 @@ class AccountCustomers extends React.Component {
             if (err) {
                 console.log(err);
             }
+            console.log(res.body);
             this.setState({
                 users: res.body
             });
@@ -81,8 +82,8 @@ class AccountCustomers extends React.Component {
                 <List>
                     {this.state.users.map((user, id) => {
                         return (
-                            <div>
-                                <ListItem key={id}>
+                            <div key={user.name}>
+                                <ListItem>
                                     <ListItemText>{user.name}</ListItemText>
                                     <FormControl>
                                         <Select

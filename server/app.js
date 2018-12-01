@@ -11,7 +11,7 @@ const user_ctrl = require('./controllers/user_ctrl');
 const order_ctrl = require('./controllers/order_ctrl');
 const discount_ctrl = require('./controllers/discount_ctrl');
 const INFO = require('./config');
-
+const bot = require('./bot');
 
 const app = express();
 // Serve the static files from the React app

@@ -1,7 +1,7 @@
 {
   "name": "hpstore_api_server",
   "version": "1.0.0",
-  "description": "",
+  "description": "Api and static content serving server",
   "main": "app.js",
   "scripts": {
     "start": "node app.js"
@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "compression": "^1.7.3",
+    "discord.js": "^11.4.2",
     "express": "^4.16.4",
     "helmet": "^3.14.0",
     "mongoose": "^5.3.4",

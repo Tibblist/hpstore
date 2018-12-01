@@ -274,9 +274,9 @@ class StoreHome extends React.Component {
           <Divider/>
           <Button component={Link} to="/store/mods">Mods/Fighters</Button>
           <Divider/>
-          <Button component={Link} to="/store/fittings">Doctrine Fittings</Button>
+          <Button disabled component={Link} to="/store/fittings">Doctrine Fittings (coming soon)</Button>
           <Divider/>
-          <Button component={Link} to="/store/fittings/parser">Custom Fittings</Button>
+          <Button disabled component={Link} to="/store/fittings/parser">Custom Fittings (coming soon)</Button>
         </Paper>
       </Fragment>
     )
