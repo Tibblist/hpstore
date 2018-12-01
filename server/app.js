@@ -32,7 +32,7 @@ let db = mongoose.connection;
 
 db.once("open", async () => {
   dataJS.init();
-  await dataJS.getMarketerPricing();
+  //await dataJS.getMarketerPricing();
   dataJS.recalcPricing();
   console.log("connected to the database")
 });
@@ -213,7 +213,8 @@ app.post('/api/completeOrder', async(req, res) => {
 app.post('/api/postOrder', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsValid(user)) {
-    order_ctrl.createOrder(res, req.body, user);
+    var order = await order_ctrl.createOrder(res, req.body, user);
+    if (order) bot.postOrder(order.transID, user.primaryCharacter.name, order.price);
   } else {
     res.send(403);
     res.end();

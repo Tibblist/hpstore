@@ -96,10 +96,6 @@ class CheckoutItems extends React.Component {
     };
 
     postOrder = () => {
-        var total = 0;
-        for (var i = 0; i < this.props.cart.length; i++) {
-            total += (this.props.cart[i].quantity * this.props.cart[i].price) - ((this.props.cart[i].quantity * this.props.cart[i].price) * (this.state.percentOff/100))
-        }
         var obj = {
             items: this.props.cart,
             discountCode: this.state.valid ? this.state.discountCode : '',

@@ -77,6 +77,7 @@ exports.createOrder = async function(res, obj, user) {
     order.save();
     res.send(id);
     res.end();
+    return order;
 }
 
 exports.getOrders = async function(user, isBuilder) {
@@ -93,6 +94,10 @@ exports.getOrders = async function(user, isBuilder) {
         }
         return newArray;
     }
+}
+
+exports.getAllOrders = async function() {
+    return await Order.find().populate({path: 'buyer', populate: {path: 'primaryCharacter'}}).populate({path: 'builder', populate: {path: 'primaryCharacter'}}).exec();
 }
 
 exports.findOrderByTID = async function (tid) {
