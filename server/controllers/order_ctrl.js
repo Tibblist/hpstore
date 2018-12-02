@@ -2,7 +2,8 @@ const Order = require('./../models/order');
 const discount_ctrl = require('./discount_ctrl');
 const dataJS = require('./../data');
 const mongoose = require('mongoose');
-
+const User = require('./../models/user');
+const Character = require('./../models/character');
 
 var exports = module.exports = {};
 
@@ -29,7 +30,21 @@ exports.createOrder = async function(res, obj, user) {
     var order = new Order({discountCode: obj.discountCode});
     var discount = await discount_ctrl.verifyDiscount(obj.discountCode);
     order._id = new mongoose.Types.ObjectId();
-    order.buyer = user;
+    if (user) order.buyer = user;
+    else {
+        var guest = await User.findOne({token: 0});
+        if (!guest) {
+            var newCharacter = new Character({name: 'Guest'});
+            newCharacter._id = new mongoose.Types.ObjectId();
+            await newCharacter.save();
+            var makeGuest = new User({token: 0, group: 1, });
+            makeGuest._id = new mongoose.Types.ObjectId();
+            makeGuest.primaryCharacter = newCharacter;
+            await makeGuest.save();
+            guest = makeGuest;
+        }
+        order.buyer = guest;
+    }
     order.location = obj.location;
     order.character = obj.character;
     var id = getRandomNumber(8);
@@ -40,7 +55,6 @@ exports.createOrder = async function(res, obj, user) {
     }
     if (discount !== null) {
         var isValid = await discount_ctrl.useDiscount(discount.code);
-        console.log(isValid);
         if (isValid === false) {
             discount = null;
             res.send({status: 1});
@@ -51,7 +65,8 @@ exports.createOrder = async function(res, obj, user) {
     }
     order.transID = id;
     if (!dataJS.validatePricing(obj.items)) {
-        console.log("Failed to validate pricing for: " + user.primaryCharacter.name);
+        if (user) console.log("Failed to validate pricing for: " + user.primaryCharacter.name);
+        else console.log("Failed to validate pricing for: " + obj.character);
         res.send({status: 2});
         res.end();
         return;

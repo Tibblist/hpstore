@@ -31,11 +31,9 @@ const styles = theme => ({
         'margin-right': '10%',
         'margin-left': '10%',
         'margin-top': '20px',
-
     },
     list: {
-        backgroundColor: 'white'
-
+        backgroundColor: 'white',
     },
     submitButton: {
         'background-color': 'blue',
@@ -76,7 +74,7 @@ class CheckoutItems extends React.Component {
             orderSent: false,
             confirmNumber: 0,
             discountCode: '',
-            location: '1DQ1-A - 1-st Thetastar of Dickbutt',
+            location: 'J5A-IX - The Player of Games',
             character: '',
             total: 0,
             open: false,
@@ -89,6 +87,16 @@ class CheckoutItems extends React.Component {
 
     componentWillMount() {
         this.fetchData();
+    }
+
+    componentDidMount() {
+        if (!AuthService.isAuthed()) {
+            this.setState({
+                open: true,
+                title: "Not signed in!",
+                body: "You can checkout as a guest but this will not allow you to track all your orders collectively. If you checkout as a guest use the transaction code you get and the status tracker in the top right to see the status of your orders."
+            })
+        }
     }
 
     handleClose = () => {
@@ -261,7 +269,7 @@ class CheckoutItems extends React.Component {
                         Be sure to pay your deposit of <b>{numberWithCommas(Math.floor(this.state.total * .25))}</b> ISK to corp "Hole Punchers Builders" in game with your Transaction ID as the reason text.  It is important you do this right for your order to be processed in a timely manner. 
                     </Typography>
                     <Typography variant="h5" className={classes.deposit}>
-                        You can find the status of your order <Link to='/account/orders'>Here.</Link>
+                        {bottomText(this.state.confirmNumber)}
                     </Typography>
                 </Paper>
             )
@@ -340,7 +348,7 @@ class CheckoutItems extends React.Component {
                     <DialogContent>
                         <DialogContentText id="alert-dialog-slide-description">
                             {this.state.body}
-                    </DialogContentText>
+                        </DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
@@ -358,6 +366,14 @@ function isDisabled(loc, char, cart, total) {
         return true;
     }
     return false;
+}
+
+function bottomText(id) {
+    if(AuthService.isAuthed()) { 
+        return <p>You can find the status of your order <Link to='/account/orders'>Here.</Link></p>
+    } else { 
+        return <p>Make sure to note your transaction ID as this is the only way to check on your order <Link to={'/orderstatus/' + id}>Here.</Link></p>
+    }
 }
 
   export default withStyles(styles)(CheckoutItems);

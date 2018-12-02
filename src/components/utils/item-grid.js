@@ -20,7 +20,6 @@ const styles = theme => ({
         'margin-right': '10%',
         'margin-top': 20,
         'display': 'inline-block',
-        'flexGrow': 1
     },
     container: {
         'display': 'inline-block',
@@ -38,7 +37,6 @@ const styles = theme => ({
     itemPrice: {
         'margin-top': 10,
         'text-align': 'center',
-
     },
     itemImg: {
         'display': 'block',
@@ -128,16 +126,13 @@ class ItemGrid extends React.Component {
             }
         }
         itemArray = newArray;
-        if (this.state.isLoading || itemArray.length === 0) {
-            console.log("IsLoading = " + this.state.isLoading + " and array length is " + itemArray.length);
+        if ((this.state.isLoading || itemArray.length === 0) && !this.props.isSearching) {
             return (
                 <div className={classes.loading}>
                         <CircularProgress disableshrink={"true"} className={classes.circle}/>
-                        <Typography align="center">Loading..</Typography>
+                        <Typography align="center">Loading...</Typography>
                 </div>
             )
-        } else {
-            console.log("Showing Items");
         }
         return (
             <div className={classes.root}>

@@ -16,7 +16,6 @@ const styles = theme => ({
         'float': 'right',
         position: 'absolute',
         'margin-left': '90%',
-
     },
     icon: {
         'display': 'inline-block',
@@ -112,6 +111,16 @@ class CheckoutMenu extends React.Component {
         this.forceUpdate();
     }
 
+    /*shouldComponentUpdate(nextProps, nextState) {
+        if (this.state.open === nextState.open) {
+            if (this.props.cart.length !== nextProps.cart.length) {
+                return true;
+            }
+            return false;
+        }
+        return true;
+    }*/
+
     render () {
         const {classes} = this.props;
         var total = 0;
@@ -119,7 +128,7 @@ class CheckoutMenu extends React.Component {
             total += this.props.cart[i].quantity * this.props.cart[i].price
         }
         return (
-        <div className={classes.cart}>
+        <div style={this.state.open ? {overflowY: 'auto', height: '75%'} : {}} className={classes.cart}>
             <Button onClick={this.handleClick}>
                 <CartIcon className={classes.icon}/>
             </Button>
@@ -131,7 +140,7 @@ class CheckoutMenu extends React.Component {
                             <img alt="" src={"https://image.eveonline.com/Type/" + item.id + "_64.png"} className={classes.itemImg}></img>
                             <p className={classes.price}>{abbreviateNumber(item.price)}</p>
                             <p className={classes.itemName}>{item.name}</p>
-                            <div className={classes.itemQuantity}><p className={classes.x} name={"quantity"}><b>X</b></p><TextField name="quantity" onChange={(e) => this.handleChange(item.id, e)} value={item.quantity} className={classes.tField}></TextField></div>
+                            <div className={classes.itemQuantity}><p className={classes.x} name={"quantity"}><b>X</b></p><TextField name="quantity" onChange={(e) => this.handleChange(item.id, e)} value={item.quantity === 0 ? '': item.quantity} className={classes.tField}></TextField></div>
                         </Paper>
                     })}
                     <p>Total: {numberWithCommas(total)} ISK</p>

@@ -7,7 +7,7 @@ import CheckoutItems from './checkout';
 import StoreSideBar from '../utils/store-sidebar'
 import { Typography, Paper, Button, Divider } from '@material-ui/core';
 import {Link} from 'react-router-dom';
-
+ 
 const request = require('superagent');
 
 export default class Store extends React.Component {
@@ -115,11 +115,10 @@ export default class Store extends React.Component {
 
     filterArray = (string, category) => {
       //console.log("Filtering for: " + string);
-      var inputLength = string.length;
       var newItemArray = this.state.itemArray.filter(function (value, index, arr) {
         for (var i = 0; i < category.length; i++) {
           if (value.category === category[i]) {
-            return value.name.slice(0, inputLength).toLowerCase() === string.toLowerCase();
+            return value.name.toLowerCase().includes(string.toLowerCase());
           }
         }
         return false;
@@ -133,7 +132,7 @@ export default class Store extends React.Component {
       } else {
         this.setState({
           isSearching: true,
-          searchArray: newItemArray,
+          searchArray: newItemArray
         });
       }
     }
@@ -212,27 +211,24 @@ export default class Store extends React.Component {
               />
               <Route
                 path='/store/hulls'
-                render={(props) => <ShowHulls {...props} changeQuantity={this.changeQuantity} suggestions={this.state.hullSuggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={this.state.isSearching ? array : this.state.hullArray} filterArrayGroup={this.filterArrayByGroup}/>}
+                render={(props) => <ShowHulls {...props} isSearching={this.state.isSearching} changeQuantity={this.changeQuantity} suggestions={this.state.hullSuggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={this.state.isSearching ? array : this.state.hullArray} filterArrayGroup={this.filterArrayByGroup}/>}
               />
               <Route
                 path='/store/mods'
-                render={(props) => <ShowMods {...props} changeQuantity={this.changeQuantity} suggestions={this.state.modSuggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={this.state.isSearching ? array : this.state.modArray} filterArrayGroup={this.filterArrayByGroup}/>}
+                render={(props) => <ShowMods {...props} isSearching={this.state.isSearching} changeQuantity={this.changeQuantity} suggestions={this.state.modSuggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={this.state.isSearching ? array : this.state.modArray} filterArrayGroup={this.filterArrayByGroup}/>}
               />
               <Route
                 path='/store/fittings'
                 exact
-                render={(props) => <ShowHulls {...props} changeQuantity={this.changeQuantity} suggestions={this.state.suggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={array} filterArrayGroup={this.filterArrayByGroup}/>}
+                render={(props) => <ShowHulls {...props} isSearching={this.state.isSearching} changeQuantity={this.changeQuantity} suggestions={this.state.suggestions} cart={this.state.cart} changeFunction={this.filterArray} addFunction={this.addToCart} items={array} filterArrayGroup={this.filterArrayByGroup}/>}
               />
               <Route
               path="/store/fittings/parser"
               render={(props) => <div/>}
               />
-              <AuthRoute
+              <Route
               path='/store/checkout'
-              component={CheckoutItems}
-              cart={this.state.cart}
-              clearCart={this.clearCart}
-              updatePrices={this.updatePrices}
+              render={(props) => <CheckoutItems {...props} cart={this.state.cart} clearCart={this.clearCart} updatePrices={this.updatePrices}/>}
               />
             </div>
         );
@@ -245,7 +241,7 @@ class ShowHulls extends React.Component {
       <Fragment>
           <StoreHeader suggestions={this.props.suggestions} cart={this.props.cart} category={[6]} changeFunction={this.props.changeFunction} changeQuantity={this.props.changeQuantity}></StoreHeader>
           <StoreSideBar filterArray={this.props.filterArrayGroup}/>
-          <ItemGrid addFunction={this.props.addFunction} items={this.props.items}></ItemGrid>
+          <ItemGrid isSearching={this.props.isSearching} addFunction={this.props.addFunction} items={this.props.items}></ItemGrid>
       </Fragment>
     );
   }
@@ -257,7 +253,7 @@ class ShowMods extends React.Component {
     return (
       <Fragment>
         <StoreHeader suggestions={this.props.suggestions} cart={this.props.cart} category={[7, 87]} changeFunction={this.props.changeFunction} changeQuantity={this.props.changeQuantity}></StoreHeader>
-        <ItemGrid addFunction={this.props.addFunction} items={this.props.items}></ItemGrid>
+        <ItemGrid isSearching={this.props.isSearching} addFunction={this.props.addFunction} items={this.props.items}></ItemGrid>
       </Fragment>
     )
   }

@@ -10,7 +10,9 @@ const styles = theme => ({
     root: {
         'float': 'left',
         'position': 'absolute',
-        'width': '20%'
+        'overflow-y': 'auto',
+        'height': '75%',
+        'margin-top': '20px',
     },
     list: {
         display: 'inline-block',
@@ -19,7 +21,6 @@ const styles = theme => ({
         'background-color': "white",
     },
     container: {
-        'margin-top': '20px',
         'display': 'inline-block'
     },
     listContainer: {

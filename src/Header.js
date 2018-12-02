@@ -58,6 +58,9 @@ class Header extends React.Component {
     }
 
     handleClose = () => {
+        if (!this.state.open) {
+            return;
+        }
         this.setState({
             open: false
         })
@@ -70,7 +73,7 @@ class Header extends React.Component {
             <div className={classes.rightnav}>
                     {AuthService.isAuthed()
                         ? <Button size="large" component={Link} to="/account/orders">Account</Button>
-                        : ''}
+                        : <Button size="large" component={Link} to="/orderstatus">Check Order Status</Button>}
                     {AuthService.isAuthed()
                         ? <Button size="large" onClick={AuthService.logout} component={Link} to="/">Logout</Button>
                         : <Button size="large" component={Link} to="/login">Login</Button>}
@@ -111,6 +114,7 @@ class Header extends React.Component {
                         Contact Us
                     </Button>
                 </div>
+                <Typography style={{position: 'absolute', left: 128, top: 105, fontSize: 16}}>Welcome, {AuthService.getName()}</Typography>
             </Paper>
         )
     }

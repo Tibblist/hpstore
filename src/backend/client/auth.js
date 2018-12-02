@@ -2,16 +2,16 @@ import { Route, Redirect } from 'react-router-dom';
 import React from 'react';
 import Cookies from 'js-cookie';
 
-export const Groups = Object.freeze({
-    MEMBER: 1,
-    BUILDER: 2,
-    ADMIN: 3,
-});
+const request = require('superagent');
 
 export class AuthService {
 
       static getName() {
-          return Cookies.get('name');
+          if (localStorage.getItem('name')) {
+            return localStorage.getItem('name');
+          } else {
+              return "Guest";
+          }
       }
 
       static isAuthed() {
@@ -30,15 +30,16 @@ export class AuthService {
       static logout() {
           console.log("Logged out!");
           Cookies.remove('token');
-          Cookies.remove('name');
+          localStorage.removeItem('group');
+          localStorage.removeItem('name');
       }
 
       static isAdmin() {
-          return parseInt(Cookies.get('group'), 10) === 3;
+          return parseInt(localStorage.getItem('group'), 10) === 3;
       }
 
       static isBuilder() {
-        return parseInt(Cookies.get('group'), 10) > 1;
+        return parseInt(localStorage.getItem('group'), 10) > 1;
       }
 }
 
@@ -52,3 +53,22 @@ export const AuthRoute = ({ component: Component, ...rest }) => (
           }} />
     )} />
 );
+
+export function getUserInfo() {
+    console.log("Getting users information")
+    request
+        .get("/api/userInfo")
+        .end((err, res) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            if (res.body === null) {
+                console.log("You are not authenticated yet!");
+                return;
+            }
+            localStorage.setItem('name', res.body.name);
+            localStorage.setItem('group', res.body.group);
+        })
+}

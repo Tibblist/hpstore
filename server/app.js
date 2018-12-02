@@ -5,6 +5,7 @@ var morgan = require("morgan");
 var compression = require("compression");  
 var helmet = require("helmet");
 var fs = require('fs');
+const cookieParser = require('cookie-parser')
 const esi = require('./esi');
 const dataJS = require('./data');
 const user_ctrl = require('./controllers/user_ctrl');
@@ -20,6 +21,7 @@ app.use(compression());
 app.use(morgan("common"));
 app.use(express.static('./build/'));
 app.use(express.json());
+app.use(cookieParser());
 
 const dbRoute = INFO.DB;
 
@@ -124,6 +126,23 @@ app.get('/api/getOrder', async (req,res) => {
   }
 });
 
+app.get('/api/orderStatus', async (req, res) => {
+  var order = await order_ctrl.findOrderByTID(req.query.id);
+  if (order) {
+    console.log(order);
+    if (order.expectedDate) {
+      var expectedDate = Date.parse(order.endDate);
+      expectedDate = new Date(expectedDate);
+      res.json({id: order.transID, items: order.items, price: order.price, builder: order.builder, status: order.status, expectedDate: expectedDate.toString(), location: order.location, character: order.character});
+    } else {
+      res.json({id: order.transID, items: order.items, price: order.price, builder: order.builder, status: order.status, expectedDate: "Not in build yet", location: order.location, character: order.character});
+    }
+  } else {
+    res.send({status: -1}) //On status -1 display order not found
+    res.end();
+  }
+});
+
 app.get('/api/verifyDiscount', async (req,res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
   if (user_ctrl.userIsValid(user)) {
@@ -216,8 +235,8 @@ app.post('/api/postOrder', async (req, res) => {
     var order = await order_ctrl.createOrder(res, req.body, user);
     if (order) bot.postOrder(order.transID, user.primaryCharacter.name, order.price);
   } else {
-    res.send(403);
-    res.end();
+    var order = await order_ctrl.createOrder(res, req.body);
+    if (order) bot.postOrder(order.transID, order.character, order.price);
   }
 });
 
@@ -390,7 +409,15 @@ app.get('/api/getSettings', async (req,res) => {
   }
 });
 
-
+app.get('/api/userInfo', async (req, res) => {
+  var user = await user_ctrl.getUserWithToken(req.cookies.token);
+  if (user_ctrl.userIsValid(user)) {
+    res.json({name: user.primaryCharacter.name, group: user.group});
+  } else {
+    res.send(403);
+    res.end();
+  }
+});
 
 app.post('/api/postMatPrices', async (req, res) => {
   var user = await user_ctrl.getUserWithToken(req.get('Authorization'));
