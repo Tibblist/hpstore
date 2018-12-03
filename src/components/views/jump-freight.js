@@ -130,7 +130,7 @@ class JumpFreight extends React.Component {
             return (trip.mass.replace(/,/g, '') * 950) + (trip.collateral.replace(/,/g, '') * 0.02)
         } else if (trip.from === 3 && trip.to === 2) {
             return (trip.mass.replace(/,/g, '') * 550) + (trip.collateral.replace(/,/g, '') * 0.02)
-        } else if (trip.to === 2 && trip.from === 3) {
+        } else if (trip.from === 2 && trip.to === 3) {
             return (trip.mass.replace(/,/g, '') * 550) + (trip.collateral.replace(/,/g, '') * 0.02)
         } else {
             return "Invalid Trip Set"
