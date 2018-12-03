@@ -124,10 +124,16 @@ class JumpFreight extends React.Component {
 
     calculateReward = () => {
         var trip = this.state.trip;
-        if (trip.from === 1) {
+        if (trip.from === 1 && trip.to === 2) {
             return (trip.mass.replace(/,/g, '') * 1000) + (trip.collateral.replace(/,/g, '') * 0.02)
-        } else if (trip.from === 2) {
+        } else if (trip.from === 2 && trip.to === 1) {
             return (trip.mass.replace(/,/g, '') * 950) + (trip.collateral.replace(/,/g, '') * 0.02)
+        } else if (trip.from === 3 && trip.to === 2) {
+            return (trip.mass.replace(/,/g, '') * 550) + (trip.collateral.replace(/,/g, '') * 0.02)
+        } else if (trip.to === 2 && trip.from === 3) {
+            return (trip.mass.replace(/,/g, '') * 550) + (trip.collateral.replace(/,/g, '') * 0.02)
+        } else {
+            return "Invalid Trip Set"
         }
     }
 
@@ -145,6 +151,7 @@ class JumpFreight extends React.Component {
                             <ListItemText>Rates are:</ListItemText>
                             <ListItemText>950 ISK per m3 from Jita to J5A</ListItemText>
                             <ListItemText>1,000 ISK per m3 from J5A to Jita</ListItemText>
+                            <ListItemText>550 ISK per m3 from FDZ to Jita and Jita to FDZ</ListItemText>
                             <ListItemText>2% fee for collateral, max collateral is 5 Billion ISK</ListItemText>
                         </List>
                     </Typography>
@@ -169,6 +176,8 @@ class JumpFreight extends React.Component {
                             >
                                 <MenuItem value={1}>J5A-IX - Fuel Cartel HQ</MenuItem>
                                 <MenuItem value={2}>Jita IV - Moon 4 - Caldari Navy Assembly Plant</MenuItem>
+                                <MenuItem value={3}>FDZ4-A VIII - Moon 3 - Society of Conscious Thought School</MenuItem>
+
                             </Select>
                         </FormControl>
                         <FormControl variant="outlined" className={classes.field}>
@@ -191,6 +200,7 @@ class JumpFreight extends React.Component {
                             >
                                 <MenuItem value={1}>J5A-IX - Fuel Cartel HQ</MenuItem>
                                 <MenuItem value={2}>Jita IV - Moon 4 - Caldari Navy Assembly Plant</MenuItem>
+                                <MenuItem value={3}>FDZ4-A VIII - Moon 3 - Society of Conscious Thought School</MenuItem>
                             </Select>
                         </FormControl>
                         <TextField
