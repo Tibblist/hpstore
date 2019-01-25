@@ -68,9 +68,9 @@ class Home extends React.Component {
         const { classes } = this.props;
         return (
             <div className={classes.root}>
-                <img className={classes.img} src="https://imageserver.eveonline.com/Corporation/98523546_256.png" alt="Hello"></img>
+                <img className={classes.img} src="https://imageserver.eveonline.com/Corporation/98589315_256.png" alt="Hello"></img>
                 <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
-                    Hole Puncher's Store
+                    The Eve Superstore
                     </Typography>
                 <Typography variant="h6" align="center" color="textSecondary" paragraph>
                     Welcome to our webstore.

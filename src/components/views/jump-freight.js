@@ -125,9 +125,9 @@ class JumpFreight extends React.Component {
     calculateReward = () => {
         var trip = this.state.trip;
         if (trip.from === 1 && trip.to === 2) {
-            return (trip.mass.replace(/,/g, '') * 1000) + (trip.collateral.replace(/,/g, '') * 0.02)
+            return (trip.mass.replace(/,/g, '') * 900) + (trip.collateral.replace(/,/g, '') * 0.02)
         } else if (trip.from === 2 && trip.to === 1) {
-            return (trip.mass.replace(/,/g, '') * 950) + (trip.collateral.replace(/,/g, '') * 0.02)
+            return (trip.mass.replace(/,/g, '') * 850) + (trip.collateral.replace(/,/g, '') * 0.02)
         } else if (trip.from === 3 && trip.to === 2) {
             return (trip.mass.replace(/,/g, '') * 550) + (trip.collateral.replace(/,/g, '') * 0.02)
         } else if (trip.from === 2 && trip.to === 3) {
@@ -143,16 +143,17 @@ class JumpFreight extends React.Component {
             <div className={classes.root}>
                 <Paper>
                     <img src="https://imageserver.eveonline.com/Corporation/98580977_256.png" alt="Corp Logo" className={classes.img}></img>
-                    <Typography variant="h2" align="center">Hole Puncher's Jump Freighting Service</Typography>
+                    <Typography variant="h2" align="center">Godless Horizon's Jump Freighting Service</Typography>
                     <Typography variant="h6" align="center" color="textSecondary" paragraph>Use our affordable and reliable services to move your goods to and from Jita. All contracts are delivered with in 72h or less, or its free!</Typography>
                     <Typography variant="h6" align="center" color="textPrimary" paragraph>Courier contract to Abyssal Freighting</Typography>
                     <Typography variant="p" align="center" color="textSecondary" paragraph>
                         <List>
                             <ListItemText>Rates are:</ListItemText>
-                            <ListItemText>950 ISK per m3 from Jita to J5A</ListItemText>
-                            <ListItemText>1,000 ISK per m3 from J5A to Jita</ListItemText>
-                            <ListItemText>550 ISK per m3 from FDZ to Jita and Jita to FDZ</ListItemText>
+                            <ListItemText>850 ISK per m3 from Jita to J5A</ListItemText>
+                            <ListItemText>900 ISK per m3 from J5A to Jita</ListItemText>
+                            <ListItemText>FDZ and F-N deliveries on hold for now</ListItemText>
                             <ListItemText>2% fee for collateral, max collateral is 5 Billion ISK</ListItemText>
+                            <ListItemText>Set contract to accept 7 days, complete 7 days</ListItemText>
                         </List>
                     </Typography>
                     <div className={classes.calc}>

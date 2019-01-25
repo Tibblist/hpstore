@@ -266,7 +266,7 @@ class CheckoutItems extends React.Component {
                         Your transaction ID is <b>#{this.state.confirmNumber}</b>
                     </Typography>
                     <Typography variant="h5" className={classes.deposit}>
-                        Be sure to pay your deposit of <b>{numberWithCommas(Math.floor(this.state.total * .25))}</b> ISK to corp "Hole Punchers Builders" in game with your Transaction ID as the reason text.  It is important you do this right for your order to be processed in a timely manner. 
+                        Be sure to pay your deposit of <b>{numberWithCommas(Math.floor(this.state.total * .25))}</b> ISK to corp "Eve Superstore" in game with your Transaction ID as the reason text.  It is important you do this right for your order to be processed in a timely manner. 
                     </Typography>
                     <Typography variant="h5" className={classes.deposit}>
                         {bottomText(this.state.confirmNumber)}

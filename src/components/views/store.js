@@ -7,6 +7,8 @@ import CheckoutItems from './checkout';
 import StoreSideBar from '../utils/store-sidebar'
 import { Typography, Paper, Button, Divider } from '@material-ui/core';
 import {Link} from 'react-router-dom';
+import FittingsParser from './fittings-parser';
+
  
 const request = require('superagent');
 
@@ -224,7 +226,7 @@ export default class Store extends React.Component {
               />
               <Route
               path="/store/fittings/parser"
-              render={(props) => <div/>}
+              render={(props) => <FittingsParser/>}
               />
               <Route
               path='/store/checkout'

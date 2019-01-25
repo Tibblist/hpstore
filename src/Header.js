@@ -80,7 +80,7 @@ class Header extends React.Component {
                 </div>
                 <div className={classes.leftnav}>
                     <Link to="/" className={classes.button}>
-                        <img src="https://imageserver.eveonline.com/Corporation/98523546_128.png" alt="Hole Puncher's Logo"></img>
+                        <img src="https://imageserver.eveonline.com/Corporation/98589315_128.png" alt="Hole Puncher's Logo"></img>
                     </Link>
                     <Button size="large" component={Link} to="/">
                         Home
